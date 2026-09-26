@@ -1,0 +1,1351 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  MA1521 Calculus for Computing -- Midterm Exercise Set
+%  Typeset in the style of Thomas' Calculus (Early Transcendentals, 15/e),
+%  laid out one-column in the manner of an MIT 18.02 problem set,
+%  with working space after every problem.
+%
+%  Coverage: Thomas 11.1-11.5, 12.1-12.3, Chapter 13 (complete)
+%            MIT 18.02 Lectures 1-13
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[scale=0.92]{tgheros}
+\usepackage{newtxtext}
+\usepackage[varg]{newtxmath}
+\usepackage[letterpaper,top=0.95in,bottom=0.95in,left=1.05in,right=1.05in,headsep=14pt,footskip=26pt]{geometry}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\usepackage{lastpage}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+%------------------------------------------------------------------ palette --
+\definecolor{ThomasBlue}{HTML}{00558C}   % Pearson/Thomas heading blue
+\definecolor{ThomasDeep}{HTML}{003A62}
+\definecolor{ThomasTint}{HTML}{E9F1F7}   % pale box fill
+\definecolor{RuleGray}{HTML}{B9C4CC}
+\definecolor{WorkGray}{HTML}{D9DEE3}
+\definecolor{SoftGray}{HTML}{6A7378}
+
+%------------------------------------------------------------------- vectors --
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\bi}{\mathbf{i}}
+\newcommand{\bj}{\mathbf{j}}
+\newcommand{\bk}{\mathbf{k}}
+\newcommand{\bA}{\mathbf{A}}
+\newcommand{\bB}{\mathbf{B}}
+\newcommand{\bC}{\mathbf{C}}
+\newcommand{\bD}{\mathbf{D}}
+\newcommand{\br}{\mathbf{r}}
+\newcommand{\bv}{\mathbf{v}}
+\newcommand{\bu}{\mathbf{u}}
+\newcommand{\ba}{\mathbf{a}}
+\newcommand{\bT}{\mathbf{T}}
+\newcommand{\bn}{\mathbf{n}}
+\newcommand{\grad}{\nabla}
+\newcommand{\pd}[2]{\dfrac{\partial #1}{\partial #2}}
+\newcommand{\pdi}[2]{\partial #1/\partial #2}
+\newcommand{\dd}[2]{\dfrac{d#1}{d#2}}
+\DeclareMathOperator{\proj}{proj}
+
+%---------------------------------------------------------- running headers --
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[L]{\footnotesize\sffamily\color{SoftGray}MA1521 \textbar\ Midterm Exercise Set}
+\fancyhead[R]{\footnotesize\sffamily\color{SoftGray}\leftmark}
+\fancyfoot[C]{\footnotesize\sffamily\color{SoftGray}\thepage\ of \pageref{LastPage}}
+\fancypagestyle{plain}{\fancyhf{}%
+  \fancyfoot[C]{\footnotesize\sffamily\color{SoftGray}\thepage\ of \pageref{LastPage}}}
+
+%--------------------------------------------------- Thomas-style structures --
+% PART heading: heavy blue rule + "PART x" + title, in the manner of the
+% "EXERCISES 13.7" banner that opens every Thomas exercise set.
+\newcommand{\parthead}[4]{%
+  \clearpage
+  \markboth{#2}{#2}%
+  \noindent{\color{ThomasBlue}\rule{\linewidth}{2.6pt}}\par\vspace{2pt}
+  \noindent{\color{RuleGray}\rule{\linewidth}{0.5pt}}\par\vspace{7pt}
+  \noindent{\sffamily\bfseries\fontsize{15}{17}\selectfont\color{ThomasDeep} PART #1}%
+  \hfill{\sffamily\fontsize{9}{11}\selectfont\color{SoftGray} #4}\par\vspace{3pt}
+  \noindent{\sffamily\bfseries\fontsize{21}{24}\selectfont\color{ThomasBlue} #2}\par\vspace{4pt}
+  \noindent{\itshape\fontsize{10}{12}\selectfont\color{SoftGray} #3}\par\vspace{5pt}
+  \noindent{\color{ThomasBlue}\rule{\linewidth}{1.1pt}}\par\vspace{12pt}
+}
+
+% Category sub-head, e.g. "Finding Local Extrema" in the textbook's exercise sets
+\newcommand{\topichead}[1]{%
+  \par\addvspace{15pt}\needspace{6\baselineskip}%
+  \noindent{\sffamily\bfseries\fontsize{11.3}{13}\selectfont\color{ThomasBlue}#1}\par
+  \vspace{1.5pt}\noindent{\color{RuleGray}\rule{\linewidth}{0.5pt}}\par\addvspace{7pt}
+}
+
+% Boxed DEFINITION / THEOREM panel, after the tinted panels in Thomas' text
+\newcommand{\panel}[2]{%
+  \par\addvspace{10pt}\needspace{5\baselineskip}%
+  \noindent{\color{ThomasBlue}\rule{\linewidth}{1.1pt}}\par\vspace{-2pt}
+  \noindent\colorbox{ThomasTint}{%
+  \begin{minipage}{\dimexpr\linewidth-2\fboxsep\relax}
+  \vspace{4pt}
+  {\sffamily\bfseries\fontsize{9}{11}\selectfont\color{ThomasDeep}#1}\par\vspace{4pt}
+  #2\par\vspace{4pt}
+  \end{minipage}}\par\vspace{-1pt}
+  \noindent{\color{RuleGray}\rule{\linewidth}{0.5pt}}\par\addvspace{11pt}
+}
+
+%------------------------------------------------------------------ problems --
+\newcounter{prob}
+\newcommand{\pts}[1]{{\sffamily\fontsize{8.5}{10}\selectfont\color{SoftGray}(#1)}}
+
+% \begin{problem} ... \end{problem}
+\newenvironment{problem}{%
+  \par\addvspace{13pt}\needspace{5\baselineskip}%
+  \refstepcounter{prob}%
+  \noindent\hangindent=2.05em\hangafter=1
+  {\bfseries\color{ThomasDeep}\theprob.}\hspace{0.55em}\ignorespaces
+}{\par}
+
+\newlist{parts}{enumerate}{3}
+\setlist[parts,1]{label=\textbf{(\alph*)},ref=\alph*,leftmargin=2.15em,
+                  itemsep=4pt,topsep=4pt,parsep=1pt,partopsep=0pt}
+\setlist[parts,2]{label=(\roman*),leftmargin=2.0em,itemsep=3pt,topsep=3pt,parsep=0pt}
+
+% Working space: a light ruled panel the student writes inside
+\newlength{\wkwidth}
+\newcommand{\work}[1]{%
+  \par\addvspace{6pt}%
+  \setlength{\wkwidth}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}%
+  \noindent\fcolorbox{WorkGray}{white}{\rule{0pt}{#1}\rule{\wkwidth}{0pt}}%
+  \par\addvspace{14pt}%
+}
+
+% Source attribution line
+\newcommand{\src}[1]{\par\vspace{2pt}\hfill{\sffamily\fontsize{8}{9}\selectfont\color{SoftGray}[#1]}\par}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\linespread{1.04}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TITLE BLOCK %%%
+\thispagestyle{plain}
+\markboth{Front Matter}{Front Matter}
+
+\noindent{\color{ThomasBlue}\rule{\linewidth}{3.2pt}}\par\vspace{2.5pt}
+\noindent{\color{RuleGray}\rule{\linewidth}{0.5pt}}\par\vspace{16pt}
+
+\noindent
+\begin{minipage}[t]{0.62\linewidth}
+{\sffamily\bfseries\fontsize{12}{14}\selectfont\color{ThomasDeep}MA1521\ \ CALCULUS FOR COMPUTING}\par\vspace{2pt}
+{\sffamily\fontsize{9.5}{11}\selectfont\color{SoftGray}National University of Singapore}
+\end{minipage}%
+\begin{minipage}[t]{0.38\linewidth}
+\raggedleft
+{\sffamily\fontsize{9.5}{12}\selectfont\color{SoftGray}
+Exercise Set~M\ \ (Midterm Revision)\\
+Name:\ \rule{3.2cm}{0.4pt}\\[2pt]
+Date:\ \rule{3.2cm}{0.4pt}}
+\end{minipage}
+
+\vspace{20pt}
+\noindent{\sffamily\bfseries\fontsize{28}{32}\selectfont\color{ThomasBlue}Vectors, Space Curves,\\[2pt] and Partial Derivatives}
+
+\vspace{10pt}
+\noindent{\fontsize{11.5}{14}\selectfont\itshape\color{ThomasDeep}
+Thomas' Calculus: Early Transcendentals, 15/e \ \ \textbullet\ \ Sections 11.1--11.5,\ 12.1--12.3,\ and Chapter 13 complete}\par\vspace{3pt}
+\noindent{\fontsize{10.5}{13}\selectfont\itshape\color{SoftGray}
+MIT 18.02 Multivariable Calculus \ \ \textbullet\ \ Lectures 1--13}
+
+\vspace{12pt}
+\noindent{\color{ThomasBlue}\rule{\linewidth}{1.4pt}}
+\vspace{16pt}
+
+\panel{HOW TO USE THIS SET}{%
+\fontsize{10}{12.5}\selectfont
+The set is arranged in five parts. Parts~A and~B rebuild the geometric machinery
+(\S11.1--11.5, \S12.1--12.3); Parts~C and~D are the heart of the midterm and cover
+Chapter~13 in full, from level curves through Lagrange multipliers; Part~E is a
+timed simulation assembled from all of the above.
+\par\vspace{5pt}
+Every problem is followed by a ruled panel sized to the work it should take. Do the
+problem \emph{inside} the panel --- if your work spills out of the box, you are almost
+certainly computing something the problem did not ask for. Answers to all problems
+begin on the last pages; consult them only after a complete attempt.
+\par\vspace{5pt}
+Problems are drawn from the exercise sets of Thomas' Calculus 15/e, from the MIT 18.02
+problem sets used in Lecture Group~1, and from the tutorial questions of Lecture Group~2.
+The source of each part is recorded in its banner.
+}
+
+\vspace{4pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\topichead{Distribution of Problems}
+
+\noindent
+{\fontsize{10}{13}\selectfont
+\begin{tabular}{@{}p{0.06\linewidth}p{0.44\linewidth}p{0.26\linewidth}p{0.14\linewidth}@{}}
+\textbf{Part} & \textbf{Topic} & \textbf{Thomas sections} & \textbf{Problems}\\[3pt]
+\hline\\[-7pt]
+A & Vectors and the Geometry of Space & 11.1--11.5 & 1--9\\
+B & Vector-Valued Functions and Motion & 12.1--12.3 & 10--15\\
+C & Partial Derivatives, Chain Rule, Gradient & 13.1--13.6 & 16--38\\
+D & Extreme Values and Lagrange Multipliers & 13.7--13.9 & 39--52\\
+E & Midterm Simulation (90 minutes) & 11--13 & 53--58\\[3pt]
+\hline
+\end{tabular}}
+
+\vspace{4pt}
+
+\topichead{Results You Are Expected to Know Cold}
+
+\panel{THEOREM 1 --- Angle Between Two Vectors}{%
+The angle $\theta$ between two nonzero vectors $\bu=\langle u_1,u_2,u_3\rangle$ and
+$\bv=\langle v_1,v_2,v_3\rangle$ is
+\[
+\theta=\cos^{-1}\!\left(\frac{\bu\cdot\bv}{|\bu|\,|\bv|}\right),
+\qquad
+\bu\cdot\bv=u_1v_1+u_2v_2+u_3v_3 .
+\]
+\vspace{-9pt}
+\[
+\proj_{\bv}\bu=\left(\frac{\bu\cdot\bv}{|\bv|^{2}}\right)\bv,
+\qquad
+|\bu\times\bv|=|\bu|\,|\bv|\sin\theta,
+\qquad
+|\,(\bu\times\bv)\cdot\mathbf{w}\,|=\bigl|\det[\bu\ \bv\ \mathbf{w}]\bigr| .
+\]}
+
+\panel{DEFINITION --- Arc Length Along a Space Curve}{%
+For a smooth curve $\br(t)=f(t)\bi+g(t)\bj+h(t)\bk$, $a\le t\le b$,
+\[
+L=\int_a^b|\bv(t)|\,dt=\int_a^b\sqrt{\left(\dd{x}{t}\right)^{2}+\left(\dd{y}{t}\right)^{2}+\left(\dd{z}{t}\right)^{2}}\,dt,
+\qquad
+\bT=\frac{\bv}{|\bv|}.
+\]}
+
+\panel{THEOREM --- The Chain Rule, the Gradient, and the Second Derivative Test}{%
+If $w=f(x,y,z)$ is differentiable and $x,y,z$ are differentiable functions of $t$, then
+$\dd{w}{t}=f_x\dd{x}{t}+f_y\dd{y}{t}+f_z\dd{z}{t}$, and
+$df=f_x\,dx+f_y\,dy+f_z\,dz$.
+\par\vspace{4pt}
+The directional derivative of $f$ at $P_0$ in the direction of a \emph{unit} vector $\bu$ is
+$D_{\bu}f=\grad f\big|_{P_0}\!\cdot\bu$; it is largest ($=|\grad f|$) in the direction of
+$\grad f$ and zero along the level curve through $P_0$.
+\par\vspace{4pt}
+At a critical point $(a,b)$ of $f$, set $D=f_{xx}f_{yy}-f_{xy}^{\,2}$ evaluated at $(a,b)$. Then
+$f$ has a local maximum if $D>0$ and $f_{xx}<0$; a local minimum if $D>0$ and $f_{xx}>0$;
+a saddle point if $D<0$; and the test is inconclusive if $D=0$.
+\par\vspace{4pt}
+\emph{Lagrange multipliers.} To find the extreme values of $f$ subject to $g=0$,
+solve $\grad f=\lambda\grad g$ together with $g=0$, then compare the values of $f$
+at the solutions.}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PART A %%%
+\parthead{A}{Vectors and the Geometry of Space}%
+{Thomas 11.1--11.5 \ \textbullet\ \ MIT 18.02 Lectures 1--5}%
+{9 problems \ \textbar\ \ 25 points}
+
+\topichead{Vectors, Lengths, and Directions}
+
+\begin{problem}
+\textbf{Unit vectors and displacement.}
+\begin{parts}
+\item For what value or values of $c$ will $\tfrac{1}{2}\bi-c\bj+c\bk$ be a unit vector?
+\item A vector $\bA$ has magnitude $6$ and direction $(\bi+2\bj-2\bk)/3$. If its tail is at
+      $(-2,0,1)$, where is its head?
+\end{parts}
+\src{MIT 18.02, Problem Set 1}
+\end{problem}
+\work{3.6cm}
+
+\begin{problem}
+Let $P$ and $Q$ be two points in space, and let $X$ be the midpoint of the line segment $PQ$.
+Let $O$ be an arbitrary fixed point.
+\begin{parts}
+\item Show that, as vectors, $\overrightarrow{OX}=\tfrac{1}{2}\bigl(\overrightarrow{OP}+\overrightarrow{OQ}\bigr)$.
+\item With the notation of part (a), assume instead that $X$ divides the segment $PQ$ in the
+      ratio $r:s$, where $r+s=1$. Derive an expression for $\overrightarrow{OX}$ in terms of
+      $\overrightarrow{OP}$ and $\overrightarrow{OQ}$.
+\end{parts}
+\src{MIT 18.02, Problem Set 1}
+\end{problem}
+\work{4.8cm}
+
+\topichead{The Dot Product, Projections, and Angles}
+
+\begin{problem}
+\textbf{Angles between vectors.}
+\begin{parts}
+\item Find the angle between $\bi-\bk$ and $4\bi+4\bj-2\bk$, and the angle between
+      $\bi+\bj+2\bk$ and $2\bi-\bj+\bk$.
+\item Tell for what values of $c$ the vectors $c\bi+2\bj-\bk$ and $\bi-\bj+2\bk$ will
+      (i) be orthogonal; (ii) form an acute angle.
+\end{parts}
+\src{MIT 18.02, Problem Set 1}
+\end{problem}
+\work{4.2cm}
+
+\begin{problem}
+Consider the vectors $\bA=6\bj+6\bk$ and $\bB=2\bi-\bj-\bk$. Write $\bA=\bC+\bD$ as a sum of
+two vectors such that $\bC$ is parallel to $\bB$ and $\bD$ is perpendicular to $\bB$.
+\par\vspace{3pt}
+{\itshape\small Suggestion. First write $\bC=\alpha\bB$, so that $\bA=\alpha\bB+\bD$ for some
+real number $\alpha$. Determine $\alpha$ using the dot product, then proceed to get
+$\bC$ and $\bD$.}
+\src{MA1521 L2, Q04.4}
+\end{problem}
+\work{4.4cm}
+
+\topichead{Determinants and the Cross Product}
+
+\begin{problem}
+\textbf{Determinants and the cross product.}
+\begin{parts}
+\item Calculate
+\[
+\begin{vmatrix} -1 & 0 & 4\\ 1 & 2 & 2\\ 3 & -2 & -1\end{vmatrix}
+\]
+using the Laplace expansion by the cofactors of (i) the first row; (ii) the first column.
+\item Find $\bA\times\bB$ if
+      (i) $\bA=\bi-2\bj+\bk$, $\bB=2\bi-\bj-\bk$;\quad
+      (ii) $\bA=2\bi-3\bk$, $\bB=\bi+\bj-\bk$.
+\end{parts}
+\src{MIT 18.02, Problem Set 1}
+\end{problem}
+\work{5.1cm}
+
+\begin{problem}
+Consider the points $A=(5,2,0)$, $B=(2,6,1)$, and $C=(2,4,7)$ in space.
+\begin{parts}
+\item Find the area of the parallelogram with two adjacent sides given by the line segments
+      $AB$ and $AC$. Hence find the area of triangle $ABC$.
+\item Find the volume of the parallelepiped spanned by $\bi+3\bk$, $2\bi+\bj-2\bk$,
+      and $5\bi+4\bk$.
+\item Suppose $A$, $B$, $C$, $D$ are four points in space with
+      $\det\bigl(\overrightarrow{AB},\overrightarrow{AC},\overrightarrow{AD}\bigr)=0$.
+      Must the four points be coplanar? Give a reason.
+\end{parts}
+\src{MA1521 L2, Q04.8--Q04.10}
+\end{problem}
+\work{5.4cm}
+
+\topichead{Lines and Planes in Space}
+
+\begin{problem}
+Find equations for the following planes.
+\begin{parts}
+\item Through $(2,0,-1)$ and perpendicular to $\bi+2\bj-2\bk$.
+\item Through the origin, $(1,1,0)$, and $(2,-1,3)$.
+\item Through the points on the $x$-, $y$-, and $z$-axes where $x=a$, $y=b$, $z=c$
+      respectively (all nonzero).
+\item Through $(1,0,1)$ and $(0,1,1)$ and parallel to $\bi-\bj+2\bk$.
+\end{parts}
+\src{MIT 18.02, Problem Set 1}
+\end{problem}
+\work{6.0cm}
+
+\begin{problem}
+Find, in parametric form, equations for
+\begin{parts}
+\item the line through $(1,0,-1)$ and parallel to $2\bi-\bj+3\bk$;
+\item the line through $(2,-1,-1)$ and perpendicular to the plane $x-y+2z=3$;
+\item all lines passing through $(1,1,1)$ and lying in the plane $x+2y-z=2$;
+\item the line through $P(4,2,1)$ and perpendicular to both of the lines
+      \[
+      \ell_1:\ x=3t+2,\quad y=-4t-1,\quad z=4t-9,
+      \qquad
+      \ell_2:\ x=3t-4,\quad y=-t+6,\quad z=5t .
+      \]
+\end{parts}
+\src{MIT 18.02, Problem Set 1; MA1521 L2, Q05.2}
+\end{problem}
+\work{6.3cm}
+
+\begin{problem}
+\textbf{Lines meeting planes.}
+\begin{parts}
+\item Where does the line through $(0,1,2)$ and $(2,0,3)$ intersect the plane $x+4y+z=4$?
+\item The line passing through $(1,1,-1)$ and perpendicular to the plane $x+2y-z=3$
+      intersects the plane $2x-y+z=1$ at what point?
+\item Find an equation of the plane that contains the point $(-1,2,1)$ and the line of
+      intersection of the planes $x+y-z=2$ and $2x-y+3z=1$.
+\end{parts}
+\src{MIT 18.02, Problem Set 1; MA1521 L2, Q05.5}
+\end{problem}
+\work{6.5cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PART B %%%
+\parthead{B}{Vector-Valued Functions and Motion in Space}%
+{Thomas 12.1--12.3 \ \textbullet\ \ MIT 18.02 Lectures 5--6}%
+{6 problems \ \textbar\ \ 20 points}
+
+\topichead{Curves in Space and Their Tangents}
+
+\begin{problem}
+For each of the following vector functions of time, calculate the velocity, the speed, the
+unit tangent vector (in the direction of the velocity), and the acceleration.
+\begin{parts}
+\item $\br=e^{t}\bi+e^{-t}\bj$
+\item $\br=t^{2}\bi+t^{3}\bj$
+\item $\br=(1-2t^{2})\bi+t^{2}\bj+(-2+2t^{2})\bk$
+\end{parts}
+\src{MIT 18.02, Problem Set 2}
+\end{problem}
+\work{5.6cm}
+
+\begin{problem}
+Consider the vector function
+$\bv(t)=(3t^{2}+2t)\bi+\pi\sin(\pi t)\bj+e^{t}\bk$.
+\begin{parts}
+\item Evaluate $\bv'(t)$, and find $\bv'(2)$.
+\item Evaluate the indefinite integral $\displaystyle\int\bv(t)\,dt$.
+\item Evaluate the definite integral $\displaystyle\int_0^1\bv(t)\,dt$.
+\end{parts}
+\src{MA1521 L2, Q05.10}
+\end{problem}
+\work{5.1cm}
+
+\begin{problem}
+Consider the curve in $\mathbb{R}^{3}$ given by
+\[
+\br(t)=(\ln t)\,\bi+\frac{t-1}{t+3}\,\bj+(t\ln t)\,\bk .
+\]
+Find parametric equations of the tangent line to the curve at the point where $t=1$.
+\src{MA1521 L2, Q05.11}
+\end{problem}
+\work{4.6cm}
+
+\topichead{Integrals of Vector Functions; Motion}
+
+\begin{problem}
+A particle moves in $\mathbb{R}^{3}$ so that its velocity at time $t$ is
+\[
+\bv(t)=(6t^{2}+4t)\,\bi+(8t^{3}+2t)\,\bj+\frac{1}{1+t^{2}}\,\bk .
+\]
+If the position of the particle at time $t=0$ is $\bi+2\bj+\pi\bk$, find the position of the
+particle at time $t=1$.
+\src{MA1521 L2, Q05.12}
+\end{problem}
+\work{4.6cm}
+
+\begin{problem}
+Two particles move in $\mathbb{R}^{3}$ so that their positions at time $t$ are
+\[
+\br_1(t)=t\,\bi+t^{2}\,\bj+t^{3}\,\bk ,
+\qquad
+\br_2(t)=(1+2t)\,\bi+(1+6t)\,\bj+(1+14t)\,\bk .
+\]
+\begin{parts}
+\item Do the particles collide? Justify your answer.
+\item Do their paths intersect? Justify your answer.
+\end{parts}
+\src{MA1521 L2, Q05.13}
+\end{problem}
+\work{5.6cm}
+
+\topichead{Arc Length in Space}
+
+\begin{problem}
+\textbf{Lengths of curves in space.}
+\begin{parts}
+\item Find the unit tangent vector of
+      $\br(t)=(2\cos t)\bi+(2\sin t)\bj+\sqrt{5}\,t\,\bk$, and the length of the portion
+      $0\le t\le\pi$.
+\item Find the arc length of the curve
+      \[
+      x=2t-2\sin t,\qquad y=2-\sqrt{2}\cos t,\qquad z=\sqrt{2}\cos t,
+      \qquad 0\le t\le 4\pi .
+      \]
+\item Find the length of the curve $\br(t)=2t\,\bi+2t\,\bj+(1-t^{2})\,\bk$ from
+      $(0,0,1)$ to $(2,2,0)$.
+\end{parts}
+\src{Thomas 12.3, Exercises 1 and 15; MA1521 L2, Q05.14}
+\end{problem}
+\work{7.1cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PART C %%%
+\parthead{C}{Partial Derivatives, the Chain Rule, and the Gradient}%
+{Thomas 13.1--13.6 \ \textbullet\ \ MIT 18.02 Lectures 8--12}%
+{23 problems \ \textbar\ \ 60 points}
+
+\topichead{Functions of Several Variables; Limits and Continuity}
+
+\begin{problem}
+\textbf{Values, domains, and level sets.}
+\begin{parts}
+\item Let $\displaystyle f(x,y,z)=\frac{x-y}{y^{2}+z^{2}}$. Evaluate $f(3,-1,2)$ and
+      $f\!\left(0,-\tfrac{1}{3},0\right)$.
+\item Find and sketch the natural domain of
+      $\displaystyle f(x,y)=\frac{1}{\ln\left(9-x^{2}-y^{2}\right)}$.
+\item Describe geometrically the level sets of
+      $f(x,y,z)=\sqrt{16-x^{2}-y^{2}-z^{2}}$.
+\end{parts}
+\src{MA1521 L2, Q06.1, Q06.2, Q06.4}
+\end{problem}
+\work{5.4cm}
+
+\begin{problem}
+\textbf{Level curves and graphs.}
+\begin{parts}
+\item Sketch five level curves for each of the following functions, and sketch the portion
+      of the graph lying in the first octant:
+      \[
+      \text{(i) } 1-x-y,\qquad
+      \text{(ii) } \sqrt{x^{2}+y^{2}},\qquad
+      \text{(iii) } x^{2}+y^{2},\qquad
+      \text{(iv) } 1-x^{2}-y^{2}.
+      \]
+\item Sketch the level curves $f(x,y)=k$ for $k=-2,0,1,2$, where
+      $\displaystyle f(x,y)=\frac{x+y}{x-y}$.
+\end{parts}
+\src{MIT 18.02, Problem Set 3; MA1521 L2, Q06.3}
+\end{problem}
+\work{7.3cm}
+
+\begin{problem}
+Evaluate each limit, or show that it does not exist.
+\begin{parts}
+\item $\displaystyle\lim_{(x,y)\to(0,\pi/4)}\sec x\,\tan(x+y)$
+\item $\displaystyle\lim_{(x,y)\to(2,0)}\frac{\sqrt{2x-y}-2}{2x-y-4}$
+      \quad{\itshape\small(The identity $a^{2}-b^{2}=(a+b)(a-b)$ is useful.)}
+\item $\displaystyle\lim_{(x,y)\to(0,0)}\frac{y}{x^{2}}$
+\item Let $f(x,y)=\sqrt{x^{2}+y^{2}}$ for $(x,y)\neq(0,0)$ and $f(0,0)=1$.
+      Find $\lim_{(x,y)\to(0,0)}f(x,y)$, and decide whether $f$ is continuous at $(0,0)$.
+\end{parts}
+\src{MA1521 L2, Q06.5, Q06.6, Q07.1}
+\end{problem}
+\work{6.6cm}
+
+\topichead{Partial Derivatives}
+
+\begin{problem}
+Calculate the first partial derivatives of each of the following functions.
+\begin{parts}
+\item $4x^{3}-3x^{2}y^{2}+2x$
+\item $\sin(3x+2y)$
+\item $y\ln(4x+3y)$; find also the values of the first partials at $(2,1)$.
+\item $x^{2}z-2yz^{3}$
+\item $y^{2}z+x^{3}yz^{3}$; find also the values of the first partials at $(1,2,4)$.
+\end{parts}
+\src{MIT 18.02, Problem Set 3; MA1521 L2, Q07.2}
+\end{problem}
+\work{6.1cm}
+
+\begin{problem}
+\textbf{Mixed second partials.}
+\begin{parts}
+\item Verify that $f_{xy}=f_{yx}$ for
+      (i) $x^{m}y^{n}$ ($m,n$ positive integers);\quad
+      (ii) $\dfrac{x}{1+y}$;\quad
+      (iii) $\cos(x^{2}+y)$.
+\item Using $f_{xy}=f_{yx}$, tell for what value of the constant $a$ there exists a function
+      $f(x,y)$ with $f_x=axy+3y^{2}$ and $f_y=x^{2}+6xy$; then find such a function by
+      inspection.
+\item Suppose $f(x,y)$ satisfies $f_x=3x^{2}+Axy$ and $f_y=3x^{2}+6y^{2}$, where $A$ is a
+      constant. Using Clairaut's Theorem, determine $A$, and then find such a function
+      $f(x,y)$. {\itshape\small(Such a function is not unique.)}
+\end{parts}
+\src{MIT 18.02, Problem Set 3; MA1521 L2, Q07.6}
+\end{problem}
+\work{6.8cm}
+
+\begin{problem}
+\textbf{Laplace's equation and implicit partials.}
+\begin{parts}
+\item Show that each of the following functions $w=f(x,y)$ satisfies the two-dimensional
+      Laplace equation $w_{xx}+w_{yy}=0$:
+      (i) $w=e^{ax}\sin ay$ ($a$ constant);\quad (ii) $w=\ln\!\left(x^{2}+y^{2}\right)$.
+\item Using implicit differentiation, find $\pdi{z}{x}$ and $\pdi{z}{y}$ if
+      \[
+      x^{3}+2y^{3}+6xz^{3}-2=59z .
+      \]
+      {\itshape\small Here $z$ is regarded as a function of the independent variables $x$ and $y$,
+      defined implicitly by the equation.}
+\end{parts}
+\src{MIT 18.02, Problem Set 3; MA1521 L2, Q07.3}
+\end{problem}
+\work{6.5cm}
+
+\topichead{Tangent Planes and Normal Lines}
+
+\begin{problem}
+Give an equation of the tangent plane to each of the following surfaces at the point
+indicated.
+\begin{parts}
+\item $z=xy^{2}$ at $(1,1,1)$
+\item $w=y^{2}/x$ at $(1,2,4)$
+\item the graph of $f(x,y)=x^{2}y+2xy$ at the point where $(x,y)=(1,2)$
+\item the surface $yz=x^{2}$ at $(4,2,8)$
+      \ {\itshape\small(Suggestion: first rewrite the surface as the graph of a function of
+      two variables.)}
+\end{parts}
+\src{MIT 18.02, Problem Set 3; MA1521 L2, Q07.8, Q07.9}
+\end{problem}
+\work{6.8cm}
+
+\begin{problem}
+Consider the surface in $xyz$-space defined by
+\[
+\cos(\pi x)-x^{2}y+e^{xz}+yz=4 .
+\]
+Find equations for the tangent plane and the normal line to the surface at the point
+$(0,1,2)$.
+\src{Thomas 13.6, Exercise 5; MA1521 L2, Q10.1}
+\end{problem}
+\work{4.9cm}
+
+\begin{problem}
+\textbf{Tangent planes to a cone.}
+\begin{parts}
+\item Find an equation of the tangent plane to the cone $z=\sqrt{x^{2}+y^{2}}$ at a point
+      $P_0:(x_0,y_0,z_0)$ on the cone, with $z_0>0$.
+\item Write parametric equations for the ray from the origin passing through $P_0$, and use
+      them to show that the ray lies on both the cone and the tangent plane at $P_0$.
+\end{parts}
+\src{MIT 18.02, Problem Set 3}
+\end{problem}
+\work{6.1cm}
+
+\topichead{Differentials}
+
+\begin{problem}
+Find the differential ($dw$ or $dz$). Make the answer look as neat as possible.
+\begin{parts}
+\item $w=\ln(xyz)$
+\item $w=xy^{2}z^{3}$
+\item $\displaystyle z=\frac{x-y}{x+y}$
+\end{parts}
+\src{MIT 18.02, Problem Set 4; MA1521 L2, Q10.5}
+\end{problem}
+\work{4.4cm}
+
+\begin{problem}
+The following equations define $w$ implicitly as a function of the other variables. Find
+$dw$ in terms of the other differentials by taking the differential of both sides and solving
+algebraically for $dw$.
+\begin{parts}
+\item $z^{2}+xyw+yw^{3}=0$
+\item $u^{2}+2v^{2}+3w^{2}=10$
+\end{parts}
+\src{MIT 18.02, Problem Set 4; MA1521 L2, Q10.6}
+\end{problem}
+\work{5.4cm}
+
+\topichead{The Chain Rule}
+
+\begin{problem}
+In each of the following, find $dw/dt$ in two distinct ways: (i) use the Chain Rule, then
+express the answer in terms of $t$; (ii) express the composite function in terms of $t$ and
+differentiate.
+\begin{parts}
+\item $w=xyz$;\quad $x=t$, $y=t^{2}$, $z=t^{3}$
+\item $w=x^{2}-y^{2}$;\quad $x=\cos t$, $y=\sin t$
+\item $w=\ln\!\left(u^{2}+v^{2}\right)$;\quad $u=2\cos t$, $v=2\sin t$
+\end{parts}
+\src{MIT 18.02, Problem Set 4}
+\end{problem}
+\work{6.3cm}
+
+\begin{problem}
+Consider the function $w=2ye^{x}-\ln z$, where
+$x=\ln\!\left(t^{2}+1\right)$, $y=\tan^{-1}t$, and $z=e^{t}$.
+\begin{parts}
+\item Find $dw/dt$ using the Chain Rule, expressing the answer in terms of $t$.
+\item Find $dw/dt$ by first expressing $w$ in terms of $t$, and check that the two answers agree.
+\end{parts}
+\src{MA1521 L2, Q09.2}
+\end{problem}
+\work{5.8cm}
+
+\begin{problem}
+Suppose the temperature at any point in $xyz$-space is
+$T(x,y,z)=e^{x}-yz+zx$, measured in ${}^{\circ}$C, where $x,y,z$ are measured in cm.
+If the position of an insect at time $t$ seconds is
+$x=t$, $y=2\left(1+t^{2}\right)$, $z=3+t$, find the rate of change of temperature
+experienced by the insect at time $t=0$. Give the answer in ${}^{\circ}$C per second.
+\src{MA1521 L2, Q09.3}
+\end{problem}
+\work{4.4cm}
+
+\begin{problem}
+Let $w=f(x,y)$, where all first- and second-order partial derivatives of $f$ are continuous,
+and change to polar coordinates $x=r\cos\theta$, $y=r\sin\theta$.
+\begin{parts}
+\item Show that $\displaystyle (w_x)^{2}+(w_y)^{2}=(w_r)^{2}+\frac{1}{r^{2}}(w_\theta)^{2}$.
+\item Show that
+      $\displaystyle \pd{^{2}w}{r^{2}}=f_{xx}\cos^{2}\theta+2f_{xy}\cos\theta\sin\theta+f_{yy}\sin^{2}\theta$.
+      {\itshape\small(First find $\pdi{w}{r}$ in terms of $f_x$, $f_y$, and $\theta$. Clairaut's
+      Theorem may be used freely.)}
+\end{parts}
+\src{MIT 18.02, Problem Set 4; MA1521 L2, Q09.6}
+\end{problem}
+\work{7.1cm}
+
+\begin{problem}
+Let $w=f(x,y)$ and make the change of variables $x=u^{2}-v^{2}$, $y=2uv$. Show that
+\[
+(w_u)^{2}+(w_v)^{2}=4\left(u^{2}+v^{2}\right)\left[(w_x)^{2}+(w_y)^{2}\right].
+\]
+\src{MIT 18.02, Problem Set 4}
+\end{problem}
+\work{4.9cm}
+
+\begin{problem}
+\textbf{Partial differential equations from the Chain Rule.}
+\begin{parts}
+\item Let $w=f(y/x)$; that is, $w$ is the composite of $w=f(u)$ and $u=y/x$. Show that $w$
+      satisfies the partial differential equation
+      $\displaystyle x\,\pd{w}{x}+y\,\pd{w}{y}=0$.
+\item Let $w=f\!\left(x^{2}-y^{2}\right)$; show that
+      $\displaystyle y\,\pd{w}{x}+x\,\pd{w}{y}=0$.
+\item Let $w=f(ax+by)$; show that
+      $\displaystyle b\,\pd{w}{x}-a\,\pd{w}{y}=0$.
+\end{parts}
+\src{MIT 18.02, Problem Set 4}
+\end{problem}
+\work{6.3cm}
+
+\topichead{Directional Derivatives and Gradient Vectors}
+
+\begin{problem}
+In each of the following, a function $f$, a point $P$, and a vector $\bA$ are given. Calculate
+the gradient of $f$ at $P$, and the directional derivative $D_{\bu}f$ at $P$ in the direction
+$\bu$ of the given vector $\bA$.
+\begin{parts}
+\item $f(x,y)=2xy-3y^{2}$;\quad $P(5,5)$,\quad $\bA=4\bi+3\bj$
+\item $f(x,y,z)=xy+yz+zx$;\quad $P(1,-1,2)$,\quad $\bA=3\bi+6\bj-2\bk$
+\item $f(x,y,z)=x^{2}+2y^{2}-3z^{2}$;\quad $P(1,1,1)$,\quad $\bA=\bi+\bj+\bk$
+\item $f(u,v,w)=(u+2v+3w)^{2}$;\quad $P(1,-1,1)$,\quad $\bA=-2\bi+2\bj-\bk$
+\end{parts}
+\src{Thomas 13.5, Exercises 11, 15, 16; MIT 18.02, Problem Set 4}
+\end{problem}
+\work{6.8cm}
+
+\begin{problem}
+Consider the function $f(x,y)=2ye^{-x}+1$ and the point $P(0,-2)$.
+\begin{parts}
+\item Find the directional derivative of $f$ at $P$ in the direction of each of the vectors
+      (i) $\tfrac{1}{\sqrt{2}}\bi+\tfrac{1}{\sqrt{2}}\bj$; \quad (ii) $12\bi+5\bj$.
+\item Find the direction that gives the largest possible directional derivative of $f$ at $P$,
+      and the value of that derivative.
+\item Find the direction along which $f$ decreases most rapidly at $P$.
+\item Find the directions along which $f$ exhibits no change at $P$.
+\end{parts}
+\src{MA1521 L2, Q09.10}
+\end{problem}
+\work{6.8cm}
+
+\begin{problem}
+Let $a$ be a positive number and consider
+$f(x,y)=\left(x^{2}+a\right)e^{2x+3y^{2}}$.
+It is given that the directional derivative of $f$ at the point $(-6,2)$ in the direction of
+the vector $\bi+2\bj$ is $216\sqrt{5}$. Find the value of $a$.
+\src{MA1521 L2, Q09.9}
+\end{problem}
+\work{5.3cm}
+
+\begin{problem}
+Let $C$ be the curve of intersection of the two surfaces
+$x^{3}+2xy+yz=7$ and $3x^{2}-yz=1$.
+Find parametric equations of the tangent line to $C$ at $(1,2,1)$.
+\par\vspace{3pt}
+{\itshape\small Suggestion. For each of the two surfaces, first find a normal vector at the
+point $(1,2,1)$.}
+\src{Thomas 13.6, Exercises 15--20; MA1521 L2, Q10.2}
+\end{problem}
+\work{5.4cm}
+
+\topichead{Linearization and Quadratic Approximation}
+
+\begin{problem}
+\textbf{Linearization and linear approximation.}
+\begin{parts}
+\item Find the linearization of $f(x,y)=e^{2x+y}$ at $(0,0)$ and at $(1,2)$. Give each answer
+      in the form $ax+by+c$.
+\item Consider $f(x,y,z)=xz+\sin(xyz)$. Using linear approximation, estimate the change in the
+      value of $f$ when $(x,y,z)$ changes from
+      $\left(\tfrac{1}{2},\pi,\tfrac{1}{3}\right)$ to
+      $\left(\tfrac{1}{2}+0.03,\ \pi+0.04,\ \tfrac{1}{3}-0.02\right)$.
+\end{parts}
+\src{MA1521 L2, Q10.4, Q10.7}
+\end{problem}
+\work{6.8cm}
+
+\begin{problem}
+Consider the function $f(x,y)=e^{x+4y}\cos x$.
+\begin{parts}
+\item Find the second-degree Taylor polynomial of $f$ at $(0,0)$.
+\item Using part (a), find an approximate value of $f(0.2,\,0.1)$.
+\end{parts}
+\src{Thomas 13.9; MA1521 L2, Q10.9}
+\end{problem}
+\work{6.5cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PART D %%%
+\parthead{D}{Extreme Values, Saddle Points, and Lagrange Multipliers}%
+{Thomas 13.7--13.9 \ \textbullet\ \ MIT 18.02 Lectures 9, 10, 13}%
+{14 problems \ \textbar\ \ 60 points}
+
+\topichead{Finding Local Extrema}
+
+\begin{problem}
+Find all the local maxima, local minima, and saddle points of the following functions, and
+give the corresponding values of the function.
+\begin{parts}
+\item $f(x,y)=x^{2}+xy+y^{2}+3x-3y+4$
+\item $f(x,y)=x^{3}-y^{3}-2xy+6$
+\item $f(x,y)=4xy-x^{4}-y^{4}$
+\item $f(x,y)=2\ln x+\ln y-4x-y$ \quad ($x>0$, $y>0$)
+\end{parts}
+\src{Thomas 13.7, Exercises 1, 13, 19, 29}
+\end{problem}
+\work{7.8cm}
+
+\begin{problem}
+Determine all the critical points of
+\[
+f(x,y)=2xy-x^{2}y-xy^{2},
+\]
+and classify each as a local maximum point, a local minimum point, or a saddle point of $f$.
+Evaluate also the local maximum and local minimum values of $f$, if any.
+\src{MA1521 L2, Q08.2}
+\end{problem}
+\work{7.1cm}
+
+\begin{problem}
+Determine all the critical points of
+\[
+f(x,y)=\ln\!\left(xy^{2}\right)-xy-2y
+\]
+over the region $x>0$, $y>0$ in the $xy$-plane, and classify each one. Evaluate also the local
+maximum and local minimum values of $f$, if any.
+\src{MA1521 L2, Q08.3}
+\end{problem}
+\work{6.8cm}
+
+\topichead{Finding Absolute Extrema}
+
+\begin{problem}
+Find the maximum and minimum points of
+\[
+f(x,y)=x^{2}-2xy+2y^{2}-2y
+\]
+over the rectangular region $R:\ -1\le x\le 2$, $0\le y\le 2$ in the $xy$-plane. Hence find the
+absolute maximum and absolute minimum values of $f$ over $R$.
+\src{MIT 18.02, Problem Set 3; MA1521 L2, Q08.6}
+\end{problem}
+\work{8.2cm}
+
+\begin{problem}
+\textbf{Constrained minimum distance.}
+\begin{parts}
+\item Consider the surface $y^{2}-xz=4$ in $xyz$-space. Find the point or points on the
+      surface closest to the origin.
+      {\itshape\small(Suggestion: first formulate the question as a problem of minimizing a
+      function of the variables $x$ and $z$.)}
+\item Find the minimum distance from the point $(2,-1,1)$ to the plane $x+y-z=2$.
+\end{parts}
+\src{Thomas 13.7, Exercise 52; MA1521 L2, Q08.4}
+\end{problem}
+\work{6.5cm}
+
+\begin{problem}
+\textbf{The method of least squares.}
+\begin{parts}
+\item Using the method of least squares, find the line $y=ax+b$ that best fits the three data
+      points $(-1,1)$, $(1,2)$, $(3,2)$.
+\item Using the method of least squares, find the quadratic polynomial of the form
+      $y=ax^{2}+bx$ that best fits the three data points $(-1,1)$, $(1,1)$, $(2,0)$.
+\end{parts}
+\src{MIT 18.02, Problem Set 3; MA1521 L2, Q08.7, Q08.8}
+\end{problem}
+\work{7.1cm}
+
+\begin{problem}
+A rectangular box with its top left open has its five faces made from different materials.
+The front face and the back face are made from material costing $10$ dollars per square metre;
+the two lateral faces from material costing $5$ dollars per square metre; and the bottom face
+from material costing $30$ dollars per square metre. Find the minimum material cost of the box
+if its volume is $6$ cubic metres, and give the dimensions (length, width, and height) of such
+a box.
+\par\vspace{3pt}
+{\itshape\small Do this problem twice: first by eliminating a variable and using the Second
+Derivative Test, and then again by the method of Lagrange multipliers. Compare the work
+involved.}
+\src{MIT 18.02, Problem Set 3; MA1521 L2, Q08.5 and Q11.4}
+\end{problem}
+\work{8.8cm}
+
+\topichead{The Method of Lagrange Multipliers}
+
+\begin{problem}
+\textbf{Extrema on a circle.}
+\begin{parts}
+\item Use the method of Lagrange multipliers to find the maximum value of $f(x,y)=xy$
+      subject to the constraint $(x-2)^{2}+y^{2}=4$.
+\item Use the method of Lagrange multipliers to find the maximum value of $f(x,y)=xy$
+      subject to the constraints $(x-2)^{2}+y^{2}=4$ \emph{and} $x\le 2$.
+      {\itshape\small(This is part (a) with one extra constraint, so the work there is useful.)}
+\end{parts}
+\src{MA1521 L2, Q11.1, Q11.2}
+\end{problem}
+\work{7.8cm}
+
+\begin{problem}
+\textbf{Nearest and farthest points.}
+\begin{parts}
+\item Find the point or points on the sphere $x^{2}+y^{2}+z^{2}=1$ furthest from the point
+      $(2,1,2)$.
+\item Find the point on the plane $x+2y+3z=13$ closest to the point $(1,1,1)$.
+\end{parts}
+\src{Thomas 13.8, Exercise 17; MA1521 L2, Q11.3}
+\end{problem}
+\work{6.8cm}
+
+\begin{problem}
+A rectangular box is placed in the first octant so that one corner $Q$ is at the origin and the
+three sides adjacent to $Q$ lie in the coordinate planes. The corner $P$ diagonally opposite
+to $Q$ lies on the ellipsoid
+\[
+\frac{x^{2}}{3}+\frac{y^{2}}{9}+\frac{z^{2}}{4}=1 .
+\]
+Use the method of Lagrange multipliers to determine the largest possible volume of the box, and
+say how you know that your answer gives a maximum.
+\src{MIT 18.02, Problem Set 5; MA1521 L2, Q12.1}
+\end{problem}
+\work{7.8cm}
+
+\begin{problem}
+Let $f(x,y)=x^{2}-y^{2}$ be defined on the disk $D=\left\{(x,y):x^{2}+y^{2}\le1\right\}$.
+\begin{parts}
+\item Find the critical points of $f$ and classify them.
+\item Find the maximum and minimum values of $f$ on $D$.
+      {\itshape\small(Lagrange multipliers are used in part (b).)}
+\end{parts}
+\src{MA1521 L2, Q12.2}
+\end{problem}
+\work{7.1cm}
+
+\begin{problem}
+\textbf{Extrema on a curve of intersection.}
+\begin{parts}
+\item Find the extreme values of $f(x,y,z)=xy+z^{2}$ on the circle in which the plane
+      $y-x=0$ intersects the sphere $x^{2}+y^{2}+z^{2}=4$.
+\item Find the maximum value of $w=xyz$ on the line of intersection of the two planes
+      $x+y+z=40$ and $x+y-z=0$. Give a geometric argument supporting the claim that you have
+      found a maximum and not a minimum.
+\end{parts}
+\src{Thomas 13.8, Exercises 42, 43}
+\end{problem}
+\work{7.8cm}
+
+\begin{problem}
+\textbf{Three applications.}
+\begin{parts}
+\item The temperature at a point $(x,y)$ on a metal plate is $T(x,y)=4x^{2}-4xy+y^{2}$. An ant
+      on the plate walks around the circle of radius $5$ centred at the origin. What are the
+      highest and lowest temperatures the ant encounters?
+\item Find the dimensions of the closed right circular cylindrical can of smallest surface area
+      whose volume is $16\pi\ \text{cm}^{3}$.
+\item Suppose the utility of amounts $x$ and $y$ of two capital goods is $U(x,y)=xy+2x$, and
+      that the budget constraint simplifies to $2x+y=30$. Find the maximum value of $U$ and the
+      corresponding values of $x$ and $y$.
+\end{parts}
+\src{Thomas 13.8, Exercises 9, 15, 33}
+\end{problem}
+\work{8.2cm}
+
+\begin{problem}
+\textbf{The condition $\grad f=\lambda\grad g$ is not sufficient.}\quad
+Even though $\grad f=\lambda\grad g$ is a necessary condition for an extreme value of
+$f(x,y)$ subject to $g(x,y)=0$ and $\grad g\neq\mathbf{0}$, it does not by itself guarantee
+that an extreme value exists. Try using Lagrange multipliers to find a maximum value of
+$f(x,y)=x+y$ subject to $xy=16$. The method identifies $(4,4)$ and $(-4,-4)$ as candidates.
+Explain carefully why $x+y$ nevertheless has \emph{no} maximum value on the hyperbola
+$xy=16$, and say which of the two candidates is a genuine local extremum and of what kind.
+\src{Thomas 13.8, Exercise 45}
+\end{problem}
+\work{6.8cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PART E %%%
+\parthead{E}{Midterm Simulation}%
+{Thomas 11--13 \ \textbullet\ \ 90 minutes, no calculator, closed book}%
+{6 problems \ \textbar\ \ 100 points}
+
+\panel{INSTRUCTIONS}{\fontsize{10}{12.5}\selectfont
+Work the six problems below in one uninterrupted sitting of \textbf{90 minutes}. Show all
+reasoning; an unsupported answer earns no credit. Leave answers in exact form ($\sqrt{2}$,
+$\ln 3$, $\pi/4$, and so on). The point values sum to $100$.}
+
+\begin{problem}
+\hfill\pts{15 points}\par\vspace{2pt}
+Let $A=(1,0,2)$, $B=(2,1,0)$, and $C=(0,3,1)$.
+\begin{parts}
+\item Find the area of the triangle $ABC$.
+\item Find an equation of the plane containing $A$, $B$, and $C$.
+\item Find the distance from the origin to that plane.
+\end{parts}
+\end{problem}
+\work{7.6cm}
+
+\begin{problem}
+\hfill\pts{13 points}\par\vspace{2pt}
+Consider the plane curve
+\[
+\br(t)=(\cos t+t\sin t)\,\bi+(\sin t-t\cos t)\,\bj ,\qquad t\ge0 .
+\]
+\begin{parts}
+\item Find $\bv(t)$ and the speed $|\bv(t)|$, simplifying as far as possible.
+\item Find the arc length parameter $s(t)$ measured from the point where $t=0$, and hence the
+      length of the portion of the curve with $0\le t\le\pi/2$.
+\item Find the unit tangent vector $\bT(t)$ for $t>0$.
+\end{parts}
+\end{problem}
+\work{7.6cm}
+
+\begin{problem}
+\hfill\pts{18 points}\par\vspace{2pt}
+Let $f(x,y,z)=x^{2}y+yz^{2}$ and let $P=(1,2,-1)$.
+\begin{parts}
+\item Find $\grad f$ at $P$.
+\item Find the directional derivative of $f$ at $P$ in the direction of $2\bi-\bj+2\bk$.
+\item In what direction does $f$ increase most rapidly at $P$, and what is that rate of increase?
+\item A particle moves so that its position at time $t$ is
+      $\br(t)=t\,\bi+(t+1)\,\bj+\left(t^{2}-2\right)\bk$. Verify that the particle is at $P$ when
+      $t=1$, and find the rate of change of $f$ experienced by the particle at that instant.
+\end{parts}
+\end{problem}
+\work{8.5cm}
+
+\begin{problem}
+\hfill\pts{16 points}\par\vspace{2pt}
+Consider the ellipsoid $x^{2}+2y^{2}+3z^{2}=21$ and the point $P_0(1,2,2)$ on it.
+\begin{parts}
+\item Find an equation of the tangent plane and parametric equations of the normal line to the
+      ellipsoid at $P_0$.
+\item Regarding $z$ as a function of $x$ and $y$ near $P_0$, use implicit differentiation to find
+      $\pdi{z}{x}$ and $\pdi{z}{y}$ at $P_0$, and check that your answers agree with part (a).
+\item Find all points on the ellipsoid at which the tangent plane is parallel to the plane
+      $x+4y+6z=0$.
+\end{parts}
+\end{problem}
+\work{8.5cm}
+
+\begin{problem}
+\hfill\pts{18 points}\par\vspace{2pt}
+Find and classify all the critical points of
+\[
+f(x,y)=x^{3}+3xy^{2}-15x-12y ,
+\]
+using the Second Derivative Test. State the local maximum and local minimum values of $f$.
+\end{problem}
+\work{9.0cm}
+
+\begin{problem}
+\hfill\pts{20 points}\par\vspace{2pt}
+\begin{parts}
+\item Use the method of Lagrange multipliers to find the maximum and minimum values of
+      $f(x,y,z)=x-2y+5z$ on the sphere $x^{2}+y^{2}+z^{2}=30$.
+\item Find the dimensions of the closed rectangular box of maximum volume that can be inscribed
+      in the sphere $x^{2}+y^{2}+z^{2}=4$, and state that maximum volume.
+\end{parts}
+\end{problem}
+\work{9.0cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ANSWERS %%%
+\clearpage
+\markboth{Answers}{Answers}
+\noindent{\color{ThomasBlue}\rule{\linewidth}{2.6pt}}\par\vspace{2pt}
+\noindent{\color{RuleGray}\rule{\linewidth}{0.5pt}}\par\vspace{7pt}
+\noindent{\sffamily\bfseries\fontsize{21}{24}\selectfont\color{ThomasBlue}Answers}%
+\hfill{\sffamily\fontsize{9}{11}\selectfont\color{SoftGray}Exercise Set M}\par\vspace{4pt}
+\noindent{\itshape\fontsize{10}{12}\selectfont\color{SoftGray}
+Consult these only after a complete attempt. ``Show that'' problems are answered with the
+key step rather than the full argument.}\par\vspace{5pt}
+\noindent{\color{ThomasBlue}\rule{\linewidth}{1.1pt}}\par\vspace{10pt}
+
+{\fontsize{8.8}{11}\selectfont
+\setlength{\columnsep}{22pt}
+\setlength{\parskip}{3.5pt}
+\begin{multicols}{2}
+\raggedright
+
+\textbf{Part A}\par\vspace{2pt}
+
+\textbf{1.} (a) $c=\pm\sqrt{6}/4$.\quad (b) $(0,4,-3)$.
+
+\textbf{2.} (b) $\overrightarrow{OX}=s\,\overrightarrow{OP}+r\,\overrightarrow{OQ}$.
+
+\textbf{3.} (a) $\pi/4$ and $\pi/3$.\quad (b) The dot product is $c-4$; (i) $c=4$, (ii) $c>4$.
+
+\textbf{4.} $\bC=-4\bi+2\bj+2\bk$, $\bD=4\bi+4\bj+4\bk$.
+
+\textbf{5.} (a) $-34$ by both expansions.\quad
+(b) (i) $3\bi+3\bj+3\bk$; (ii) $3\bi-\bj+2\bk$.
+
+\textbf{6.} (a) $\overrightarrow{AB}\times\overrightarrow{AC}=26\bi+18\bj+6\bk$; parallelogram
+$2\sqrt{259}\approx32.19$, triangle $\sqrt{259}$.\quad (b) $11$.\quad
+(c) Yes --- a zero determinant means the three edge vectors are linearly dependent, so all four
+points lie in a common plane.
+
+\textbf{7.} (a) $x+2y-2z=4$.\quad (b) $x-y-z=0$.\quad
+(c) $\dfrac{x}{a}+\dfrac{y}{b}+\dfrac{z}{c}=1$.\quad (d) $x+y=1$.
+
+\textbf{8.} (a) $x=1+2t$, $y=-t$, $z=-1+3t$.\quad
+(b) $x=2+t$, $y=-1-t$, $z=-1+2t$.\quad
+(c) $x=1+at$, $y=1+bt$, $z=1+(a+2b)t$ for any $(a,b)\neq(0,0)$.\quad
+(d) Direction $\langle3,-4,4\rangle\times\langle3,-1,5\rangle=\langle-16,-3,9\rangle$:
+$x=4-16t$, $y=2-3t$, $z=1+9t$.
+
+\textbf{9.} (a) $(4,-1,4)$.\quad (b) $(0,-1,0)$.\quad (c) $x-2y+4z+1=0$.
+
+\vspace{4pt}
+\textbf{Part B}\par\vspace{2pt}
+
+\textbf{10.} (a) $\bv=e^{t}\bi-e^{-t}\bj$, speed $\sqrt{e^{2t}+e^{-2t}}$,
+$\bT=\bv/|\bv|$, $\ba=e^{t}\bi+e^{-t}\bj$.\quad
+(b) $\bv=2t\bi+3t^{2}\bj$, speed $|t|\sqrt{4+9t^{2}}$,
+$\bT=(2\bi+3t\bj)/\sqrt{4+9t^{2}}$ for $t>0$, $\ba=2\bi+6t\bj$.\quad
+(c) $\bv=t(-4\bi+2\bj+4\bk)$, speed $6|t|$, $\bT=\tfrac{1}{3}(-2\bi+\bj+2\bk)$ for $t>0$,
+$\ba=-4\bi+2\bj+4\bk$ (constant).
+
+\textbf{11.} (a) $\bv'=(6t+2)\bi+\pi^{2}\cos(\pi t)\bj+e^{t}\bk$;\ $\bv'(2)=14\bi+\pi^{2}\bj+e^{2}\bk$.\quad
+(b) $\left(t^{3}+t^{2}\right)\bi-\cos(\pi t)\bj+e^{t}\bk+\bC$.\quad
+(c) $2\bi+2\bj+(e-1)\bk$.
+
+\textbf{12.} $\br(1)=\mathbf{0}$ and $\br'(1)=\bi+\tfrac14\bj+\bk$, so
+$x=t$, $y=t/4$, $z=t$.
+
+\textbf{13.} $5\bi+5\bj+\dfrac{5\pi}{4}\bk$.
+
+\textbf{14.} (a) No: $t=1+2t$ forces $t=-1$, and then $t^{2}=1\neq-5$.\quad
+(b) Yes. Solving $s=1+2t$, $s^{2}=1+6t$, $s^{3}=1+14t$ gives $s=1$ ($t=0$) and $s=2$
+($t=\tfrac12$); the paths meet at $(1,1,1)$ and $(2,4,8)$.
+
+\textbf{15.} (a) $|\bv|=3$, $\bT=\tfrac{1}{3}\left(-2\sin t\,\bi+2\cos t\,\bj+\sqrt{5}\,\bk\right)$,
+length $3\pi$.\quad
+(b) $|\bv|=4\left|\sin(t/2)\right|$, length $32$.\quad
+(c) $\sqrt{3}+\ln\!\left(2+\sqrt{3}\right)\approx3.049$.
+
+\vspace{4pt}
+\textbf{Part C}\par\vspace{2pt}
+
+\textbf{16.} (a) $4/5$ and $3$.\quad
+(b) $\left\{(x,y):0\le x^{2}+y^{2}<9\ \text{and}\ x^{2}+y^{2}\neq8\right\}$: the open disk of
+radius $3$ with the circle of radius $2\sqrt{2}$ removed.\quad
+(c) For $0\le c<4$, the sphere $x^{2}+y^{2}+z^{2}=16-c^{2}$ centred at the origin; for $c=4$,
+the origin alone.
+
+\textbf{17.} (a) (i) parallel lines $x+y=1-c$, graph a plane; (ii) circles $x^{2}+y^{2}=c^{2}$,
+$c\ge0$, graph a cone; (iii) circles of radius $\sqrt{c}$, graph a paraboloid opening upward;
+(iv) circles $x^{2}+y^{2}=1-c$, graph a paraboloid opening downward.\quad
+(b) Lines through the origin (origin and the line $y=x$ deleted):
+$y=\dfrac{k-1}{k+1}\,x$, i.e. $y=3x$, $y=-x$, $y=0$, $y=\tfrac13x$ for $k=-2,0,1,2$.
+
+\textbf{18.} (a) $1$.\quad (b) $\dfrac14$ (multiply by
+$\sqrt{2x-y}+2$).\quad (c) Does not exist: the limit is $0$ along $y=0$ but $1$ along
+$y=x^{2}$.\quad (d) The limit is $0\neq f(0,0)=1$, so $f$ is not continuous at the origin.
+
+\textbf{19.} (a) $12x^{2}-6xy^{2}+2$;\ $-6x^{2}y$.\quad
+(b) $3\cos(3x+2y)$;\ $2\cos(3x+2y)$.\quad
+(c) $\dfrac{4y}{4x+3y}$;\ $\ln(4x+3y)+\dfrac{3y}{4x+3y}$; at $(2,1)$: $\tfrac{4}{11}$ and
+$\ln11+\tfrac{3}{11}$.\quad
+(d) $2xz$;\ $-2z^{3}$;\ $x^{2}-6yz^{2}$.\quad
+(e) $3x^{2}yz^{3}$;\ $2yz+x^{3}z^{3}$;\ $y^{2}+3x^{3}yz^{2}$; at $(1,2,4)$: $384$, $80$, $100$.
+
+\textbf{20.} (b) $f_{xy}=ax+6y$ and $f_{yx}=2x+6y$, so $a=2$ and $f=x^{2}y+3xy^{2}+C$.\quad
+(c) $f_{xy}=Ax$ and $f_{yx}=6x$, so $A=6$ and $f=x^{3}+3x^{2}y+2y^{3}+C$.
+
+\textbf{21.} (b) $\pd{z}{x}=\dfrac{3x^{2}+6z^{3}}{59-18xz^{2}}$,\quad
+$\pd{z}{y}=\dfrac{6y^{2}}{59-18xz^{2}}$.
+
+\textbf{22.} (a) $z=x+2y-2$.\quad (b) $w=-4x+4y$.\quad (c) $z=8x+3y-8$.\quad
+(d) $4x-4y-z=0$.
+
+\textbf{23.} $\grad F=\langle2,2,1\rangle$ at $(0,1,2)$; tangent plane $2x+2y+z=4$, normal line
+$x=2t$, $y=1+2t$, $z=2+t$.
+
+\textbf{24.} (a) $z_{0}z=x_{0}x+y_{0}y$.\quad
+(b) The ray is $(tx_{0},ty_{0},tz_{0})$, $t\ge0$; substituting gives $t z_{0}=t z_{0}$ on the
+cone and $t z_{0}^{2}=t\!\left(x_{0}^{2}+y_{0}^{2}\right)=tz_{0}^{2}$ on the plane. (A cone is
+tangent to each of its tangent planes along a whole ruling.)
+
+\textbf{25.} (a) $\dfrac{dx}{x}+\dfrac{dy}{y}+\dfrac{dz}{z}$.\quad
+(b) $xy^{2}z^{3}\!\left(\dfrac{dx}{x}+\dfrac{2\,dy}{y}+\dfrac{3\,dz}{z}\right)$.\quad
+(c) $\dfrac{2y\,dx-2x\,dy}{(x+y)^{2}}$.
+
+\textbf{26.} (a) $dw=-\dfrac{yw\,dx+\left(xw+w^{3}\right)dy+2z\,dz}{xy+3yw^{2}}$.\quad
+(b) $dw=-\dfrac{u\,du+2v\,dv}{3w}$.
+
+\textbf{27.} (a) $6t^{5}$.\quad (b) $-2\sin2t$.\quad (c) $0$ (here $u^{2}+v^{2}\equiv4$).
+
+\textbf{28.} $\dd{w}{t}=4t\tan^{-1}t+1$ by either method.
+
+\textbf{29.} $\grad T=\langle4,-3,-2\rangle$ at $(0,2,3)$ and
+$\br'(0)=\langle1,0,1\rangle$, so $dT/dt=2\ {}^{\circ}\text{C/s}$.
+
+\textbf{30.} (a) $w_r=f_x\cos\theta+f_y\sin\theta$ and
+$w_\theta=r\left(-f_x\sin\theta+f_y\cos\theta\right)$; squaring and adding gives the identity.\quad
+(b) Differentiate $w_r$ again with respect to $r$, using the Chain Rule on $f_x$ and $f_y$ and
+$f_{xy}=f_{yx}$.
+
+\textbf{31.} $w_u=2u\,w_x+2v\,w_y$ and $w_v=-2v\,w_x+2u\,w_y$; the cross terms cancel when
+the squares are added.
+
+\textbf{32.} (a) $w_x=-\dfrac{y}{x^{2}}f'$, $w_y=\dfrac1x f'$.\quad
+(b) $w_x=2xf'$, $w_y=-2yf'$.\quad (c) $w_x=af'$, $w_y=bf'$.
+
+\textbf{33.} (a) $\grad f=\langle10,-20\rangle$, $D_{\bu}f=-4$.\quad
+(b) $\grad f=\langle1,3,0\rangle$, $D_{\bu}f=3$.\quad
+(c) $\grad f=\langle2,4,-6\rangle$, $D_{\bu}f=0$.\quad
+(d) $\grad f=\langle4,8,12\rangle$, $D_{\bu}f=-\tfrac43$.
+
+\textbf{34.} $\grad f(P)=\langle4,2\rangle$.
+(a) (i) $3\sqrt{2}$; (ii) $\tfrac{58}{13}$.\quad
+(b) $\tfrac{1}{\sqrt5}\langle2,1\rangle$, with value $|\grad f|=2\sqrt5$.\quad
+(c) $-\tfrac{1}{\sqrt5}\langle2,1\rangle$, with value $-2\sqrt5$.\quad
+(d) $\pm\tfrac{1}{\sqrt5}\langle1,-2\rangle$.
+
+\textbf{35.} $\grad f(-6,2)=\langle60+2a,\ 432+12a\rangle$ and
+$D_{\bu}f=(924+26a)/\sqrt5=216\sqrt5$, so $a=6$.
+
+\textbf{36.} $\grad F=\langle7,3,2\rangle$, $\grad G=\langle6,-1,-2\rangle$, and
+$\grad F\times\grad G=\langle-4,26,-25\rangle$:
+$x=1-4t$, $y=2+26t$, $z=1-25t$.
+
+\textbf{37.} (a) $L(x,y)=1+2x+y$ at $(0,0)$; \
+$L(x,y)=e^{4}(2x+y-3)$ at $(1,2)$.\quad
+(b) $df=\left(\tfrac13+\tfrac{\sqrt3\pi}{6}\right)(0.03)+\tfrac{\sqrt3}{12}(0.04)
+-\left(\tfrac12+\tfrac{\sqrt3\pi}{4}\right)(0.02)=\dfrac{\sqrt3}{300}\approx0.0058$.
+
+\textbf{38.} (a) $1+x+4y+4xy+8y^{2}$.\quad
+(b) $1.76$ (the true value is $1.7858\ldots$).
+
+\vspace{4pt}
+\textbf{Part D}\par\vspace{2pt}
+
+\textbf{39.} (a) Local minimum $-5$ at $(-3,3)$ ($D=3$, $f_{xx}=2$).\quad
+(b) Saddle at $(0,0)$ ($D=-4$); local maximum $\tfrac{170}{27}$ at
+$\left(-\tfrac23,\tfrac23\right)$ ($D=12$, $f_{xx}=-4$).\quad
+(c) Saddle at $(0,0)$; local maxima of value $2$ at $(1,1)$ and $(-1,-1)$.\quad
+(d) Local maximum $-3-2\ln2$ at $\left(\tfrac12,1\right)$ ($D=8$, $f_{xx}=-8$).
+
+\textbf{40.} Critical points $(0,0)$, $(2,0)$, $(0,2)$, $\left(\tfrac23,\tfrac23\right)$;
+$D=4xy-(2-2x-2y)^{2}$. The first three are saddle points ($D=-4$); the last is a local maximum
+with value $\tfrac{8}{27}$ ($D=\tfrac43$, $f_{xx}=-\tfrac43$). There is no local minimum.
+
+\textbf{41.} The only critical point is $\left(2,\tfrac12\right)$, with $D=1>0$ and
+$f_{xx}=-\tfrac14<0$: a local maximum of value $-2-\ln2$. There is no local minimum and no
+saddle point.
+
+\textbf{42.} Interior critical point $(1,1)$ with $f=-1$. On the boundary the candidates are
+$f(-1,0)=1$, $f(-1,2)=9$, $f(2,0)=4$, $f(2,2)=0$, $f\!\left(2,\tfrac32\right)=-\tfrac12$,
+$f(0,0)=0$. Absolute maximum $9$ at $(-1,2)$; absolute minimum $-1$ at $(1,1)$.
+
+\textbf{43.} (a) Minimise $x^{2}+y^{2}+z^{2}=x^{2}+xz+z^{2}+4$; the only critical point is
+$x=z=0$, giving $(0,\pm2,0)$ at distance $2$.\quad
+(b) $\dfrac{|2-1-1-2|}{\sqrt3}=\dfrac{2\sqrt3}{3}$.
+
+\textbf{44.} (a) $y=\tfrac14x+\tfrac{17}{12}$.\quad
+(b) $y=\tfrac{3}{11}x^{2}-\tfrac{4}{11}x$.
+
+\textbf{45.} With width $x$, depth $y$, height $z$: $C=20xz+10yz+30xy$ subject to $xyz=6$.
+Eliminating $z$ gives $C=\dfrac{60}{x}+\dfrac{120}{y}+30xy$, whose only critical point is
+$x=1$, $y=2$, so $z=3$. Minimum cost $\$180$, with dimensions
+$1\ \text{m}\times2\ \text{m}\times3\ \text{m}$ (each of the three cost terms equals $\$60$).
+
+\textbf{46.} (a) The equations give $y^{2}=x^{2}-2x$, hence $x=0$ or $x=3$; the maximum is
+$3\sqrt3$ at $\left(3,\sqrt3\right)$ (and the minimum is $-3\sqrt3$ at
+$\left(3,-\sqrt3\right)$).\quad
+(b) The candidate $x=3$ is excluded, so the maximum occurs on the new boundary $x=2$: the
+maximum is $4$, at $(2,2)$.
+
+\textbf{47.} (a) $\left(-\tfrac23,-\tfrac13,-\tfrac23\right)$, at distance $4$.\quad
+(b) $\left(\tfrac32,2,\tfrac52\right)$.
+
+\textbf{48.} At the maximum $\dfrac{x^{2}}{3}=\dfrac{y^{2}}{9}=\dfrac{z^{2}}{4}=\dfrac13$, so
+$x=1$, $y=\sqrt3$, $z=\tfrac{2}{\sqrt3}$ and $V_{\max}=2$. The constraint surface is closed and
+bounded and $V$ is continuous, so the extreme values are attained; $V=0$ on the boundary of the
+first octant, so the interior critical point is the maximum.
+
+\textbf{49.} (a) $(0,0)$ is the only critical point, and $D=-4<0$: a saddle point, $f(0,0)=0$.\quad
+(b) On $x^{2}+y^{2}=1$: maximum $1$ at $(\pm1,0)$, minimum $-1$ at $(0,\pm1)$.
+
+\textbf{50.} (a) On $y=x$ the constraint becomes $2x^{2}+z^{2}=4$ and $f=4-x^{2}$: maximum $4$
+at $(0,0,\pm2)$, minimum $2$ at $\pm\left(\sqrt2,\sqrt2,0\right)$.\quad
+(b) The planes meet where $x+y=20$, $z=20$, so $w=20xy$ with $x+y=20$; the maximum is
+$w=2000$ at $(10,10,20)$. Along the line $w=20x(20-x)\to-\infty$ in both directions, so the
+critical point must be a maximum.
+
+\textbf{51.} (a) $T=(2x-y)^{2}$; on $x=5\cos t$, $y=5\sin t$ this is
+$25(2\cos t-\sin t)^{2}$, so the hottest temperature is $125^{\circ}$ and the coldest is
+$0^{\circ}$.\quad
+(b) $r=2$ cm, $h=4$ cm.\quad
+(c) $U_{\max}=128$ at $x=8$, $y=14$.
+
+\textbf{52.} The method gives $x=y$, so $(4,4)$ and $(-4,-4)$. On the branch in the first
+quadrant $f=x+16/x\to+\infty$ as $x\to0^{+}$ and as $x\to+\infty$, so $(4,4)$ is a
+\emph{minimum} there ($f=8$) and $f$ has no maximum on $xy=16$. On the third-quadrant branch
+$(-4,-4)$ gives a maximum, $f=-8$. The constraint set is unbounded, which is exactly what
+$\grad f=\lambda\grad g$ cannot detect.
+
+\vspace{4pt}
+\textbf{Part E}\par\vspace{2pt}
+
+\textbf{53.} $\overrightarrow{AB}\times\overrightarrow{AC}=\langle5,3,4\rangle$.
+(a) $\tfrac{5\sqrt2}{2}$.\quad (b) $5x+3y+4z=13$.\quad
+(c) $\dfrac{13}{5\sqrt2}=\dfrac{13\sqrt2}{10}$.
+
+\textbf{54.} (a) $\bv=t\cos t\,\bi+t\sin t\,\bj$, $|\bv|=t$ for $t\ge0$.\quad
+(b) $s(t)=t^{2}/2$; the length is $\pi^{2}/8$.\quad
+(c) $\bT=\cos t\,\bi+\sin t\,\bj$. (This curve is the involute of the unit circle.)
+
+\textbf{55.} (a) $\grad f(P)=\langle4,2,-4\rangle$.\quad
+(b) $-\tfrac23$.\quad
+(c) In the direction $\tfrac13\langle2,1,-2\rangle$, at the rate $|\grad f|=6$.\quad
+(d) $\br(1)=\langle1,2,-1\rangle=P$ and $\br'(1)=\langle1,1,2\rangle$, so
+$df/dt=4+2-8=-2$.
+
+\textbf{56.} $\grad F(P_0)=\langle2,8,12\rangle$.
+(a) Tangent plane $x+4y+6z=21$; normal line $x=1+t$, $y=2+4t$, $z=2+6t$.\quad
+(b) $\pdi{z}{x}=-x/(3z)=-\tfrac16$ and $\pdi{z}{y}=-2y/(3z)=-\tfrac23$, matching
+$z=\tfrac16(21-x-4y)$.\quad
+(c) $\grad F\parallel\langle1,4,6\rangle$ forces $(x,y,z)=\pm(1,2,2)$, so the points are
+$(1,2,2)$ and $(-1,-2,-2)$.
+
+\textbf{57.} $f_x=0$ and $f_y=0$ give $x^{2}+y^{2}=5$ and $xy=2$, so the critical points are
+$(2,1)$, $(1,2)$, $(-1,-2)$, $(-2,-1)$. Here $D=36\!\left(x^{2}-y^{2}\right)$.
+Local minimum $-28$ at $(2,1)$; local maximum $28$ at $(-2,-1)$; saddle points at $(1,2)$ and
+$(-1,-2)$.
+
+\textbf{58.} (a) $\langle1,-2,5\rangle=2\lambda\langle x,y,z\rangle$ gives
+$(x,y,z)=\pm(1,-2,5)$: maximum $30$ at $(1,-2,5)$, minimum $-30$ at $(-1,2,-5)$.\quad
+(b) A cube of edge $\dfrac{4}{\sqrt3}$, of volume $\dfrac{64}{3\sqrt3}=\dfrac{64\sqrt3}{9}$.
+
+\end{multicols}}
+
+\vspace{10pt}
+\noindent{\color{RuleGray}\rule{\linewidth}{0.5pt}}\par\vspace{5pt}
+\noindent{\sffamily\fontsize{8}{10}\selectfont\color{SoftGray}
+Problems adapted from \emph{Thomas' Calculus: Early Transcendentals}, 15th edition
+(Hass, Heil, Weir), \S\S11.1--11.5, 12.1--12.3, 13.1--13.9; from the MIT 18.02 problem sets
+distributed with the Lecture Group 1 lesson notes; and from the MA1521 Lecture Group 2 tutorial
+questions, Lessons 02--12.}
+
+\end{document}

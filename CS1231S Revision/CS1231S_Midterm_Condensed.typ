@@ -200,6 +200,9 @@
 #defn[Statement (2.1.1) · Statement form (2.1.5)][
 A *statement* (proposition) is a sentence that is true or false, but not both. A *statement form* is an expression built from statement variables and connectives that becomes a statement when statements are substituted for its variables.]
 
+#defn[Negation (2.1.2) · Conjunction (2.1.3) · Disjunction (2.1.4)][
+For statement variables $p$ and $q$: the *negation* of $p$ is "not $p$" or "it is not the case that $p$", denoted $lnot p$; the *conjunction* of $p$ and $q$ is "$p$ and $q$", denoted $p and q$; the *disjunction* of $p$ and $q$ is "$p$ or $q$", denoted $p or q$ (inclusive: true when either or both are true).]
+
 #grid(columns: (auto, 1fr), gutter: 16pt,
   table(columns: 8, align: center,
     $p$, $q$, $lnot p$, $p and q$, $p or q$, $p -> q$, $p <-> q$, $p xor q$,
@@ -217,7 +220,7 @@ A *statement* (proposition) is a sentence that is true or false, but not both. A
   ])
 
 #defn[Tautology, contradiction (2.1.7–8) · Logical equivalence (2.1.6)][
-A *tautology* is a statement form that is true for every assignment; a *contradiction* is false for every assignment. $P equiv Q$ iff $P$ and $Q$ have identical truth values under every assignment; equivalently, iff $P <-> Q$ is a tautology.]
+A *tautology* is a statement form that is true for every assignment; a *contradiction* is false for every assignment. A statement whose form is a tautology (contradiction) is a *tautological* (*contradictory*) statement. $P equiv Q$ iff $P$ and $Q$ have identical truth values under every assignment; equivalently, iff $P <-> Q$ is a tautology.]
 
 == 2 · Logical equivalences and set identities
 
@@ -274,7 +277,7 @@ Call the long first conjunct $X or p$. Answer: *$p and q$* (option C).
 == 3 · Conditional statements
 
 #defn[Conditional (2.2.1) and its relatives (2.2.2–4)][
-$p -> q$ is false only when $p$ is true and $q$ is false; when $p$ is false it is *vacuously true*. From $p -> q$ form the *contrapositive* $lnot q -> lnot p$, the *converse* $q -> p$, and the *inverse* $lnot p -> lnot q$.]
+$p -> q$ ("if $p$ then $q$", "$p$ implies $q$") is false only when $p$ is true and $q$ is false; when $p$ is false it is *vacuously true*. $p$ is the *hypothesis* (antecedent) and $q$ the *conclusion* (consequent). From $p -> q$ form the *contrapositive* $lnot q -> lnot p$, the *converse* $q -> p$, and the *inverse* $lnot p -> lnot q$.]
 
 #thm[][A conditional $equiv$ its contrapositive. Its converse $equiv$ its inverse (they are contrapositives of each other). A conditional is *not* equivalent to its converse or its inverse.]
 
@@ -295,8 +298,8 @@ $p -> q$ is false only when $p$ is true and $q$ is false; when $p$ is false it i
 
 == 4 · Arguments and rules of inference
 
-#defn[Argument, validity (2.3.1) · Sound (2.3.2)][
-An *argument* is a sequence of statements; all but the last are *premises*, the last (after $therefore$) is the *conclusion*. It is *valid* iff whenever all premises are true, the conclusion is true; that is, no row of the truth table has all premises T and the conclusion F (check only the *critical rows*, where all premises are T). An argument is *sound* iff it is valid *and* its premises are true.]
+#defn[Argument, validity (2.3.1) · Critical row · Syllogism · Sound, unsound (2.3.2)][
+An *argument* (*argument form*) is a sequence of statements (statement forms); all but the last are *premises* (assumptions, hypotheses), the last (after $therefore$) is the *conclusion*. An argument form is *valid* iff, whatever statements are substituted for its variables, if the premises are all true then the conclusion is true. A *critical row* is a truth-table row in which all premises are T: the form is valid iff the conclusion is T in every critical row. A *syllogism* is an argument form with two premises and a conclusion (e.g. modus ponens). An argument is *sound* iff it is valid *and* all its premises are true; otherwise it is *unsound*.]
 
 #table(columns: (auto, 1fr, auto, 1fr), align: (left, center, left, center),
   [Rule], [Form], [Rule], [Form],
@@ -377,7 +380,13 @@ $p and (lnot p or q) equiv (p and lnot p) or (p and q)$ #j[distributive] $equiv 
 == 5 · Predicates and quantifiers
 
 #defn[Predicate (3.1.1) · Truth set (3.1.2)][
-A *predicate* is a sentence with finitely many variables that becomes a statement when values are substituted. The *domain* of a variable is the set of values that may be substituted for it. The *truth set* of $P(x)$, $x in D$, is ${x in D : P(x)}$.]
+A *predicate* is a sentence with finitely many variables that becomes a statement when values are substituted. The *domain* of a variable is the set of values that may be substituted for it (also called the domain of discourse, universe of discourse, universal set, or universe). The *truth set* of $P(x)$, $x in D$, is the set of all elements of $D$ that make $P(x)$ true: ${x in D : P(x)}$ (also written ${x in D | P(x)}$).]
+
+#defn[Kinds of mathematical statements (Lecture 1)][
+A *universal statement* says a property holds for *all* elements of a set ($forall$; "all", "every", "any"). A *conditional statement* says that if one thing is true then another must be ($->$; "if … then"). An *existential statement* says there is *at least one* thing with the property ($exists$; "there exists", "some"). \
+A *universal conditional statement* is both universal and conditional: $forall x thin (P(x) -> Q(x))$, e.g. "for all animals $a$, if $a$ is a dog then $a$ is a mammal". \
+A *universal existential statement* has the form $forall x thin exists y thin ...$: "every real number has an additive inverse". \
+An *existential universal statement* has the form $exists x thin forall y thin ...$: "there is a positive integer that is $<=$ every positive integer".]
 
 #defn[Universal (3.1.3) and existential (3.1.4) statements · Uniqueness][
 $forall x in D, Q(x)$ is true iff $Q(x)$ is true for *every* $x in D$, and false iff $Q(x)$ is false for at least one $x$, called a *counterexample*. \
@@ -434,6 +443,9 @@ To *prove* $forall x exists y thin P$: "Let $x$ be arbitrary. Let $y = f(x)$. Th
 $forall x in ZZ^+ thin exists y in ZZ (x + y = 0)$ is true but becomes false over $y in ZZ^+$. Check every domain again after negating or reordering quantifiers.]
 
 == 8 · Arguments with quantified statements
+
+#defn[Valid argument form (3.4.1)][
+An argument form is *valid* iff, no matter what particular predicates are substituted for the predicate symbols in its premises, if the resulting premise statements are all true then the conclusion is also true. An argument is *valid* iff its form is valid.]
 
 #table(columns: (auto, 1fr, auto, 1fr),
   [Rule], [Form], [Rule], [Form],
@@ -505,7 +517,7 @@ Writing "by definition of even" or "by closure" is shorthand for exactly these i
   table(columns: (auto, 1fr),
     [Term], [Meaning (Lecture 1)],
     [Definition], [precise meaning of a term: all and only the required properties],
-    [Axiom], [assumed true without proof (Peano, Euclid's postulates)],
+    [Axiom / postulate], [assumed true without proof (Peano, Euclid's postulates)],
     [Theorem], [a major result, proved rigorously],
     [Lemma], [a small result used to prove a theorem],
     [Corollary], [a simple deduction from a theorem],
@@ -532,7 +544,8 @@ Arguing from examples · reusing a letter ($m = 2r$ and $n = 2r$ makes $m = n$) 
 #defn[Even, odd · Prime, composite][
 $n in ZZ$ is *even* $<=> exists k in ZZ thin (n = 2k)$; $quad$ *odd* $<=> exists k in ZZ thin (n = 2k + 1)$. \
 $n$ is *prime* iff $n > 1$ and $forall r, s in ZZ^+ thin (n = r s -> (r = 1 and s = n) or (r = n and s = 1))$. \
-$n$ is *composite* iff $n > 1$ and $exists r, s in ZZ^+ thin (n = r s and 1 < r < n and 1 < s < n)$. $quad$ 1 is neither.]
+$n$ is *composite* iff $n > 1$ and $exists r, s in ZZ^+ thin (n = r s and 1 < r < n and 1 < s < n)$. $quad$ 1 is neither. \
+An equivalent definition of prime: $n > 1 and forall r, s in ZZ thin (r > 1 and s > 1 -> r s != n)$.]
 
 #defn[Rational, irrational · Lowest terms][
 $r in RR$ is *rational* $<=> exists a, b in ZZ thin (r = a slash b and b != 0)$; otherwise *irrational*. A fraction $a slash b$ is in *lowest terms* if the largest integer dividing both $a$ and $b$ is 1.]
@@ -540,6 +553,10 @@ $r in RR$ is *rational* $<=> exists a, b in ZZ thin (r = a slash b and b != 0)$;
 #defn[Divisibility][
 For $n, d in ZZ$: $quad d dv n <=> exists k in ZZ thin (n = d k)$. $quad$ Read: $d$ divides $n$; $n$ is a multiple of $d$; $d$ is a factor/divisor of $n$. \
 Consequences: every $d$ divides 0; 0 divides only 0; $1 dv n$ and $n dv n$ for all $n$. No division is performed: $3 dv 12$ is *true* and $3 dv 10$ is *false*.]
+
+#defn[Absolute value (Lecture 1) · Colorful (Lecture 1, CS1231S only)][
+For $x in RR$, the *absolute value* of $x$ is $|x| = x$ if $x >= 0$, and $|x| = -x$ if $x < 0$. \
+An integer $n$ is *colorful* iff there exists some integer $k$ such that $n = 3k$. (Non-standard term, used only in the lecture: $-1353 = 3 dot (-451)$ and $0 = 3 dot 0$ are colorful; 7 is not.)]
 
 #thm[Quotient–Remainder Theorem (4.5.1) · div and mod][
 For $n in ZZ$ and $d in ZZ^+$ there exist *unique* $q, r in ZZ$ with $n = d q + r$ and $0 <= r < d$. We write $n "div" d = q$ and $n mod d = r$. Hence every integer is of exactly one form $d q, d q + 1, ..., d q + (d - 1)$. This is the basis for *division into cases*.]
@@ -756,12 +773,18 @@ In a perfect square every prime appears to an even power.]
 == 13 · Describing sets
 
 #defn[Set · Membership · Cardinality][
-A *set* is an unordered collection of objects, its *elements*; order and repetition do not matter: ${9, 8, 7} = {7, 8, 7, 9, 9}$. $x in S$ means $x$ is an element of $S$. The *cardinality* $|S|$ is the number of elements of $S$.]
+A *set* is an unordered collection of objects, its *members* or *elements*; order and repetition do not matter: ${9, 8, 7} = {7, 8, 7, 9, 9}$. $x in S$ means $x$ is an element of $S$; $x in.not S$ means it is not. The *cardinality* $|S|$ is the size of $S$, the number of elements of $S$.]
 
-#defn[Set-builder and replacement notation][
+#defn[Set-roster, set-builder and replacement notation][
+*Set-roster:* list all the elements between braces, e.g. ${1, 2, 3}$, ${1, 2, ..., 100}$, ${1, 2, 3, ...}$ (the ellipsis "…" reads "and so forth"). \
 *Set-builder:* ${x in U : P(x)}$ is the set of all $x in U$ for which $P(x)$ is true. $z$ is a member iff $z in U$ *and* $P(z)$. \
 *Replacement:* ${t(x) : x in A}$ is the set of all objects $t(x)$ as $x$ ranges over $A$. $z$ is a member iff $t(x) = z$ for *some* $x in A$. \
 E.g. ${x + 1 : x in ZZ_(>= 0)} = ZZ^+$; $quad$ ${x in ZZ : -2 < x < 5} = {-1, 0, 1, 2, 3, 4}$.]
+
+#defn[Interval notation (Lecture 5)][
+For real numbers $a <= b$: $quad (a, b) = {x in RR : a < x < b}$, $quad [a, b] = {x in RR : a <= x <= b}$, $quad (a, b] = {x in RR : a < x <= b}$, $quad [a, b) = {x in RR : a <= x < b}$. \
+Unbounded: $(a, oo) = {x in RR : x > a}$, $quad [a, oo) = {x in RR : x >= a}$, $quad (-oo, b) = {x in RR : x < b}$, $quad (-oo, b] = {x in RR : x <= b}$. \
+The interval $(a, b)$ and the ordered pair $(a, b)$ look the same; context tells them apart.]
 
 #grid(columns: (1.1fr, 1fr), gutter: 14pt,
   table(columns: (auto, 1fr),
@@ -778,12 +801,14 @@ E.g. ${x + 1 : x in ZZ_(>= 0)} = ZZ^+$; $quad$ ${x in ZZ : -2 < x < 5} = {-1, 0,
 
 == 14 · Subsets, equality and the empty set
 
-#defn[Subset · Proper subset · Set equality][
-$A subset.eq B <=> forall x (x in A -> x in B)$. $quad A subset.eq.not B <=> exists x (x in A and x in.not B)$. \
-$A subset.neq B$ (proper) iff $A subset.eq B$ and $A != B$. $quad$ $A = B <=> A subset.eq B and B subset.eq A <=> forall x (x in A <-> x in B)$.]
+#defn[Subset, superset · Proper subset · Set equality · Empty set, singleton][
+$A subset.eq B <=> forall x (x in A -> x in B)$: every element of $A$ is in $B$ ("$A$ is contained in $B$"). $quad A subset.eq.not B <=> exists x (x in A and x in.not B)$. \
+If $A subset.eq B$ we may write $B supset.eq A$: "$B$ contains / includes $A$", "$B$ is a *superset* of $A$". \
+$A subset.neq B$ (proper, or strict, inclusion) iff $A subset.eq B$ and $A != B$. $quad$ $A = B <=> A subset.eq B and B subset.eq A <=> forall x (x in A <-> x in B)$. \
+The *empty set* $nothing = {}$ is the set with no elements. A set with exactly one element is a *singleton*.]
 
 #thm[6.2.4 · The empty set][
-$nothing subset.eq A$ for every set $A$ (and $nothing$ is unique). *Proof:* $forall x (x in nothing -> x in A)$ is vacuously true, as $x in nothing$ is always false. A set with exactly one element is a *singleton*.]
+$nothing subset.eq A$ for every set $A$ (and $nothing$ is unique). *Proof:* $forall x (x in nothing -> x in A)$ is vacuously true, as $x in nothing$ is always false.]
 
 #grid(columns: (1fr, 1fr), gutter: 14pt,
 [
@@ -828,9 +853,10 @@ $A times B = {(a, b) : a in A and b in B}$; $A_1 times dots.c times A_n = {(a_1,
 
 == 16 · Operations on sets
 
-#defn[Union, intersection, difference, complement][
+#defn[Universal set · Union, intersection, difference, complement][
+A *universal set* (universe of discourse) $U$ is the set containing every object under discussion, e.g. $RR$ when all sets considered are sets of reals. \
 For $A, B subset.eq U$: $quad A union B = {x in U : x in A or x in B}$, $quad A inter B = {x in U : x in A and x in B}$, \
-$B without A = {x in U : x in B and x in.not A}$, $quad overline(A) = {x in U : x in.not A} = U without A$. \
+$B without A = {x in U : x in B and x in.not A}$ (the *relative complement* of $A$ in $B$), $quad overline(A) = {x in U : x in.not A} = U without A$. \
 *Procedural versions* (the steps in element proofs): $a in X union Y <=> a in X or a in Y$; $a in X inter Y <=> a in X and a in Y$; $a in X without Y <=> a in X and a in.not Y$; $a in overline(X) <=> a in.not X$; $(a, b) in X times Y <=> a in X and b in Y$.]
 
 #defn[Symmetric difference (Tutorial 3) · Disjoint][
@@ -967,7 +993,7 @@ $(A union B) without C = (A union B) inter overline(C)$ #j[set difference law] $
 == 19 · Relations and inverses
 
 #defn[Relation · Domain, co-domain, range][
-A (binary) *relation from $A$ to $B$* is a subset $R subset.eq A times B$; $x R y$ means $(x, y) in R$. A *relation on $A$* is a subset of $A times A = A^2$. \
+A (binary) *relation from $A$ to $B$* is a subset $R subset.eq A times B$; $x R y$ ("$x$ is $R$-related to $y$") means $(x, y) in R$, and $x cancel(R) y$ means $(x, y) in.not R$. A *relation on $A$* is a relation from $A$ to $A$, i.e. a subset of $A times A = A^2$ (generally $A^n = A times dots.c times A$). Its *directed graph* draws each element of $A$ once, with an arrow $x -> y$ whenever $x R y$ and a loop at $x$ when $x R x$. \
 $D o m(R) = {a in A : a R b "for some" b in B}$, $quad c o D o m(R) = B$, $quad R a n g e(R) = {b in B : a R b "for some" a in A}$. \
 An *$n$-ary relation* on $A_1 times dots.c times A_n$ is a subset of it (binary, ternary, quaternary for $n = 2, 3, 4$). Relational databases are built on $n$-ary relations.]
 
@@ -1075,7 +1101,12 @@ Given a partition $cal(C)$ of $A$, the *induced relation* is $x R y <-> x, y$ li
 $R$ on $A$ is an *equivalence relation* iff it is *reflexive, symmetric and transitive*. Notation: $tilde.op$.]
 
 #defn[Equivalence class · Quotient $A slash simq$][
-$[a]_simq = {x in A : a tilde.op x}$. $quad A slash simq = {[x]_simq : x in A}$, "the quotient of $A$ by $tilde.op$". Its *elements* are the equivalence classes.]
+For an equivalence relation $tilde.op$ on $A$ and $a in A$, the *equivalence class* of $a$ (the *class of $a$*) is $[a]_simq = {x in A : a tilde.op x}$; procedurally, $forall x in A thin (x in [a]_simq <-> a tilde.op x)$. \
+$A slash simq = {[x]_simq : x in A}$, the set of all equivalence classes, read "the quotient of $A$ by $tilde.op$". Its *elements* are the equivalence classes.]
+
+#defn[Congruence modulo $n$ (Lecture 6.3.4)][
+Let $a, b in ZZ$ and $n in ZZ^+$. $a$ is *congruent to $b$ modulo $n$*, written $a equiv b space (mod n)$, iff $a - b = n k$ for some $k in ZZ$; in other words, $n dv (a - b)$. \
+E.g. $7 equiv 1 space (mod 2)$; $-3 equiv 12 space (mod 5)$; $-4 equiv.not 5 space (mod 7)$. The classes are $[x] = {x + n k : k in ZZ}$, and $ZZ slash #math.class("normal", math.attach(sym.tilde.op, br: $n$)) = {[0], [1], ..., [n - 1]}$.]
 
 #thm[Lemma Rel.1 · Theorem Rel.2 (Epp 8.3.4)][
 For an equivalence relation $tilde.op$ on $A$ and $x, y in A$ the following are equivalent: (i) $x tilde.op y$; (ii) $[x] = [y]$; (iii) $[x] inter [y] != nothing$. \
@@ -1165,11 +1196,16 @@ $pleq$ is a *total (linear) order* iff it is a partial order and $forall x, y in
 #defn[Maximal, minimal, largest, smallest (Lecture 6.4.5)][
 For a poset $(A, pleq)$ and $c in A$:
 #grid(columns: (1fr, 1fr), gutter: 14pt,
-[- $c$ *maximal* $<=> forall x in A thin (c pleq x -> c = x)$: nothing lies strictly above $c$.
- - $c$ *minimal* $<=> forall x in A thin (x pleq c -> c = x)$: nothing lies strictly below $c$.],
+[- $c$ *maximal* $<=> forall x in A thin (c pleq x -> c = x)$: nothing lies strictly above $c$. Equivalently, every $x in A$ has $x pleq c$ or is not comparable with $c$.
+ - $c$ *minimal* $<=> forall x in A thin (x pleq c -> c = x)$: nothing lies strictly below $c$. Equivalently, every $x in A$ has $c pleq x$ or is not comparable with $c$.],
 [- $c$ *largest* $<=> forall x in A thin (x pleq c)$: every element lies below $c$.
  - $c$ *smallest* $<=> forall x in A thin (c pleq x)$: every element lies above $c$.])
 Largest = greatest = maximum; smallest = least = minimum. On a Hasse diagram: maximal = no line going up; minimal = no line going down.]
+
+#defn[Well-ordered set (Lecture 6.4.7)][
+Let $pleq$ be a total order on a set $A$. $A$ is *well-ordered* iff every non-empty subset of $A$ contains a smallest element. Symbolically,
+$ forall S in PP(A) thin (S != nothing -> exists x in S thin forall y in S thin (x pleq y)). $
+$(NN, <=)$ is well-ordered. $(ZZ, <=)$ is not: $ZZ$ itself (or $ZZ^-$) is a non-empty subset with no smallest element.]
 
 #thm[Extremal-element facts][
 #grid(columns: (1fr, 1fr), gutter: 12pt,
@@ -1180,7 +1216,7 @@ Largest = greatest = maximum; smallest = least = minimum. On a Hasse diagram: ma
 [- Distinct maximal elements are noncomparable (so are distinct minimal ones).
  - An element can be both maximal and minimal: an isolated point.
  - Infinite posets may have none: $(ZZ, <=)$.
- - *Well-ordered:* every non-empty subset has a smallest element. $(NN, <=)$ is well-ordered; $(ZZ, <=)$ is not.])]
+ - Every total order on a finite set is well-ordered: a non-empty subset has a minimal element, and in a total order a minimal element is smallest.])]
 
 #proofb[A smallest element is minimal (Lecture 6)][
 + Let $c$ be a smallest element, and take any $x in A$ with $x pleq c$.
@@ -1553,27 +1589,33 @@ The smallest equivalence relation containing $R$ is $A times A$ (9 pairs): ignor
 #set text(size: 9.3pt)
 #columns(2, gutter: 14pt)[
 #let e(term, body, where) = block(below: 0.42em)[*#term:* #body #text(fill: muted)[§#where]]
+#e[Absolute value][$|x| = x$ if $x >= 0$, $-x$ if $x < 0$.][10]
 #e[Antichain][no two distinct elements comparable.][24]
 #e[Antisymmetric][$x R y and y R x -> x = y$.][21]
-#e[Argument; valid; sound][premises then conclusion; valid if true premises force a true conclusion; sound if valid with true premises.][4]
+#e[Argument; valid; sound, unsound][premises then conclusion; valid if true premises force a true conclusion; sound if valid with true premises, else unsound.][4]
 #e[Asymmetric][$x R y -> y cancel(R) x$.][21]
 #e[Biconditional][$p <-> q$: true iff $p, q$ agree.][3]
 #e[Cardinality][$|S|$, the number of elements.][13]
 #e[Cartesian product][$A times B = {(a, b) : a in A and b in B}$.][15]
 #e[Chain; maximal chain; length][pairwise comparable subset; cannot be extended; one less than its size.][24]
+#e[Colorful][$n = 3k$ for some $k in ZZ$ (lecture only).][10]
 #e[Comparable][$a pleq b$ or $b pleq a$.][24]
 #e[Compatible][$exists c thin (a pleq c and b pleq c)$.][24]
 #e[Complement][$overline(A) = U without A$.][16]
 #e[Composite][$n > 1$, $n = r s$ with $1 < r, s < n$.][10]
 #e[Composition][$x (S compose R) z <-> exists y (x R y and y S z)$; $R$ first.][20]
+#e[Conditional][$p -> q$, false only for T $->$ F; hypothesis $p$, conclusion $q$.][3]
 #e[Congruence][$a equiv b space (mod n) <-> n dv (a - b)$.][23]
 #e[Contradiction][statement form false in every row.][1]
 #e[Contrapositive / converse / inverse][of $p -> q$: $lnot q -> lnot p$ / $q -> p$ / $lnot p -> lnot q$.][3]
+#e[Critical row][truth-table row with all premises true.][4]
 #e[Difference][$B without A = {x : x in B and x in.not A}$.][16]
+#e[Directed graph][one vertex per element; arrow $x -> y$ iff $x R y$.][19]
+#e[Disjoint; mutually disjoint][$A inter B = nothing$; $A_i inter A_j = nothing$ for $i != j$.][16]
 #e[div, mod][quotient and remainder of the QR theorem.][10]
 #e[Divides][$d dv n <-> exists k in ZZ thin (n = d k)$.][10]
 #e[Domain, co-domain, range][first coordinates used; $B$; second coordinates used.][19]
-#e[Empty set][$nothing$, the set with no elements; $nothing subset.eq$ every set.][14]
+#e[Empty set; singleton][$nothing$, no elements; exactly one element.][14]
 #e[Equivalence class][$[a] = {x in A : a tilde.op x}$.][23]
 #e[Equivalence relation][reflexive, symmetric and transitive.][23]
 #e[Even / odd][$n = 2k$ / $n = 2k + 1$ for some $k in ZZ$.][10]
@@ -1581,29 +1623,37 @@ The smallest equivalence relation containing $R$ is $A times A$ (9 pairs): ignor
 #e[Hasse diagram][line $x$ below $y$ iff $x pleq y$ with nothing strictly between.][24]
 #e[Induced relation][same component of a partition.][23]
 #e[Intersection][$A inter B = {x : x in A and x in B}$.][16]
+#e[Interval notation][$(a, b)$, $[a, b]$, $(a, b]$, $[a, b)$, $[a, oo)$, … as subsets of $RR$.][13]
 #e[Inverse relation][$R^(-1) = {(y, x) : (x, y) in R}$.][19]
 #e[Largest / smallest][$forall x (x pleq c)$ / $forall x (c pleq x)$.][24]
-#colbreak()
 #e[Linearization][total order $plin$ with $x pleq y -> x plin y$.][25]
 #e[Logical equivalence][identical truth values in every row.][1]
+#e[Lowest terms][$a slash b$ where 1 is the largest common divisor.][10]
 #e[Maximal / minimal][$forall x (c pleq x -> c = x)$ / $forall x (x pleq c -> c = x)$.][24]
+#e[$n$-ary relation][subset of $A_1 times dots.c times A_n$.][19]
 #e[Necessary / sufficient][$r$ necessary for $s$: $s -> r$; sufficient: $r -> s$.][3]
+#colbreak()
+#e[Negation, conjunction, disjunction][$lnot p$; $p and q$; $p or q$.][1]
 #e[Only if][$p$ only if $q$: $p -> q$.][3]
-#e[Ordered pair][$(a, b) = (c, d) <-> a = c and b = d$.][15]
+#e[Ordered pair; $n$-tuple][equal iff equal componentwise.][15]
 #e[Partial order; poset][reflexive, antisymmetric, transitive; $(A, pleq)$.][24]
-#e[Partition][non-empty subsets; each element in exactly one.][18]
+#e[Partition; component][non-empty subsets; each element in exactly one; its elements.][18]
 #e[Power set][$PP(A)$, the set of all subsets of $A$.][18]
-#e[Predicate; truth set][sentence with variables; ${x in D : P(x)}$.][5]
+#e[Predicate; domain; truth set][sentence with variables; allowed values; ${x in D : P(x)}$.][5]
 #e[Prime][$n > 1$ whose only positive factorizations are $1 dot n$, $n dot 1$.][10]
 #e[Proper subset][$A subset.eq B$ and $A != B$.][14]
 #e[Quotient $A slash simq$][${[x] : x in A}$.][23]
-#e[Rational][$r = a slash b$ with $a, b in ZZ$, $b != 0$.][10]
+#e[Rational / irrational][$r = a slash b$ with $a, b in ZZ$, $b != 0$ / not rational.][10]
 #e[Reflexive][$forall x (x R x)$.][21]
-#e[Relation][subset of $A times B$; on $A$: subset of $A times A$.][19]
+#e[Reflexive / symmetric closure][$R union {(x, x) : x in A}$ / $R union R^(-1)$.][22]
+#e[Relation; relation on $A$][subset of $A times B$; subset of $A times A$.][19]
 #e[Replacement notation][${t(x) : x in A}$.][13]
 #e[Set-builder notation][${x in U : P(x)}$.][13]
+#e[Set equality][$A subset.eq B$ and $B subset.eq A$.][14]
+#e[Set-roster notation][elements listed in braces.][13]
 #e[Statement; statement form][true or false, not both; built from variables and connectives.][1]
-#e[Subset][$forall x (x in A -> x in B)$.][14]
+#e[Subset; superset][$forall x (x in A -> x in B)$; $B supset.eq A$.][14]
+#e[Syllogism][two premises and a conclusion.][4]
 #e[Symmetric][$x R y -> y R x$.][21]
 #e[Symmetric difference][$A xor B = (A without B) union (B without A)$.][16]
 #e[Tautology][statement form true in every row.][1]
@@ -1611,7 +1661,11 @@ The smallest equivalence relation containing $R$ is $A times A$ (9 pairs): ignor
 #e[Transitive][$x R y and y R z -> x R z$.][21]
 #e[Transitive closure][smallest transitive relation containing $R$.][22]
 #e[Union][$A union B = {x : x in A or x in B}$.][16]
+#e[Uniqueness $exists!$][exactly one element satisfies it.][5]
+#e[Universal conditional; universal existential; existential universal][$forall x (P -> Q)$; $forall exists$; $exists forall$.][5]
+#e[Universal set][$U$, all objects under discussion.][16]
 #e[Universal statement][true iff every element of the domain satisfies it.][5]
 #e[Vacuous truth][$forall x (P(x) -> Q(x))$ with no $x$ satisfying $P$.][6]
-#e[Well-ordered][every non-empty subset has a smallest element.][24]
+#e[Valid argument form][true premises force a true conclusion.][4, §8]
+#e[Well-ordered][total order in which every non-empty subset has a smallest element.][24]
 ]

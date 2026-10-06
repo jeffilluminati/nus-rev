@@ -1166,6 +1166,20 @@ Pick *one representative per class* from a region that meets every class exactly
 - AY23 Q19: $QQ slash S = {[x] : x in QQ and 0 <= x < 1 slash 2}$.
 - Lecture Ex. 15: nonempty $A subset.eq {1,2,3}$, related iff they have the same least element: $[{1}] = {{1},{1,2},{1,3},{1,2,3}}$, $[{2}] = {{2},{2,3}}$, $[{3}] = {{3}}$, three classes.]
 
+#defn[Representative · Well-defined operation on $A slash simq$][
+Any $b in [a]$ is a *representative* of $[a]$, since then $[b] = [a]$: mod 5, $[2] = [7] = [12]$. \
+A rule $[a] ast.op [b] = [a ast.op b]$ is *well defined* iff the answer depends only on the classes, not on the representatives chosen: $a tilde.op a' and b tilde.op b' => a ast.op b tilde.op a' ast.op b'$.]
+
+#proofb[$+$ and $dot$ are well defined on the classes of congruence mod $n$][
++ Let $a equiv a'$ and $b equiv b' space (mod n)$: $a - a' = n k$ and $b - b' = n m$ for some $k, m in ZZ$ #j[definition of congruence].
++ (Addition) $(a + b) - (a' + b') = n(k + m)$, so $a + b equiv a' + b' space (mod n)$.
++ (Multiplication) $a b - a' b' = (a - a') b + a'(b - b') = n(k b + a' m)$ with $k b + a' m in ZZ$ #j[closure], so $a b equiv a' b' space (mod n)$. #qed
+E.g. mod 5: $[2] dot [4] = [8] = [3]$ and $[7] dot [9] = [63] = [3]$.]
+
+#trap[Check reflexive, symmetric, transitive first · then check well-definedness][
+- $a tilde.op b <-> a b >= 0$ is *not* transitive on $RR$ ($1 tilde.op 0$ and $0 tilde.op -1$, but $1 tilde.not -1$), so there are no classes. On $RR without {0}$ it means "same sign": $(RR without {0}) slash simq = {[1], [-1]} = {(0, oo), (-oo, 0)}$.
+- $a tilde.op b <-> a - b = 2k$ for some $k in ZZ$, on $RR$: $[a] = {a + 2k : k in ZZ}$ and $RR slash simq = {[r] : 0 <= r < 2}$ (infinitely many classes). $+$ is well defined, but $dot$ is *not*: $[0.5] = [2.5]$, yet $[0.5] dot [0.5] = [0.25] != [1.25] = [2.5] dot [0.5]$, since $1.25 - 0.25 = 1$ is not of the form $2k$.]
+
 == 24 · Partial orders
 
 #defn[Partial order (Lecture 6.4.2) · Poset][
@@ -1667,5 +1681,6 @@ The smallest equivalence relation containing $R$ is $A times A$ (9 pairs): ignor
 #e[Universal statement][true iff every element of the domain satisfies it.][5]
 #e[Vacuous truth][$forall x (P(x) -> Q(x))$ with no $x$ satisfying $P$.][6]
 #e[Valid argument form][true premises force a true conclusion.][4, §8]
+#e[Well-defined operation][$a tilde.op a' and b tilde.op b' => a ast.op b tilde.op a' ast.op b'$; result independent of representatives.][23]
 #e[Well-ordered][total order in which every non-empty subset has a smallest element.][24]
 ]

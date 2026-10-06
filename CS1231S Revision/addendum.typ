@@ -16,9 +16,10 @@
     let pg = here().page()
     if pg > 1 {
       set text(size: 7.5pt, fill: muted)
-      grid(columns: (1fr, auto), [CS1231S · Midterm Condensed Addendum], [Revisions since Initial Commit])
-      v(-5pt)
-      line(length: 100%, stroke: 0.4pt + luma(200))
+      stack(spacing: 3pt,
+        grid(columns: (1fr, auto), [CS1231S · Midterm Condensed Addendum], [Revisions since Initial Commit]),
+        line(length: 100%, stroke: 0.4pt + luma(200)),
+      )
     }
   },
   footer: context {
@@ -111,6 +112,7 @@
 #let tip(title, body)   = kbox("Method", rgb("#5b3f8c"), rgb("#f3effa"), title, body)
 
 #let example(title, body) = kbox("Worked example", rgb("#44484f"), rgb("#f6f6f7"), title, body, split: true)
+#import "lecture_reference.typ": lecture-reference
 
 #let j(it) = h(0.3em) + text(size: 8.2pt, fill: muted, style: "italic")[(#it)]
 #let qed = h(1fr) + $square.filled$
@@ -120,7 +122,7 @@
 // ============================================================================
 
 #text(size: 9.5pt, fill: muted)[
-This addendum compiles all content added or refined after the initial commit (`062d28e`), including lecture definitions, equivalence relation notes, well-defined operations on quotient sets, selected tutorial proofs (Part VI), and updated index terms. The material is also integrated into the current condensed notes; keep this companion alongside an initial printed copy. Tutorial solutions are adapted from the supplied answers, with explicit domains and justifications.
+This addendum compiles all content added or refined after the initial commit (`062d28e`), including lecture definitions, equivalence relation notes, well-defined operations on quotient sets, selected tutorial proofs (Part VI), updated index terms, and the complete Appendix A and lecture theorem reference (Part VIII). All material is integrated into the current condensed notes, whose §32 is now a topic locator. This addendum remains a companion for an initial printed copy. Tutorial solutions are adapted from the supplied answers, with explicit domains and justifications.
 ]
 
 // ============================================================================
@@ -388,7 +390,7 @@ On $A = {a, b, c}$ find a relation that is (a) asymmetric and antisymmetric; (b)
 On strings over ${s, u}$, $a R b <-> op("len")(a) <= op("len")(b)$ is *not* a partial order: $s R u$ and $u R s$ but $s != u$, so $R$ is not antisymmetric. One counterexample suffices; there is no need to check reflexivity or transitivity.]
 
 // ============================================================================
-== Part VII · New & Updated Definition Index Entries (§32)
+== Part VII · Definition locator for the original notes
 // ============================================================================
 
 #set text(size: 9.3pt)
@@ -425,3 +427,11 @@ On strings over ${s, u}$, $a R b <-> op("len")(a) <= op("len")(b)$ is *not* a pa
 #e[Well-defined operation][binary operation on $A$ inducing a rule on classes independent of representatives.][23]
 #e[Well-ordered][total order in which every non-empty subset has a smallest element.][24]
 ]
+
+// ============================================================================
+#pagebreak()
+#set text(size: 10.3pt)
+= Part VIII · Appendix A and Lecture Theorems (§33–34)
+// ============================================================================
+
+#lecture-reference(thm, kbox, lnot, PP, dv, simq, pleq)

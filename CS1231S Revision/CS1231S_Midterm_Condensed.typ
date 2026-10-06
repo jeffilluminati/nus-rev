@@ -1,7 +1,6 @@
 // ============================================================================
 //  CS1231S Midterm: Condensed Textbook
-//  Epp, Discrete Mathematics with Applications (5th ed.), as scoped by
-//  CS1231S Lectures 1-6, weighted by the AY23/24, AY24/25, AY25/26 midterms.
+//  CS1231S Lectures 1–6, Tutorials 1–5, and the AY23–25 midterms.
 //  Compile:  typst compile CS1231S_Midterm_Condensed.typ
 // ============================================================================
 
@@ -19,9 +18,10 @@
       let hs = query(heading.where(level: 1)).filter(h => h.location().page() <= pg)
       let part = if hs.len() > 0 { hs.last().body } else { [] }
       set text(size: 7.5pt, fill: muted)
-      grid(columns: (1fr, auto), [CS1231S · Midterm Condensed], part)
-      v(-5pt)
-      line(length: 100%, stroke: 0.4pt + luma(200))
+      stack(spacing: 3pt,
+        grid(columns: (1fr, auto), [CS1231S · Midterm Condensed], part),
+        line(length: 100%, stroke: 0.4pt + luma(200)),
+      )
     }
   },
   footer: context {
@@ -30,9 +30,9 @@
   },
 )
 #set text(font: "New Computer Modern", size: 10.3pt, fill: ink, lang: "en")
-#set par(justify: true, leading: 0.66em, spacing: 0.88em)
-#set enum(numbering: "1.1.", full: true, spacing: 0.58em, indent: 0.3em, body-indent: 0.55em)
-#set list(spacing: 0.58em, indent: 0.3em, body-indent: 0.55em)
+#set par(justify: true, leading: 0.6em, spacing: 0.65em)
+#set enum(numbering: "1.1.", full: true, spacing: 0.4em, indent: 0.3em, body-indent: 0.55em)
+#set list(spacing: 0.4em, indent: 0.3em, body-indent: 0.55em)
 #set table(stroke: 0.4pt + luma(190), inset: (x: 6pt, y: 4pt))
 #show table.cell.where(y: 0): set text(weight: "bold")
 #show table: set par(justify: false)
@@ -61,16 +61,16 @@
 
 #show heading.where(level: 1): it => {
   v(0pt)
-  block(width: 100%, above: 2.2em, below: 1.2em, sticky: true, {
+  block(width: 100%, above: 1.5em, below: 0.8em, sticky: true, {
     set text(size: 15pt, weight: "bold", fill: accent)
     it.body
     v(-7pt)
     line(length: 100%, stroke: 1.1pt + accent)
   })
 }
-#show heading.where(level: 2): it => block(above: 1.45em, below: 0.75em,
+#show heading.where(level: 2): it => block(above: 1.0em, below: 0.55em,
   text(size: 11pt, weight: "bold", fill: accent, it.body))
-#show heading.where(level: 3): it => block(above: 1.1em, below: 0.6em,
+#show heading.where(level: 3): it => block(above: 0.8em, below: 0.4em,
   text(size: 9.8pt, weight: "bold", it.body))
 
 // ---- math shorthands ---------------------------------------------------------
@@ -84,8 +84,8 @@
 
 // ---- boxes ------------------------------------------------------------------
 #let kbox(label, col, bg, title, body, split: false) = block(
-  width: 100%, inset: (x: 10pt, y: 7.5pt), radius: 1.5pt, fill: bg,
-  stroke: (left: 2.2pt + col), above: 0.95em, below: 0.95em, breakable: split,
+  width: 100%, inset: (x: 9pt, y: 6pt), radius: 1.5pt, fill: bg,
+  stroke: (left: 2.2pt + col), above: 0.65em, below: 0.65em, breakable: split,
   {
     set par(justify: false)
     block(sticky: true, below: 0.55em, {
@@ -95,12 +95,12 @@
     body
   })
 #let defn(title, body) = block(
-  width: 100%, inset: (x: 12pt, y: 10pt), radius: 2pt, fill: rgb("#e7eff9"),
+  width: 100%, inset: (x: 10pt, y: 7pt), radius: 2pt, fill: rgb("#e7eff9"),
   stroke: (left: 4pt + accent, top: 0.7pt + accent, right: 0.7pt + accent, bottom: 0.7pt + accent),
-  above: 1.15em, below: 1.15em, breakable: false,
+  above: 0.75em, below: 0.75em, breakable: false,
   {
     set par(justify: false, leading: 0.7em)
-    block(sticky: true, below: 0.7em, {
+    block(sticky: true, below: 0.5em, {
       text(size: 7.8pt, weight: "bold", fill: accent, tracking: 0.6pt, "DEFINITION")
       if title != none { h(7pt); text(size: 12pt, weight: "bold", fill: accent, title) }
     })
@@ -113,6 +113,7 @@
 #let exam(title, body)  = kbox("Past paper", rgb("#8a5a00"), rgb("#fdf5e3"), title, body)
 #let tip(title, body)   = kbox("Method", rgb("#5b3f8c"), rgb("#f3effa"), title, body)
 #let example(title, body) = kbox("Worked example", rgb("#44484f"), rgb("#f6f6f7"), title, body, split: true)
+#import "lecture_reference.typ": lecture-reference
 #let drill(title, body) = kbox("Drill", rgb("#3d5a73"), rgb("#eef2f5"), title, body)
 
 #let dtable(..cells) = {
@@ -142,73 +143,13 @@
 // ============================================================================
 //  TITLE PAGE
 // ============================================================================
-#page(header: none)[
-  #v(8mm)
-  #text(size: 9pt, fill: muted, tracking: 1pt)[CS1231S DISCRETE STRUCTURES · MIDTERM]
-  #v(1mm)
-  #text(size: 25pt, weight: "bold", fill: accent)[The Condensed Textbook]
-  #v(-2mm)
-  #text(size: 12pt, fill: muted)[Definitions and model proofs from Epp, _Discrete Mathematics with Applications_ (5th ed.), scoped to Lectures 1–6]
-  #v(1mm)
-  #line(length: 100%, stroke: 1.4pt + accent)
-  #v(2mm)
+#text(size: 20pt, weight: "bold", fill: accent)[CS1231S · Condensed Revision]
+#v(2pt)
+Lectures 1–6, Tutorials 1–5 and the AY23–25 midterms. Definitions, theorems and worked examples are integrated by topic; Appendix A is complete. Theorem and appendix labels follow the lecture slides.
 
-  #grid(columns: (1fr, 1fr), gutter: 7mm,
-  [
-    === About this book
-    Definitions follow the wording of the lecture slides. Proofs follow the lecture format: numbered steps, each with its justification in brackets. Worked problems come from the AY23/24, AY24/25 and AY25/26 midterms and Tutorials 1–5. Tutorial solutions are adapted from the supplied answers with explicit domains and justifications; the tutorial locator in §29 gives their locations.
+*Find material:* topic locator §32; theorem locator §34; past-paper/tutorial locator §29. *Test format (past papers):* 90 minutes, open book, 50 marks: 30 MCQ + 20 written.
 
-    === Box types
-    #defn(none)[A definition, in the lecture wording.]
-    #v(-2mm)
-    #thm(none)[A result that may be cited in a proof.]
-    #v(-2mm)
-    #proofb(none)[A model proof in exam format.]
-    #v(-2mm)
-    #exam(none)[A past midterm question with its solution.]
-    #v(-2mm)
-    #trap(none)[A common error.]
-    #v(-2mm)
-    #tip(none)[A procedure for a question type.]
-    #v(-2mm)
-    #example(none)[A statement and its worked proof or solution, from lectures, tutorials or exam-style examples. *Drill* boxes are quick self-checks.]
-  ],
-  [
-    === Format of the test
-    - 90 minutes, *open book*, 50 marks.
-    - *Part A:* 15 MCQs × 2 marks = 30. One answer each; many are "which of (i)–(iv) are true".
-    - *Part B:* 20 marks written: set and relation computations, a short proof or two, occasionally a logic puzzle.
-
-    === Topics in the last three papers
-    #table(columns: (1fr, auto, auto, auto),
-      [Topic], [AY23], [AY24], [AY25],
-      [Propositional logic, arguments], [2], [3], [3],
-      [Quantified statements], [3], [1], [2],
-      [Number theory], [0], [0], [1],
-      [Sets, power sets, partitions], [4], [4], [3],
-      [Relations: composition, properties, closures], [3], [6], [5],
-      [Equivalence relations, $A slash simq$], [2], [1], [5],
-      [Partial orders, Hasse, chains], [4], [7], [1],
-      [*Items counted*], [*18*], [*22*], [*20*],
-    )
-    #text(size: 8pt, fill: muted)[Each MCQ and each Part B sub-part is counted once, under its main topic; the course-trivia Q1s are excluded. Relations and partial orders appear in Part B every year.]
-
-    === CS1231S conventions (differ from Epp)
-    #table(columns: (auto, 1fr),
-      [Here], [Meaning / Epp equivalent],
-      [$NN$], [$\{0, 1, 2, ...\}$, *including 0*],
-      [$overline(A)$], [complement (Epp: $A^c$)],
-      [$A without B$], [difference (Epp: $A - B$)],
-      [$A subset.eq B$], [subset; avoid $subset$],
-      [largest / smallest], [Epp: greatest / least],
-      [$lnot$, $->$, $<->$], [not, implies, iff],
-    )
-  ])
-
-  #v(2mm)
-  #line(length: 100%, stroke: 0.5pt + luma(200))
-  #text(size: 8.3pt, fill: muted)[*Contents.* Part I Propositional Logic (Epp Ch. 2) · Part II Quantified Statements (Ch. 3) · Part III Number Theory and Methods of Proof (Ch. 1, 4) · Part IV Set Theory (Ch. 1.2, 6) · Part V Relations (Ch. 1.3, 8, plus the lecture-only material) · Part VI Worked Examples · Part VII Exam Playbook and Definition Index.]
-]
+*Conventions:* $NN = {0, 1, 2, ...}$; $overline(A)$ is complement; $A without B$ is difference; use $subset.eq$ for subset. Largest/smallest = greatest/least. Blue boxes define terms; grey boxes contain proofs and worked examples; green boxes state results; amber boxes solve past papers.
 
 // ============================================================================
 = Part I · Propositional Logic
@@ -220,7 +161,7 @@
 A *statement* (proposition) is a sentence that is true or false, but not both. A *statement form* is an expression built from statement variables and connectives that becomes a statement when statements are substituted for its variables.]
 
 #defn[Negation (2.1.2) · Conjunction (2.1.3) · Disjunction (2.1.4)][
-For statement variables $p$ and $q$: the *negation* of $p$ is "not $p$" or "it is not the case that $p$", denoted $lnot p$; the *conjunction* of $p$ and $q$ is "$p$ and $q$", denoted $p and q$; the *disjunction* of $p$ and $q$ is "$p$ or $q$", denoted $p or q$ (inclusive: true when either or both are true).]
+$lnot p$: “not $p$”; $p and q$: “$p$ and $q$”; $p or q$: inclusive “$p$ or $q$”, true when at least one is true.]
 
 #grid(columns: (auto, 1fr), gutter: 16pt,
   table(columns: 8, align: center,
@@ -243,12 +184,13 @@ A *tautology* is a statement form that is true for every assignment; a *contradi
 
 == 2 · Logical equivalences and set identities
 
-Theorem 2.1.1 (logic) and Theorem 6.2.2 (sets) side by side, as in Epp's Table 6.4.1. Read $and$ as $inter$, $or$ as $union$, $lnot$ as complement, $bold(t)$ as $U$, $bold(c)$ as $nothing$. Cite laws *by name*.
+Theorem 2.1.1 (logic) and Theorem 6.2.2 (sets) side by side (Lecture 2, slides 25–26; Lecture 5, slides 42–43). Read $and$ as $inter$, $or$ as $union$, $lnot$ as complement, $bold(t)$ as $U$, $bold(c)$ as $nothing$. Cite laws *by name*.
 
 #table(columns: (auto, 1fr, 1fr), align: (left, center, center),
   [Law], [Logic (for statement variables)], [Sets (subsets of $U$)],
   [Commutative], $p and q equiv q and p quad p or q equiv q or p$, $A inter B = B inter A quad A union B = B union A$,
   [Associative], $(p and q) and r equiv p and (q and r)$, $(A inter B) inter C = A inter (B inter C)$,
+  [], $(p or q) or r equiv p or (q or r)$, $(A union B) union C = A union (B union C)$,
   [Distributive], $p and (q or r) equiv (p and q) or (p and r)$, $A inter (B union C) = (A inter B) union (A inter C)$,
   [], $p or (q and r) equiv (p or q) and (p or r)$, $A union (B inter C) = (A union B) inter (A union C)$,
   [Identity], $p and bold(t) equiv p quad p or bold(c) equiv p$, $A inter U = A quad A union nothing = A$,
@@ -293,6 +235,15 @@ Call the long first conjunct $X or p$. Answer: *$p and q$* (option C).
 *AY24 Q3(iii)* $(p or q or lnot r) and (s or lnot(p or q)) -> (s or lnot r)$: falsifying needs $s = F, r = T$; the premise becomes $(p or q) and lnot(p or q)$, a contradiction, so the statement is a tautology.
 *To show $P equiv.not Q$,* one row is enough. AY23 Q3(i): $lnot(p -> q) equiv p or (p -> lnot q)$? At $p = q = T$ the left side is F and the right side is T, so they are not equivalent.]
 
+#example[Logic laws][
+Without a truth table, show $(p -> q) and (p -> lnot q) equiv lnot p$.
+
+$(p -> q) and (p -> lnot q)$ \
+$equiv (lnot p or q) and (lnot p or lnot q)$ #j[implication law ×2] \
+$equiv lnot p or (q and lnot q)$ #j[distributive law] \
+$equiv lnot p or bold(c)$ #j[negation law] \
+$equiv lnot p$ #j[identity law]. #qed]
+
 == 3 · Conditional statements
 
 #defn[Conditional (2.2.1) and its relatives (2.2.2–4)][
@@ -300,9 +251,8 @@ $p -> q$ ("if $p$ then $q$", "$p$ implies $q$") is false only when $p$ is true a
 
 #thm[][A conditional $equiv$ its contrapositive. Its converse $equiv$ its inverse (they are contrapositives of each other). A conditional is *not* equivalent to its converse or its inverse.]
 
-#defn[Only if (2.2.5) · Biconditional (2.2.6) · Necessary and sufficient (2.2.7)][
-"$p$ only if $q$" means $lnot q -> lnot p$, i.e. $p -> q$. $quad$ "$p$ iff $q$" is $p <-> q$, true exactly when $p$, $q$ agree. \
-"$r$ is *sufficient* for $s$" means $r -> s$. $quad$ "$r$ is *necessary* for $s$" means $lnot r -> lnot s$, i.e. $s -> r$.]
+#defn[Only if (2.2.5) · Biconditional (2.2.6) · Necessary/sufficient (2.2.7)][
+The table below translates each phrase. “$p$ iff $q$” is true exactly when their truth values agree. A necessary condition must hold; a sufficient condition guarantees the conclusion.]
 
 #table(columns: (1fr, auto, 1fr, auto),
   [English], [Symbolic], [English], [Symbolic],
@@ -354,13 +304,12 @@ Names: cat (3 letters), sheep (5), rabbit (6), penguin (7).
 
 === Model derivations
 
-#proofb[Simplify $lnot(lnot p and q) and (p or q)$ using the laws (Epp 2.1)][
+#proofb[Simplify $lnot(lnot p and q) and (p or q)$ using the laws][
 #dtable(
   $lnot(lnot p and q) and (p or q) equiv (lnot lnot p or lnot q) and (p or q)$, j[De Morgan's law],
   $equiv (p or lnot q) and (p or q)$, j[double negative law],
   $equiv p or (lnot q and q)$, j[distributive law],
-  $equiv p or (q and lnot q) equiv p or bold(c)$, j[commutative law; negation law],
-  $equiv p$, j[identity law]) #qed]
+  $equiv p quad square.filled$, j[commutative, negation and identity laws])]
 
 #proofb[Derive variant absorption $p and (lnot p or q) equiv p and q$ from the table][
 $p and (lnot p or q)$ \
@@ -374,7 +323,6 @@ $equiv p and q$ #j[identity]. #qed]
 + $u and s$ #j[from $lnot q -> (u and s)$ and step 1, by modus ponens]; so $s$ #j[specialization]
 + $p$ #j[from $p or q$ and step 1, by elimination]
 + $p and s$ #j[steps 2, 3, by conjunction]; so $t$ #j[from $(p and s) -> t$, by modus ponens]. #qed]
-
 
 
 #block(breakable: false, grid(columns: (auto, 1fr), gutter: 16pt,
@@ -397,6 +345,12 @@ $equiv p and q$ #j[identity]. #qed]
   ]))
 
 // ============================================================================
+#example[Validity][
+Decide validity: (a) $p -> q$, $q -> r$, $lnot r$ $therefore lnot p$. $quad$ (b) $p -> q$, $lnot p$ $therefore lnot q$.
+
+(a) *Valid:* $p -> r$ #j[transitivity]; with $lnot r$, $lnot p$ #j[modus tollens]. \
+(b) *Invalid* (inverse error): the critical row $p = F$, $q = T$ makes both premises true and the conclusion $lnot q$ false.]
+
 = Part II · Quantified Statements
 // ============================================================================
 
@@ -406,10 +360,10 @@ $equiv p and q$ #j[identity]. #qed]
 A *predicate* is a sentence with finitely many variables that becomes a statement when values are substituted. The *domain* of a variable is the set of values that may be substituted for it (also called the domain of discourse, universe of discourse, universal set, or universe). The *truth set* of $P(x)$, $x in D$, is the set of all elements of $D$ that make $P(x)$ true: ${x in D : P(x)}$ (also written ${x in D | P(x)}$).]
 
 #defn[Kinds of mathematical statements (Lecture 1)][
-A *universal statement* says a property holds for *all* elements of a set ($forall$; "all", "every", "any"). A *conditional statement* says that if one thing is true then another must be ($->$; "if … then"). An *existential statement* says there is *at least one* thing with the property ($exists$; "there exists", "some"). \
-A *universal conditional statement* is both universal and conditional: $forall x thin (P(x) -> Q(x))$, e.g. "for all animals $a$, if $a$ is a dog then $a$ is a mammal". \
-A *universal existential statement* has the form $forall x thin exists y thin ...$: "every real number has an additive inverse". \
-An *existential universal statement* has the form $exists x thin forall y thin ...$: "there is a positive integer that is $<=$ every positive integer".]
+*Universal:* “all/every/any” ($forall$); *existential:* “some/at least one” ($exists$); *conditional:* “if … then” ($->$). Combined forms:
+- *Universal conditional:* $forall x thin (P(x) -> Q(x))$.
+- *Universal existential:* $forall x thin exists y thin P(x, y)$.
+- *Existential universal:* $exists x thin forall y thin P(x, y)$.]
 
 #defn[Universal (3.1.3) and existential (3.1.4) statements · Uniqueness][
 $forall x in D, Q(x)$ is true iff $Q(x)$ is true for *every* $x in D$, and false iff $Q(x)$ is false for at least one $x$, called a *counterexample*. \
@@ -425,7 +379,7 @@ $forall x (B i r d(x) -> lnot F l y(x))$, option C. Option B, $forall x (B i r d
 
 == 6 · Negation, vacuous truth, variants
 
-#thm[Negation of quantified statements (3.2.1–2)][
+#thm[Theorem 3.2.1 · Theorem 3.2.2 · Negation of quantified statements][
 $lnot (forall x in D, P(x)) equiv exists x in D, lnot P(x) quad quad lnot (exists x in D, P(x)) equiv forall x in D, lnot P(x)$ \
 Universal conditional: $lnot forall x in D (P(x) -> Q(x)) equiv exists x in D (P(x) and lnot Q(x))$. \
 Nested: push $lnot$ inward, flipping each quantifier: $lnot forall x exists y thin P(x,y) equiv exists x forall y lnot P(x,y)$.]
@@ -465,10 +419,16 @@ To *prove* $forall x exists y thin P$: "Let $x$ be arbitrary. Let $y = f(x)$. Th
 #trap[Hidden domain changes][
 $forall x in ZZ^+ thin exists y in ZZ (x + y = 0)$ is true but becomes false over $y in ZZ^+$. Check every domain again after negating or reordering quantifiers.]
 
+#example[Nested quantifiers][
+Decide and justify: (a) $forall x in ZZ thin exists y in ZZ thin (y > x^2)$; $quad$ (b) $exists y in ZZ thin forall x in ZZ thin (y > x^2)$.
+
+(a) *True.* Let $x in ZZ$ be arbitrary; take $y = x^2 + 1 in ZZ$ #j[closure]; then $y > x^2$. \
+(b) *False.* Its negation $forall y in ZZ thin exists x in ZZ thin (y <= x^2)$ holds: given $y$, take $x = y$; then $y <= y^2$ for every integer $y$ (if $y <= 0$ then $y <= 0 <= y^2$; if $y >= 1$ then $y^2 = y dot y >= y$).]
+
 == 8 · Arguments with quantified statements
 
 #defn[Valid argument form (3.4.1)][
-An argument form is *valid* iff, no matter what particular predicates are substituted for the predicate symbols in its premises, if the resulting premise statements are all true then the conclusion is also true. An argument is *valid* iff its form is valid.]
+Valid iff every substitution of predicates that makes all premises true also makes the conclusion true. An argument is valid iff its form is valid.]
 
 #table(columns: (auto, 1fr, auto, 1fr),
   [Rule], [Form], [Rule], [Form],
@@ -516,12 +476,6 @@ $exists x thin (S q u a r e(x) and forall y thin (T r i a n g l e(y) -> R i g h 
   $equiv forall x thin (lnot S q u a r e(x) or exists y thin (T r i a n g l e(y) and lnot R i g h t O f(x, y)))$, j[negated conditional],
 ) "Every object is either not a square, or has some triangle it is not to the right of." #qed]
 
-#proofb[Universal modus ponens inside an ordinary proof (Lecture 3.4.3)][
-In "the sum of two even integers is even", each step is an instance of universal modus ponens:
-+ "If an integer is even, it equals twice some integer; $m$ is a particular even integer; $therefore$ $m = 2r$ for some integer $r$."
-+ "For all $u, v$: if $u, v$ are integers then $u + v$ is an integer; $r, s$ are integers; $therefore$ $r + s$ is an integer."
-+ "If a number equals twice some integer, it is even; $2(r + s)$ is such a number; $therefore$ $m + n$ is even." #qed
-Writing "by definition of even" or "by closure" is shorthand for exactly these instantiations.]
 
 #drill[Translate, then negate (answers after the arrow)][
 - "Every student has a friend": $forall s thin exists f thin F(s, f)$ $->$ negation $exists s thin forall f thin lnot F(s, f)$.
@@ -549,29 +503,24 @@ Writing "by definition of even" or "by closure" is shorthand for exactly these i
   [
     #tip[Proof format][
     - *Number the steps;* nest sub-arguments ($1.1, 1.2, ...$).
-    - *Justify every step* in brackets: "by definition of odd", "by closure of integers under $+$", "by basic algebra", "by Theorem 4.4.3".
-    - Open a universal proof with "Let $x$ be a *particular but arbitrarily chosen* element of $D$".
+    - *Justify every step* in brackets: "by definition of odd", "by closure of integers under $+$", "by basic algebra", "by Theorem 4.3.3".
+    - Open a universal proof with "Let $x$ be a *arbitrary* element of $D$".
     - Give each existential witness a *fresh* name.
     - End with the claim, restated, then $square.filled$.]
   ])
 
 #defn[Basic properties of integers (Lecture 1, Appendix A)][
-For all $x, y, z in ZZ$: *closure* ($x + y, x y in ZZ$), *commutativity*, *associativity*, *distributivity*, *trichotomy* (exactly one of $x < y$, $x = y$, $x > y$). Appendix A's field and order axioms for $RR$ may also be cited. \
+For all $x, y, z in ZZ$: *closure* ($x + y, x - y, x y in ZZ$), *commutativity*, *associativity*, *distributivity*, *trichotomy* (exactly one of $x < y$, $x = y$, $x > y$). Appendix A's field and order axioms for $RR$ may also be cited; the complete Appendix A appears in §33. \
 *Assumption 1:* every integer is even or odd, but not both. $quad$ *Assumption 2:* every rational number can be reduced to lowest terms.]
 
-#trap[Common mistakes in proofs (Epp 4.2)][
+#trap[Common mistakes in proofs][
 Arguing from examples · reusing a letter ($m = 2r$ and $n = 2r$ makes $m = n$) · assuming what is to be proved · "therefore" without a reason · writing "$a dv b = 3$" ($a dv b$ is a statement, not a number).]
 
-#example[T1 Q11 · Biconditional: $n^2$ is odd $<->$ $n$ is odd][
-For $n in ZZ$, Smart writes: "*Proof (by contradiction).* Suppose $n$ is even, so $n = 2k$, … so $n^2$ is even. So if $n$ is even then $n^2$ is even, i.e. if $n^2$ is odd then $n$ is odd. Therefore $n^2$ is odd iff $n$ is odd." Comment, then give a correct proof.
-
-Let $n in ZZ$. *Faults:* (1) only one direction ($n^2$ odd $-> n$ odd) is proved; (2) the method is *contraposition*, not contradiction; (3) justifications are missing (definition of even, closure).
-+ ($=>$) Prove the contrapositive of "if $n^2$ is odd, then $n$ is odd".
-  + Suppose $n$ is even. Then $exists k in ZZ$ s.t. $n = 2k$ #j[definition of even].
-  + $n^2 = (2k)^2 = 4k^2 = 2(2k^2)$ #j[basic algebra], with $2k^2 in ZZ$ #j[closure of integers under $times$].
-  + So $n^2$ is even #j[definition of even]. This proves: if $n^2$ is odd, then $n$ is odd #j[contraposition and the even/odd dichotomy].
-+ ($arrow.l.double$) Suppose $n$ is odd: $n = 2k + 1$ for some $k in ZZ$ #j[definition of odd]. Then $n^2 = 2(2k^2 + 2k) + 1$, with $2k^2 + 2k in ZZ$ #j[basic algebra, closure], so $n^2$ is odd #j[definition of odd].
-+ Therefore $n^2$ is odd iff $n$ is odd #j[lines 1 and 2]. #qed]
+#example[T1 Q11 · Odd square iff odd integer · Proposition 4.6.4][
+For $n in ZZ$, a proposed “contradiction proof” shows only that $n$ even implies $n^2$ even. *Faults:* it uses contraposition, proves only one direction, and omits justifications. A complete proof is:
++ ($=>$) Suppose $n$ is even: $n = 2k$, $k in ZZ$. Then $n^2 = 2(2k^2)$ is even #j[definition; closure]. By contraposition, $n^2$ odd implies $n$ odd.
++ ($arrow.l.double$) If $n = 2k + 1$, $k in ZZ$, then $n^2 = 2(2k^2 + 2k) + 1$ is odd #j[algebra; closure]. Hence $n^2$ is odd iff $n$ is odd. #qed
+*Proposition 4.6.4:* $n^2$ even implies $n$ even, by contraposition of line 2 and the even/odd dichotomy.]
 
 == 10 · Definitions and results in number theory
 
@@ -592,25 +541,10 @@ Consequences: every $d$ divides 0; 0 divides only 0; $1 dv n$ and $n dv n$ for a
 For $x in RR$, the *absolute value* of $x$ is $|x| = x$ if $x >= 0$, and $|x| = -x$ if $x < 0$. \
 An integer $n$ is *colorful* iff there exists some integer $k$ such that $n = 3k$. (Non-standard term, used only in the lecture: $-1353 = 3 dot (-451)$ and $0 = 3 dot 0$ are colorful; 7 is not.)]
 
-#thm[Quotient–Remainder Theorem (4.5.1) · div and mod][
+#thm[Theorem 4.4.1 · Quotient–Remainder · div and mod][
 For $n in ZZ$ and $d in ZZ^+$ there exist *unique* $q, r in ZZ$ with $n = d q + r$ and $0 <= r < d$. We write $n "div" d = q$ and $n mod d = r$. Hence every integer is of exactly one form $d q, d q + 1, ..., d q + (d - 1)$. This is the basis for *division into cases*.]
 
-#thm[Results that may be cited][
-#grid(columns: (1fr, 1fr), gutter: 12pt,
-[- *4.3.1* Every integer is rational.
- - *4.3.2* The sum of two rationals is rational; *Cor. 4.3.3* the double of a rational is rational.
- - *4.4.1* $a, b in ZZ^+, a dv b => a <= b$.
- - *4.4.2* The only divisors of 1 are $1$ and $-1$.
- - *4.4.3* $a dv b and b dv c => a dv c$.
- - *4.4.4* Every integer $n > 1$ is divisible by a prime.],
-[- *4.4.5* Unique factorization: $n > 1$ is $p_1^(e_1) dots.c p_k^(e_k)$, unique up to order.
- - *4.5.2* Consecutive integers have opposite parity.
- - *4.5.4* $-|r| <= r <= |r|$; *4.5.6* $|x + y| <= |x| + |y|$.
- - *4.7.1* There is no greatest integer.
- - *4.7.4* $n^2$ even $=> n$ even.
- - *4.8.1* $sqrt(2)$ is irrational; *4.8.4* there are infinitely many primes.])
-#v(2pt)
-#text(size: 8.3pt, fill: muted)[Numbers follow Epp's 5th edition. The slides quote 4th-edition numbers first: the slides' 4._k_._x_ is 4.(_k_+1)._x_ in the 5th edition for sections 4.2–4.7; for example, the slides' "Theorem 4.3.3" is 4.4.3.]]
+*Slide-numbered results and proofs:* §12; *theorem locator:* §34; *Appendix A:* §33.
 
 == 11 · Choosing the method
 
@@ -631,29 +565,16 @@ For $n in ZZ$ and $d in ZZ^+$ there exist *unique* $q, r in ZZ$ with $n = d q + 
 Use *contraposition* when the negated conclusion is easier to work with; "$n$ is odd" is easier to use than "$n^2$ is not odd". Use *contradiction* for statements such as "there is no …", "there are infinitely many …" and "… is irrational", whose negations assert that some object exists.]
 
 #example[T2 Q8 · Cases inside a conditional][
-Prove $forall x in RR thin ((x^2 > x) -> ((x < 0) or (x > 1)))$. Must the case $x^2 <= x$ be examined?
+Prove $forall x in RR thin ((x^2 > x) -> ((x < 0) or (x > 1)))$.
++ Let $r in RR$ with $r^2 > r$. Then $r(r - 1) > 0$ #j[algebra].
++ By Appendix A, Theorem T25, $r$ and $r - 1$ have the same sign. If both are positive, $r - 1 > 0$, so $r > 1$. If both are negative, $r < 0$.
++ Thus $r < 0$ or $r > 1$; the statement follows since $r$ was arbitrary. #qed
+The case $x^2 <= x$ needs no proof: the implication is vacuously true. A graph alone is not a proof.]
 
-*No:* $p -> q$ is true whenever $p$ is false, so only $x^2 > x$ needs examining.
-+ Let $r$ be an arbitrarily chosen real number.
-+ Suppose $r^2 > r$.
-  + Then $r^2 - r > 0$, i.e. $r(r - 1) > 0$ #j[basic algebra].
-  + So $r$ and $r - 1$ are both positive or both negative #j[Appendix A, T25].
-  + *Case 1:* both positive. Then $r - 1 > 0$, so $r > 1$ #j[basic algebra].
-  + *Case 2:* both negative. Then $r < 0$ #j[case assumption].
-  + Hence $(r > 1) or (r < 0)$; so $(r^2 > r) -> ((r > 1) or (r < 0))$ #j[division into cases].
-+ Therefore $forall x in RR thin ((x^2 > x) -> ((x < 0) or (x > 1)))$ #j[universal generalization, as $r$ was arbitrary]. #qed
-Do not use diagrams (e.g. graphs) as proofs unless instructed.]
-
-#exam[T2 Q11 · Past midterm · A factor is at most $sqrt(n)$][
+#exam[T2 Q11 · A factor is at most $sqrt(n)$][
 For $n, a, b in ZZ^+$, prove $n = a b -> (a <= sqrt(n) or b <= sqrt(n))$.
-*By contraposition* ($p -> q equiv lnot q -> lnot p$):
-+ Contrapositive: if $a > sqrt(n)$ and $b > sqrt(n)$, then $n$ is not the product $a b$ #j[De Morgan's law].
-+ Suppose $a > sqrt(n)$ and $b > sqrt(n)$. Then $a b > sqrt(n) dot sqrt(n) = n$ #j[Appendix A, T27].
-+ Since $a b != n$, the contrapositive is true; therefore the original statement is true. #qed
-*By contradiction* ($lnot(p -> q) equiv p and lnot q$):
-+ Suppose not: $n = a b$ and $a > sqrt(n)$ and $b > sqrt(n)$ #j[De Morgan's law].
-+ Then $a b > sqrt(n) dot sqrt(n) = n$ #j[Appendix A, T27], contradicting $n = a b$ in line 1. #qed
-_T27:_ if $0 < a < c$ and $0 < b < d$, then $0 < a b < c d$.]
+*Contraposition:* suppose $a > sqrt(n)$ and $b > sqrt(n)$. Then $a b > sqrt(n) dot sqrt(n) = n$ #j[Appendix A, Theorem T27], hence $n != a b$. #qed \
+*Contradiction:* suppose $n = a b$ and both factors exceed $sqrt(n)$. The same inequality gives $a b > n$, contradicting $a b = n$. #qed]
 
 #trap[T2 Q4 · Closure claims][
 $ZZ$ is *not* closed under division ($3 slash 2 = 1.5 in.not ZZ$). Division is not a binary operation on *all* of $QQ times QQ$, since $r slash 0$ is undefined; division of a rational by a *nonzero* rational does give a rational. In proving $QQ$ closed under $+$, the line "$b d != 0$ #j[zero product property]" is required, and is commonly omitted.]
@@ -661,41 +582,42 @@ $ZZ$ is *not* closed under division ($3 slash 2 = 1.5 in.not ZZ$). Division is n
 == 12 · Model proofs
 
 #proofb[Sum of two even integers is even (Lecture 4, Ex. 4)][
-+ Let $m$ and $n$ be particular but arbitrarily chosen even integers.
++ Let $m$ and $n$ be arbitrary even integers.
   + Then $m = 2 r$ and $n = 2 s$ for some integers $r$ and $s$ #j[by definition of even].
   + $m + n = 2 r + 2 s = 2(r + s)$ #j[by basic algebra].
   + $r + s$ is an integer #j[by closure of integers under $+$], so $m + n$ is even #j[by definition of even].
-+ Therefore the sum of any two even integers is even. #qed]
++ Therefore the sum of any two even integers is even. #qed
+*Lecture 3.4.3:* “by definition” and “by closure” apply universal modus ponens: instantiate the general rule at the chosen integers, then use its hypothesis.]
 
-#proofb[The product of two consecutive odd integers is odd (Lecture 1, Ex. 1)][
-+ Let $a$ and $b$ be two consecutive odd integers.
-  + WLOG $a < b$, hence $b = a + 2$.
-  + $a = 2 k + 1$ for some integer $k$ #j[by definition of odd], so $b = 2 k + 3$.
-  + $a b = (2k + 1)(2k + 3) = 4k^2 + 8k + 3 = 2(2k^2 + 4k + 1) + 1$ #j[by basic algebra].
-  + Let $m = 2k^2 + 4k + 1$, an integer #j[by closure under $times$ and $+$]. Then $a b = 2m + 1$ is odd #j[by definition of odd].
-+ Therefore the product of two consecutive odd integers is odd. #qed]
+#example[Odd products and contraposition · Lecture 1, Ex. 1][
+Prove that the product of two odd integers is odd; deduce that an even product has an even factor.
++ Let $a = 2r + 1$ and $b = 2s + 1$, where $r, s in ZZ$ #j[definition of odd].
++ $a b = 2(2 r s + r + s) + 1$, with $2 r s + r + s in ZZ$ #j[algebra; closure]. Thus $a b$ is odd.
++ By contraposition and the even/odd dichotomy, $a b$ even implies $a$ even or $b$ even. #qed
+In particular, two consecutive odd integers have odd product. Taking $s = r + 1$ gives $a b = 2(2r^2 + 4r + 1) + 1$.]
 
-#proofb[Theorem 4.3.2 · The sum of any two rational numbers is rational][
-+ Let $r$ and $s$ be particular but arbitrarily chosen rational numbers.
+#proofb[Theorem 4.2.2 · The sum of any two rational numbers is rational][
++ Let $r$ and $s$ be arbitrary rational numbers.
   + Then $r = a slash b$ and $s = c slash d$ for some integers $a, b, c, d$ with $b != 0$, $d != 0$ #j[by definition of rational].
   + $r + s = (a d + b c) slash (b d)$ #j[by basic algebra].
   + $a d + b c$ and $b d$ are integers #j[by closure under $+$ and $times$], and $b d != 0$ #j[zero product property], so $r + s$ is rational #j[by definition of rational].
-+ Therefore the sum of any two rational numbers is rational. #qed]
++ Therefore the sum of any two rational numbers is rational. #qed
+*Corollary 4.2.3:* if $r in QQ$, then $2r = r + r in QQ$ by this theorem.]
 
-#proofb[Theorem 4.4.1 · For all $a, b in ZZ^+$, if $a dv b$ then $a <= b$][
+#proofb[Theorem 4.3.1 · For all $a, b in ZZ^+$, if $a dv b$ then $a <= b$][
 + Let $a, b$ be positive integers with $a dv b$.
   + Then $b = a k$ for some integer $k$ #j[by definition of divisibility].
   + Since $a$ and $b$ are positive, $k$ is positive, i.e. $k >= 1$.
   + Therefore $a <= a k = b$. #qed]
 
-#proofb[Theorem 4.4.2 · The only divisors of 1 are 1 and −1 (division into cases)][
+#proofb[Theorem 4.3.2 · The only divisors of 1 are 1 and −1 (division into cases)][
 + Let $m$ be any integer with $m dv 1$. Then $1 = m k$ for some integer $k$ #j[by definition of divisibility].
   + Since $m k > 0$, $m$ and $k$ are both positive or both negative.
-  + *Case 1:* both positive. Then $m <= 1$ #j[by Theorem 4.4.1], so $m = 1$.
+  + *Case 1:* both positive. Then $m <= 1$ #j[by Theorem 4.3.1], so $m = 1$.
   + *Case 2:* both negative. Then $1 = (-m)(-k)$, so $-m$ is a positive divisor of 1; as in Case 1, $-m = 1$, i.e. $m = -1$.
 + Therefore the only divisors of 1 are 1 and −1. #qed]
 
-#proofb[Theorem 4.4.3 · Transitivity of divisibility][
+#proofb[Theorem 4.3.3 · Transitivity of divisibility][
 + Suppose $a, b, c$ are integers with $a dv b$ and $b dv c$.
   + Then $b = a r$ and $c = b s$ for some integers $r, s$ #j[by definition of divisibility].
   + $c = b s = (a r) s = a (r s)$ #j[by substitution and associativity].
@@ -707,72 +629,63 @@ $ZZ$ is *not* closed under division ($3 slash 2 = 1.5 in.not ZZ$). Division is n
   + *Case 2:* $n = 2k + 1$. Then $n^2 = 4k^2 + 4k + 1 = 4(k^2 + k) + 1$, and $k^2 + k in ZZ$ #j[closure].
 + In either case $n^2 = 4q + r$ with $r in {0, 1}$, so $n^2 mod 4 in {0, 1}$ #j[by the quotient–remainder theorem, $r$ is unique]. #qed]
 
-#proofb[Theorem 4.7.1 · There is no greatest integer (contradiction)][
+#proofb[Theorem 4.6.1 · There is no greatest integer (contradiction)][
 + Suppose not; that is, there is a greatest integer $g$, so $g >= n$ for every integer $n$.
   + Let $G = g + 1$. Then $G$ is an integer #j[by closure under $+$] and $G > g$.
   + This contradicts that $g$ is the greatest integer.
 + Hence the supposition is false, and there is no greatest integer. #qed]
 
-#proofb[Proposition 4.7.4 · For all integers $n$, if $n^2$ is even then $n$ is even (contraposition)][
-+ Contrapositive: for all integers $n$, if $n$ is odd then $n^2$ is odd.
-+ Let $n$ be an arbitrarily chosen odd integer.
-  + Then $n = 2k + 1$ for some integer $k$ #j[by definition of odd].
-  + $n^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$ #j[by basic algebra].
-  + Let $m = 2k^2 + 2k$, an integer #j[by closure]. Then $n^2 = 2m + 1$ is odd #j[by definition of odd].
-+ Therefore, for all integers $n$, if $n^2$ is even then $n$ is even. #qed]
 
-#proofb[Theorem 4.8.1 · $sqrt(2)$ is irrational (contradiction)][
+#proofb[Theorem 4.7.1 · $sqrt(2)$ is irrational (contradiction)][
 + Suppose not; that is, $sqrt(2)$ is rational.
   + Then $sqrt(2) = a slash b$ for some integers $a, b$ with $b != 0$ #j[by definition of rational].
   + Reduce $a slash b$ to lowest terms $m slash n$ #j[Assumption 2]; then $m^2 = 2 n^2$ #j[by basic algebra].
-  + So $m^2$ is even #j[by definition of even, as $n^2 in ZZ$], hence $m$ is even #j[by Proposition 4.7.4].
-  + Let $m = 2k$. Then $4k^2 = 2n^2$, so $n^2 = 2k^2$ is even, hence $n$ is even #j[by Proposition 4.7.4].
+  + So $m^2$ is even #j[by definition of even, as $n^2 in ZZ$], hence $m$ is even #j[by Proposition 4.6.4].
+  + Let $m = 2k$. Then $4k^2 = 2n^2$, so $n^2 = 2k^2$ is even, hence $n$ is even #j[by Proposition 4.6.4].
   + So 2 divides both $m$ and $n$, contradicting that $m slash n$ is in lowest terms.
 + Therefore $sqrt(2)$ is irrational. #qed]
 
-#proofb[Theorem 4.7.3 · rational + irrational is irrational (contradiction)][
+#proofb[rational + irrational is irrational (contradiction)][
 + Suppose not: some rational $r$ and irrational $s$ have $r + s$ rational.
   + Then $r = a slash b$ and $r + s = c slash d$ with $a, b, c, d in ZZ$, $b, d != 0$ #j[by definition of rational].
   + So $s = c slash d - a slash b = (b c - a d) slash (b d)$, with $b c - a d, b d in ZZ$ and $b d != 0$ #j[closure; zero product property].
   + Hence $s$ is rational #j[by definition of rational], contradicting that $s$ is irrational. #qed]
 
-#proofb[Theorem 4.8.4 · The set of primes is infinite (contradiction)][
+#proofb[The set of primes is infinite (contradiction)][
 + Suppose not: the primes are exactly $p_1, p_2, ..., p_n$. Let $N = p_1 p_2 dots.c p_n + 1$.
-  + $N > 1$, so some prime $p$ divides $N$ #j[by Theorem 4.4.4]; $p = p_i$ for some $i$ #j[the list is complete].
-  + $p_i$ divides $p_1 dots.c p_n = N - 1$ as well. But a prime dividing $a$ cannot divide $a + 1$ #j[Proposition 4.8.3]. Contradiction.
+  + $N > 1$, so some prime $p$ divides $N$ #j[existence of a prime divisor, proved below]; $p = p_i$ for some $i$ #j[the list is complete].
+  + $p_i$ divides $p_1 dots.c p_n = N - 1$ as well. But a prime dividing $a$ cannot divide $a + 1$ #j[consecutive-integer divisibility result, proved below]. Contradiction.
 + Hence there are infinitely many primes. #qed]
 
 #proofb[There exist irrational $p, q$ with $p^q$ rational (Lecture 1, Ex. 7; non-constructive proof by cases)][
-+ $sqrt(2)$ is irrational #j[Theorem 4.8.1]. Consider $sqrt(2)^sqrt(2)$: it is rational or irrational.
++ $sqrt(2)$ is irrational #j[Theorem 4.7.1]. Consider $sqrt(2)^sqrt(2)$: it is rational or irrational.
   + *Case 1:* rational. Take $p = q = sqrt(2)$.
   + *Case 2:* irrational. Take $p = sqrt(2)^sqrt(2)$, $q = sqrt(2)$: then $p^q = sqrt(2)^(sqrt(2) dot sqrt(2)) = sqrt(2)^2 = 2$, rational.
 + In either case the required $p$ and $q$ exist. #qed]
 
 
-=== More model proofs
-
-#proofb[Theorem 4.5.2 · Any two consecutive integers have opposite parity][
-+ Let $m$ and $m + 1$ be two particular but arbitrarily chosen consecutive integers. $m$ is even or odd #j[Assumption 1].
+#proofb[Any two consecutive integers have opposite parity][
++ Let $m$ and $m + 1$ be two arbitrary consecutive integers. $m$ is even or odd #j[Assumption 1].
   + *Case 1:* $m = 2k$ for some $k in ZZ$. Then $m + 1 = 2k + 1$ is odd #j[by definition of odd].
   + *Case 2:* $m = 2k + 1$. Then $m + 1 = 2(k + 1)$ with $k + 1 in ZZ$ #j[closure], so $m + 1$ is even.
 + In both cases $m$ and $m + 1$ have opposite parity. #qed]
 
-#proofb[Theorem 4.5.3 · The square of any odd integer has the form $8m + 1$ (division into cases via QR)][
-+ Let $n$ be a particular but arbitrarily chosen odd integer. By the QR theorem with $d = 4$, $n = 4q$, $4q + 1$, $4q + 2$ or $4q + 3$ for some $q in ZZ$; as $n$ is odd, $n = 4q + 1$ or $n = 4q + 3$.
+#proofb[The square of any odd integer has the form $8m + 1$ (division into cases via QR)][
++ Let $n$ be a arbitrary odd integer. By the QR theorem with $d = 4$, $n = 4q$, $4q + 1$, $4q + 2$ or $4q + 3$ for some $q in ZZ$; as $n$ is odd, $n = 4q + 1$ or $n = 4q + 3$.
   + *Case 1:* $n^2 = 16q^2 + 8q + 1 = 8(2q^2 + q) + 1$.
   + *Case 2:* $n^2 = 16q^2 + 24q + 9 = 8(2q^2 + 3q + 1) + 1$.
 + In both cases $n^2 = 8m + 1$ for an integer $m$ #j[closure]. #qed]
 
-#proofb[Theorem 4.5.6 · Triangle inequality $|x + y| <= |x| + |y|$ for all $x, y in RR$][
-+ By Lemma 4.5.4, $-|x| <= x <= |x|$ and $-|y| <= y <= |y|$; adding, $-(|x| + |y|) <= x + y <= |x| + |y|$.
+#proofb[Theorem 4.4.6 · Triangle inequality $|x + y| <= |x| + |y|$ for all $x, y in RR$][
++ By Lemma 4.4.4, $-|x| <= x <= |x|$ and $-|y| <= y <= |y|$; adding, $-(|x| + |y|) <= x + y <= |x| + |y|$.
   + *Case 1:* $x + y >= 0$. Then $|x + y| = x + y <= |x| + |y|$ #j[definition of absolute value].
   + *Case 2:* $x + y < 0$. Then $|x + y| = -(x + y) <= |x| + |y|$ #j[from the left inequality].
 + So $|x + y| <= |x| + |y|$ in all cases. #qed]
 
-#proofb[Proposition 4.8.3 · For any integer $a$ and prime $p$: if $p dv a$ then $p ndv (a + 1)$ (contradiction)][
+#proofb[For any integer $a$ and prime $p$: if $p dv a$ then $p ndv (a + 1)$ (contradiction)][
 + Suppose not: $p dv a$ and $p dv (a + 1)$ for some integer $a$ and prime $p$.
   + Then $a = p r$ and $a + 1 = p s$ for some $r, s in ZZ$ #j[definition of divisibility], so $1 = p s - p r = p(s - r)$.
-  + So $p dv 1$ #j[as $s - r in ZZ$], hence $p = 1$ or $p = -1$ #j[Theorem 4.4.2]. This is a contradiction, since a prime is greater than 1. #qed]
+  + So $p dv 1$ #j[as $s - r in ZZ$], hence $p = 1$ or $p = -1$ #j[Theorem 4.3.2]. This is a contradiction, since a prime is greater than 1. #qed]
 
 #proofb[If $a dv b$ and $a dv c$ then $a dv (m b + n c)$ for all integers $m, n$][
 + Suppose $a dv b$ and $a dv c$: $b = a r$ and $c = a s$ for some $r, s in ZZ$ #j[definition of divisibility].
@@ -786,14 +699,14 @@ _Work backwards first:_ the goal "$x + 2y$ is colorful" means we need an integer
 
 #example[Disproof by counterexample][
 - "$forall a, b, c in ZZ thin (a dv b c -> a dv b or a dv c)$" is false: $4 dv 2 dot 2$ but $4 ndv 2$.
-- "$forall a, b in ZZ thin (a dv b and b dv a -> a = b)$" is false: take $a = 1$, $b = -1$. (True on $ZZ^+$: Theorem 4.4.1.)
+- "$forall a, b in ZZ thin (a dv b and b dv a -> a = b)$" is false: take $a = 1$, $b = -1$. (True on $ZZ^+$: Theorem 4.3.1.)
 - "The product of two irrational numbers is irrational" is false: $sqrt(2) dot sqrt(8) = 4$ (Lecture 1).
 - "$forall a, b in RR thin (a^2 = b^2 -> a = b)$" is false: take $a = 1$, $b = -1$ (Lecture 4).
-- "There is no integer that is both even and odd" (4.7.2) is *true*: if $n = 2a = 2b + 1$ then $1 = 2(a - b)$, so $1 slash 2 in ZZ$, a contradiction.]
+- "There is no integer that is both even and odd" is *true*: if $n = 2a = 2b + 1$ then $1 = 2(a - b)$, so $1 slash 2 in ZZ$, a contradiction.]
 
 
-#proofb[Theorem 4.3.1 · Every integer is a rational number][
-+ Let $a$ be a particular but arbitrarily chosen integer. Then $a = a slash 1$, a quotient of integers with non-zero denominator.
+#proofb[Theorem 4.2.1 · Every integer is a rational number][
++ Let $a$ be a arbitrary integer. Then $a = a slash 1$, a quotient of integers with non-zero denominator.
 + Hence $a$ is rational #j[by definition of rational]. #qed]
 
 #proofb[Proof by exhaustion (Lecture 4, Ex. 3) · every even $n$ with $4 <= n <= 26$ is a sum of two primes][
@@ -806,29 +719,46 @@ $4 = 2+2$, $6 = 3+3$, $8 = 3+5$, $10 = 5+5$, $12 = 5+7$, $14 = 3+11$, $16 = 5+11
   + *Case $n = 3q + 2$:* the factor $n + 1 = 3(q + 1)$, so $n^3 - n = 3 dot (q+1)(n-1)n$.
 + In each case the cofactor is an integer #j[closure], so $3 dv (n^3 - n)$ #j[definition of divisibility]. #qed]
 
-#proofb[Every prime $p > 3$ has the form $6k + 1$ or $6k + 5$ (Epp 4.5, exercise 39)][
+#proofb[Every prime $p > 3$ has the form $6k + 1$ or $6k + 5$][
 + Let $p > 3$ be prime. By the QR theorem, $p = 6k + r$ with $r in {0, 1, 2, 3, 4, 5}$.
   + If $r in {0, 2, 4}$, then $p = 2(3k + r slash 2)$ is even and $> 2$, so not prime.
   + If $r = 3$, then $p = 3(2k + 1)$ with $p > 3$, so not prime.
 + Hence $r = 1$ or $r = 5$. #qed]
 
 
-#proofb[Theorem 4.4.4 · Every integer $n > 1$ is divisible by a prime (via well-ordering)][
+#proofb[Every integer $n > 1$ is divisible by a prime (via well-ordering)][
 + Let $n > 1$ be an integer, and let $D = {d in ZZ : d > 1 and d dv n}$. $D != nothing$, since $n in D$.
 + $D$ has a smallest element $p$ #j[$(NN, <=)$ is well-ordered].
-+ $p$ is prime: suppose instead $p = r s$ with $1 < r < p$. Then $r dv p$ and $p dv n$, so $r dv n$ #j[Theorem 4.4.3], so $r in D$ with $r < p$, contradicting the minimality of $p$.
++ $p$ is prime: suppose instead $p = r s$ with $1 < r < p$. Then $r dv p$ and $p dv n$, so $r dv n$ #j[Theorem 4.3.3], so $r in D$ with $r < p$, contradicting the minimality of $p$.
 + Hence the prime $p$ divides $n$. #qed]
 
-#proofb[Lemma 4.5.4 · For every real $r$: $-|r| <= r <= |r|$ (division into cases)][
+#proofb[Lemma 4.4.4 · For every real $r$: $-|r| <= r <= |r|$ (division into cases)][
 + *Case $r >= 0$:* $|r| = r$ #j[definition of absolute value], and $-|r| = -r <= 0 <= r$. So $-|r| <= r = |r|$.
 + *Case $r < 0$:* $|r| = -r > 0$, so $-|r| = r$ and $r < 0 < |r|$. So $-|r| = r <= |r|$. #qed]
 
-#exam[Using unique factorization (Theorem 4.4.5) · AY25 Q6(iii) in full][
+#exam[Using unique factorization · AY25 Q6(iii) in full][
+*Unique factorization:* every integer $n > 1$ is a product of primes, unique up to order. \
 *Claim:* if $n = m^2$ is a perfect square and a prime $p$ divides $n$, then $p^2 dv n$. \
-If $m = 0$, then $n = 0$ and $p^2 dv 0$. Otherwise write $|m| = p_1^(e_1) dots.c p_k^(e_k)$ #j[Theorem 4.4.5]; then $n = p_1^(2e_1) dots.c p_k^(2e_k)$. A prime dividing $n$ is some $p_i$ (uniqueness of the factorization), and its exponent $2e_i >= 2$, so $p_i^2 dv n$. #qed \
+If $m = 0$, then $n = 0$ and $p^2 dv 0$. Otherwise write $|m| = p_1^(e_1) dots.c p_k^(e_k)$ #j[unique factorization]; then $n = p_1^(2e_1) dots.c p_k^(2e_k)$. A prime dividing $n$ is some $p_i$ (uniqueness of the factorization), and its exponent $2e_i >= 2$, so $p_i^2 dv n$. #qed \
 In a perfect square every prime appears to an even power.]
 
 // ============================================================================
+#example[Division into cases][
+Prove: for every integer $n$, $n^2 + n$ is even.
+
++ Let $n$ be a arbitrary integer. Then $n$ is even or odd #j[Assumption 1].
+  + *Case 1:* $n = 2k$ for some $k in ZZ$. Then $n^2 + n = 4k^2 + 2k = 2(2k^2 + k)$, and $2k^2 + k in ZZ$ #j[closure].
+  + *Case 2:* $n = 2k + 1$. Then $n^2 + n = (2k + 1)(2k + 2) = 2(2k + 1)(k + 1)$, and $(2k+1)(k+1) in ZZ$ #j[closure].
++ In both cases $n^2 + n$ is even #j[by definition of even]. #qed]
+
+#example[Contradiction][
+Prove: there is no smallest positive rational number.
+
++ Suppose not: let $r$ be the smallest positive rational number.
+  + $r = a slash b$ for some integers $a, b$ with $b != 0$ #j[definition of rational]. Then $r slash 2 = a slash (2b)$, where $a, 2b in ZZ$ and $2b != 0$, so $r slash 2$ is rational.
+  + $r slash 2 > 0$ and $r slash 2 < r$ #j[as $r > 0$], contradicting the choice of $r$ as the smallest.
++ Hence there is no smallest positive rational number. #qed]
+
 = Part IV · Set Theory
 // ============================================================================
 
@@ -869,8 +799,9 @@ If $A subset.eq B$ we may write $B supset.eq A$: "$B$ contains / includes $A$", 
 $A subset.neq B$ (proper, or strict, inclusion) iff $A subset.eq B$ and $A != B$. $quad$ $A = B <=> A subset.eq B and B subset.eq A <=> forall x (x in A <-> x in B)$. \
 The *empty set* $nothing = {}$ is the set with no elements. A set with exactly one element is a *singleton*.]
 
-#thm[6.2.4 · The empty set][
-$nothing subset.eq A$ for every set $A$ (and $nothing$ is unique). *Proof:* $forall x (x in nothing -> x in A)$ is vacuously true, as $x in nothing$ is always false.]
+#thm[Theorem 6.2.4 · The empty set][
+$nothing subset.eq A$ for every set $A$ (and $nothing$ is unique). *Proof:* $forall x (x in nothing -> x in A)$ is vacuously true, as $x in nothing$ is always false. \
+*Uniqueness:* the empty set is unique: two empty sets are subsets of one another by Theorem 6.2.4, hence equal.]
 
 #grid(columns: (1fr, 1fr), gutter: 14pt,
 [
@@ -927,7 +858,7 @@ $B without A = {x in U : x in B and x in.not A}$ (the *relative complement* of $
 #defn[Symmetric difference (Tutorial 3) · Disjoint][
 $A xor B = (A without B) union (B without A)$, the set of elements in exactly one of $A$ and $B$. $A$ and $B$ are *disjoint* iff $A inter B = nothing$; $A_1, A_2, ...$ are *mutually disjoint* iff $A_i inter A_j = nothing$ whenever $i != j$. $union.big_(i=0)^n A_i$, $inter.big_(i=0)^n A_i$ extend $union, inter$.]
 
-#thm[6.2.1 · Subset relations][
+#thm[Theorem 6.2.1 · Subset relations][
 $A inter B subset.eq A$, $A inter B subset.eq B$ #h(0.8em) (inclusion of intersection); $quad A subset.eq A union B$, $B subset.eq A union B$ #h(0.8em) (inclusion in union); $quad A subset.eq B and B subset.eq C => A subset.eq C$ #h(0.8em) (transitivity). The *set identities* (Theorem 6.2.2) are the right column of the table in §2.]
 
 #exam[AY23 Q7 · For which can *no* non-empty $A, B$ exist?][
@@ -974,15 +905,11 @@ $= (A without B) union (A without C)$ #j[set difference ×2]. #qed]
 + ($arrow.l.double$) Suppose $PP(A) subset.eq PP(B)$. $A subset.eq A$, so $A in PP(A)$, hence $A in PP(B)$, i.e. $A subset.eq B$ #j[definition of power set]. #qed]
 
 #example[T3 Q4 · Set equality by double inclusion][
-$A = {2n + 1 : n in ZZ}$, $B = {2n - 5 : n in ZZ}$. Is $A = B$? Prove it.
-
-+ ($subset.eq$) Let $a in A$.
-  + Use the definition of $A$ to find an integer $n$ such that $a = 2n + 1$.
-  + Then $a = 2n + 1 = 2(n + 3) - 5$, and $n + 3 in ZZ$ #j[closure of integers under $+$].
-  + Therefore $a in B$ #j[definition of $B$].
-+ ($supset.eq$) Let $b in B$; find $n in ZZ$ with $b = 2n - 5$. Then $b = 2(n - 3) + 1$ with $n - 3 in ZZ$ #j[closure under $-$], so $b in A$ #j[definition of $A$].
-+ Therefore $A = B$ #j[definition of set equality]. #qed
-The change of variables $k = n + 3$ is valid only after showing it ranges over *all* integers: for each $k in ZZ$, take $n = k - 3 in ZZ$. Closure alone does not justify that step; double inclusion makes both directions explicit.]
+Let $A = {2n + 1 : n in ZZ}$ and $B = {2n - 5 : n in ZZ}$. Prove $A = B$.
++ If $a in A$, write $a = 2n + 1 = 2(n + 3) - 5$ for $n in ZZ$. Since $n + 3 in ZZ$ #j[closure], $a in B$ #j[definition of $B$].
++ If $b in B$, write $b = 2n - 5 = 2(n - 3) + 1$ for $n in ZZ$. Since $n - 3 in ZZ$, $b in A$.
++ Thus $A = B$ #j[double inclusion]. #qed
+A substitution $k = n + 3$ must range over *all* integers: given $k$, use $n = k - 3$. Closure alone does not show this.]
 
 #example[T3 Q5 · Element method as a set-builder chain][
 Prove that for all sets $A, B, C$: $A inter (B without C) = (A inter B) without C$.
@@ -1006,13 +933,30 @@ $quad = (A inter B) without C$ #j[definition of $without$]. #qed]
 + $= (A union B) inter overline(A inter B)$ #j[De Morgan's law]
 + $= (A union B) without (A inter B)$ #j[set difference law]. #qed]
 
+#example[Set identity][
+Prove $A without (B union C) = (A without B) inter (A without C)$.
+
+$A without (B union C)$ \
+$= A inter overline(B union C)$ #j[set difference law] \
+$= A inter (overline(B) inter overline(C))$ #j[De Morgan's law] \
+$= (A inter A) inter (overline(B) inter overline(C))$ #j[idempotent law] \
+$= (A inter overline(B)) inter (A inter overline(C))$ #j[associative, commutative laws] \
+$= (A without B) inter (A without C)$ #j[set difference law]. #qed]
+
+#example[Prove or disprove][
+(a) $A union (B without C) = (A union B) without C$; $quad$ (b) $PP(A union B) = PP(A) union PP(B)$; $quad$ (c) $A subset.eq C and B subset.eq C -> A union B subset.eq C$.
+
+(a) *False:* $A = {1}$, $B = nothing$, $C = {1}$: left side ${1}$, right side $nothing$. \
+(b) *False:* $A = {1}$, $B = {2}$: ${1, 2} in PP(A union B)$ but ${1,2} in.not PP(A) union PP(B)$. (Only $supset.eq$ holds.) \
+(c) *True:* let $x in A union B$; then $x in A$ or $x in B$ #j[definition of $union$]; in either case $x in C$ #j[as $A subset.eq C$, $B subset.eq C$]. #qed]
+
 == 18 · Partitions and power sets
 
 #defn[Partition (Lecture 6)][
 $cal(C)$ is a *partition* of $A$ iff (1) every element of $cal(C)$ is a *non-empty* subset of $A$, and (2) every element of $A$ lies in *exactly one* element of $cal(C)$: $quad forall x in A thin exists! S in cal(C) thin (x in S)$. The elements of $cal(C)$ are its *components*. (Equivalently: non-empty, mutually disjoint, union is $A$.)]
 
 #defn[Power set · Theorem 6.3.1][
-$PP(A)$ is the set of all subsets of $A$. $quad$ If $|A| = n$ then $|PP(A)| = 2^n$. Always $nothing in PP(A)$ and $A in PP(A)$. \
+$PP(A)$ is the set of all subsets of $A$. $quad$ If $A$ is finite and $|A| = n$, then $|PP(A)| = 2^n$. Always $nothing in PP(A)$ and $A in PP(A)$. \
 $PP(A) inter PP(B) = PP(A inter B)$, but only $PP(A) union PP(B) subset.eq PP(A union B)$.]
 
 #exam[AY24 Q7 and Q8 · Partitions, power sets][
@@ -1034,9 +978,7 @@ $PP(A) = {nothing, {nothing}, {x}, {nothing, x}}$ and $PP(nothing) = {nothing}$,
 *Q17.* (a) $(A_1 inter A_2) without A_3 = nothing$. (b) $(A_1 union A_2) without A_3 = {nothing}$. (c) $(A_1 times A_2) union A_3 = {(nothing, a), a, {a}}$. (d) $(A_1 union A_2) times A_3 = {(nothing, a), (nothing, {a}), (a, a), (a, {a})}$.]
 
 
-=== More model proofs for sets
-
-#proofb[Distributive law $A union (B inter C) = (A union B) inter (A union C)$, by the element method with cases (Epp 6.2)][
+#proofb[Distributive law $A union (B inter C) = (A union B) inter (A union C)$, by the element method with cases][
 + ($subset.eq$) Let $x in A union (B inter C)$. Then $x in A$ or $x in B inter C$ #j[definition of $union$].
   + *Case $x in A$:* then $x in A union B$ and $x in A union C$ #j[definition of $union$], so $x in (A union B) inter (A union C)$.
   + *Case $x in B inter C$:* then $x in B$ and $x in C$, so again $x in A union B$ and $x in A union C$.
@@ -1065,7 +1007,7 @@ $= (A union B) inter overline(C)$ #j[set difference law] \
 $= (A inter overline(C)) union (B inter overline(C))$ #j[distributive, commutative] \
 $= (A without C) union (B without C)$ #j[set difference law]. #qed]
 
-#example[Disproving a set identity (Epp 6.3) · "$(A without B) union (B without C) = A without C$ for all sets"][
+#example[Disproving a set identity · "$(A without B) union (B without C) = A without C$ for all sets"][
 *False.* Counterexample: $A = nothing$, $B = {1}$, $C = nothing$. Then $(A without B) union (B without C) = nothing union {1} = {1}$, while $A without C = nothing$. Write out every set and compute both sides.]
 
 
@@ -1080,14 +1022,8 @@ $= (A without C) union (B without C)$ #j[set difference law]. #qed]
 [- $|PP(A times B)|$ with $|A| = 2$, $|B| = 3$ $->$ $2^6 = 64$
  - ${x in ZZ : x^2 < 5}$ $->$ ${-2, -1, 0, 1, 2}$
  - ${2n + 1 : n in {0, 1, 2}}$ $->$ ${1, 3, 5}$
- - ${{1,2},{3}}$ a partition of ${1,2,3}$? $->$ *yes*; ${{1,2},{2,3}}$ $->$ *no* (2 twice); ${{1,2},{3},nothing}$ $->$ *no* ($nothing$ component)
- - $A = {nothing, {nothing}}$: $A inter PP(A)$ $->$ $A$ itself, so $A subset.eq PP(A)$])]
+ - ${{1,2},{3}}$ a partition of ${1,2,3}$? $->$ *yes*; ${{1,2},{2,3}}$ $->$ *no* (2 twice); ${{1,2},{3},nothing}$ $->$ *no* ($nothing$ component)])]
 
-
-#proofb[The empty set is unique (Corollary 6.2.5)][
-+ Suppose $nothing_1$ and $nothing_2$ are both sets with no elements.
-+ $nothing_1 subset.eq nothing_2$ and $nothing_2 subset.eq nothing_1$ #j[Theorem 6.2.4, applied to each as "the" empty set].
-+ So $nothing_1 = nothing_2$ #j[definition of set equality]. #qed]
 
 #proofb[If $A subset.eq B$ then $A inter C subset.eq B inter C$ and $A union C subset.eq B union C$][
 + Let $x in A inter C$: $x in A$ and $x in C$ #j[definition of $inter$]; $x in B$ #j[as $A subset.eq B$]; so $x in B inter C$.
@@ -1095,6 +1031,11 @@ $= (A without C) union (B without C)$ #j[set difference law]. #qed]
 #text(size: 8.4pt, fill: muted)[*Reading only (Lecture 5.3).* Unrestricted comprehension breaks: Russell's $R = {x : x in.not x}$ gives $R in R <-> R in.not R$; a set of "everything" $cal(D)$ contradicts $|PP(cal(D))| > |cal(D)|$ (Cantor). Zermelo (1908), later Fraenkel and Skolem, fixed this with the ZF axioms. Cantor, Russell, Zermelo and Fraenkel contributed to modern set theory; Gauss did not (AY25 Q1).]
 
 // ============================================================================
+#example[Power set of a set that contains $nothing$][
+Let $A = {nothing, {nothing}}$. Find $PP(A)$ and $A inter PP(A)$.
+
+$PP(A) = {nothing, {nothing}, {{nothing}}, {nothing, {nothing}}}$, with four subsets since $|A| = 2$. For $A inter PP(A)$ test each element of $A$: $nothing in PP(A)$ (as $nothing subset.eq A$), and ${nothing} in PP(A)$ (as ${nothing} subset.eq A$, since $nothing in A$). So $A inter PP(A) = {nothing, {nothing}} = A$, i.e. $A subset.eq PP(A)$.]
+
 = Part V · Relations
 // ============================================================================
 
@@ -1112,16 +1053,13 @@ $R^(-1) = {(y, x) in B times A : (x, y) in R}$, i.e. $forall x in A, y in B thin
 *Q9.* $A = {1,2,3}$, $B = {2, 5}$. $S_2 = PP(A times B)$ is *exactly* the set $S_3$ of relations from $A$ to $B$; $S_1 = PP(A) times PP(B)$ holds *pairs of sets*, a different kind of object. So $S_4 subset.eq S_3 subset.eq S_2$. Answer *A*. \
 *Q10.* The relation "$p -> q$" on ${T, F}$ is $R = {(T,T), (F,T), (F,F)}$. $R^(-1) = {(T,T), (T,F), (F,F)}$ is "$q -> p$", the *converse*. The converse is equivalent to the inverse, so the answer key accepted *B or D*.]
 
-== 20 · Composition of relations #text(size: 8pt, fill: muted, weight: "regular")[(lecture-only; not in Epp)]
+== 20 · Composition of relations
 
 #defn[Composition (Lecture 6.1.4)][
 For $R subset.eq A times B$ and $S subset.eq B times C$, the *composition* $S compose R$ is the relation from $A$ to $C$ with
 $ forall x in A, forall z in C thin (x (S compose R) z <-> exists y in B thin (x R y and y S z)). $
 $x$ and $z$ are related iff there is a path $x ->^R y ->^S z$. *$S compose R$ applies $R$ first.*]
 
-#thm[Associativity · Inverse of a composition][
-$T compose (S compose R) = (T compose S) compose R = T compose S compose R$. $quad (S compose R)^(-1) = R^(-1) compose S^(-1)$ (order reverses). \
-Stated without proof in the lecture; the second follows by chasing the definition: $(z, x) in (S compose R)^(-1) <-> exists y (x R y and y S z) <-> exists y (z S^(-1) y and y R^(-1) x)$.]
 
 #tip[Computing $S compose R$ by hand][
 For each pair $(x, y) in R$, list every $(y, z) in S$ that *starts where it ends*, and record $(x, z)$. For $R compose R compose R$, compute $R_2 = R compose R$ first, then $R compose R_2$. Stop and re-check pairs that could join through two different middles.]
@@ -1137,13 +1075,14 @@ $S compose R$ (apply $R$ then $S$): $(6,6)(6,9) -> (6,9)$; $(9,9)(9,12) -> (9,12
 *Q17(e).* $x R_1 y <-> y = 2x$, $x R_2 y <-> x = y^2$ on $ZZ^+$. $x (R_1 compose R_2) z <-> exists y (x = y^2 and z = 2y)$, so *$x = z^2 slash 4$* (with $z$ even). \
 *Q12.* $|R compose R|$ has no fixed relation to $|R|$: on ${a, b}$, $R = {(a,a),(a,b),(b,a)}$ gives $|R compose R| = 4 > 3$; ${(a,a),(a,b)}$ gives $2 = 2$ but $!= 2^2$; ${(a,a)}$ gives $1 = 1^2$. None of (i)–(iii) always holds. Answer *E*.]
 
-#proofb[$(S compose R)^(-1) = R^(-1) compose S^(-1)$ (chain of $<->$)][
-For all $z in C$, $x in A$: $(z, x) in (S compose R)^(-1) <-> (x, z) in S compose R$ #j[definition of inverse] \
+#proofb[$(S compose R)^(-1) = R^(-1) compose S^(-1)$ (Lecture 6, slide 18)][
+Let $R subset.eq A times B$ and $S subset.eq B times C$. For all $z in C$, $x in A$: $(z, x) in (S compose R)^(-1) <-> (x, z) in S compose R$ #j[definition of inverse] \
 $<-> exists y in B thin (x R y and y S z)$ #j[definition of $compose$] \
 $<-> exists y in B thin (z S^(-1) y and y R^(-1) x)$ #j[definition of inverse; commutative law] \
 $<-> (z, x) in R^(-1) compose S^(-1)$ #j[definition of $compose$]. #qed]
 
-#proofb[Composition is associative: $(T compose S) compose R = T compose (S compose R)$][
+#proofb[Proposition (Lecture 6, slide 18): $(T compose S) compose R = T compose (S compose R)$][
+Let $R subset.eq A times B$, $S subset.eq B times C$, $T subset.eq C times D$, $x in A$ and $w in D$. \
 $x ((T compose S) compose R) w$ \
 $<-> exists y (x R y and exists z (y S z and z T w))$ \
 $<-> exists z exists y (x R y and y S z and z T w)$ #j[$z$ is not free in $x R y$; same-kind quantifiers commute; associative law] \
@@ -1166,8 +1105,11 @@ $= S$. \
   + As $2y^2$ is even #j[definition of even, closure], $x^2 + z^2$ is even #j[difference of two even integers], so $(x, z) in S$ #j[definition of $S$].
 + ($supset.eq$) Let $(x, z) in S$. Note $(x, x) in S$, as $x^2 + x^2$ is even. Since $(x, x) in S$ and $(x, z) in S$, $(x, z) in S compose S$ #j[definition of composition].
 + Therefore $S compose S = S$. #qed
-(c) $S compose S^(-1) = S compose S = S$ by (a) and (b). \
-_Alternative for ($supset.eq$):_ by cases. If $x^2$ is odd, so is $z^2$, and $(x, 1), (1, z) in S$. If $x^2$ is even, so is $z^2$, and $(x, 0), (0, z) in S$.]
+(c) $S compose S^(-1) = S compose S = S$ by (a) and (b).]
+
+#example[Lecture 6 · Composition as "going through" a middle set][
+"takes" $subset.eq$ Students $times$ Modules and "held in" $subset.eq$ Modules $times$ Venues. Ann takes CS1010, CS1231, MA1101; Bryan takes CS1010, IS1103; Candy takes CS1231, IS1103; Danny takes nothing. CS1010 is held in LT15; CS1231 in ICube and SR1; IS1103 in SR1; CS2100 in LT15; MA1101 nowhere. \
+"held in $compose$ takes" = "goes to": Ann $->$ {LT15, ICube, SR1}; Bryan $->$ {LT15, SR1}; Candy $->$ {ICube, SR1}; Danny $->$ nothing. CS2100 contributes no pair, since nobody takes it.]
 
 == 21 · Properties of relations on a set $A$
 
@@ -1250,6 +1192,20 @@ Let $R$ be a relation on a non-empty set $A$, and define $S$ on $A$ by $x S y <-
 In all cases $(x, y) in S'$. Therefore $S subset.eq S'$. #qed \
 $S$ is the *reflexive closure* of $R$: the smallest reflexive relation on $A$ containing $R$. Parts (a)–(c) mirror the three conditions defining a closure.]
 
+#example[Composition and closure][
+$A = {1,2,3,4}$, $R = {(1,2),(2,3),(3,4),(4,1)}$. Find $R compose R$, $R^(-1) compose R$ and $|R^t|$.
+
+$R compose R = {(1,3),(2,4),(3,1),(4,2)}$ (two steps round the 4-cycle). $R^(-1) compose R = {(1,1),(2,2),(3,3),(4,4)}$: follow an arrow of $R$, then return along the same arrow. From any vertex a path reaches every vertex, itself included, so $R^t = A times A$ and $|R^t| = 16$.]
+
+#example[All the closures][
+$A = {1, 2, 3}$, $R = {(1,2), (2,3)}$. Find $R^r$, $R^s$, $R^t$ and the smallest equivalence relation containing $R$.
+
+$R^r = {(1,1), (1,2), (2,2), (2,3), (3,3)}$ (5 pairs); $quad R^s = {(1,2), (2,1), (2,3), (3,2)}$ (4); $quad R^t = {(1,2), (2,3), (1,3)}$ (3). \
+The smallest equivalence relation containing $R$ is $A times A$ (9 pairs): ignoring directions, 1–2–3 is one connected piece, so there is a single class.]
+
+#thm[Closure facts][
+The transitive closure of a *symmetric* relation is symmetric, and of a *reflexive* relation is reflexive (reverse or extend the paths). Hence the *smallest equivalence relation containing $R$* is $(R union R^(-1) union {(x, x) : x in A})^t$. Its classes are the connected components of the digraph of $R$ when arrow directions are ignored.]
+
 == 23 · Equivalence relations
 
 #defn[Relation induced by a partition · Equivalence relation][
@@ -1264,18 +1220,16 @@ $A slash simq = {[x]_simq : x in A}$, the set of all equivalence classes, read "
 Let $a, b in ZZ$ and $n in ZZ^+$. $a$ is *congruent to $b$ modulo $n$*, written $a equiv b space (mod n)$, iff $a - b = n k$ for some $k in ZZ$; in other words, $n dv (a - b)$. \
 E.g. $7 equiv 1 space (mod 2)$; $-3 equiv 12 space (mod 5)$; $-4 equiv.not 5 space (mod 7)$. The classes are $[x] = {x + n k : k in ZZ}$, and $ZZ slash #math.class("normal", math.attach(sym.tilde.op, br: $n$)) = {[0], [1], ..., [n - 1]}$.]
 
-#thm[Lemma Rel.1 · Theorem Rel.2 (Epp 8.3.4)][
-For an equivalence relation $tilde.op$ on $A$ and $x, y in A$ the following are equivalent: (i) $x tilde.op y$; (ii) $[x] = [y]$; (iii) $[x] inter [y] != nothing$. \
-Hence $A slash simq$ *is a partition of $A$*, and equivalence relations on $A$ correspond one-to-one with partitions of $A$. The number of equivalence relations on an $n$-set is therefore the number of partitions (Bell numbers): $1, 2, 5, 15, 52$ for $n = 1, ..., 5$. For AY25 Q4 the answer is *5* on ${1,2,3}$.]
 
 #proofb[Lemma Rel.1 (Lecture 6)][
+Let $tilde.op$ be an equivalence relation on $A$. For $x, y in A$, these are equivalent: (i) $x tilde.op y$; (ii) $[x] = [y]$; (iii) $[x] inter [y] != nothing$.
 + ((i) $=>$ (ii)) Suppose $x tilde.op y$; then $y tilde.op x$ #j[symmetry].
   + For every $z in [x]$: $x tilde.op z$ #j[definition of $[x]$], so $y tilde.op z$ #j[transitivity, as $y tilde.op x$], so $z in [y]$. Thus $[x] subset.eq [y]$.
   + Symmetrically $[y] subset.eq [x]$, so $[x] = [y]$.
 + ((ii) $=>$ (iii)) Suppose $[x] = [y]$. $x tilde.op x$ #j[reflexivity], so $x in [x] = [x] inter [y]$ #j[idempotent law]; hence $[x] inter [y] != nothing$.
 + ((iii) $=>$ (i)) Take $z in [x] inter [y]$. Then $x tilde.op z$ and $y tilde.op z$ #j[definitions of $[x], [y]$]; so $z tilde.op y$ #j[symmetry] and $x tilde.op y$ #j[transitivity]. #qed]
 
-#proofb[Congruence mod $n$ is an equivalence relation on $ZZ$ ($a equiv b space (mod n) <-> n dv (a - b)$)][
+#proofb[Proposition (Lecture 6, slide 54) · Congruence mod $n$ is an equivalence relation on $ZZ$ ($a equiv b space (mod n) <-> n dv (a - b)$)][
 + (Reflexive) For all $a in ZZ$: $a - a = 0 = n dot 0$, so $a equiv a space (mod n)$ #j[definition of congruence].
 + (Symmetric) Let $a equiv b space (mod n)$: $a - b = n k$ for some $k in ZZ$. Then $b - a = n(-k)$ with $-k in ZZ$ #j[closure], so $b equiv a space (mod n)$.
 + (Transitive) Let $a equiv b$ and $b equiv c space (mod n)$: $a - b = n k$, $b - c = n l$. Then $a - c = n(k + l)$ with $k + l in ZZ$, so $a equiv c space (mod n)$. #qed]
@@ -1296,7 +1250,7 @@ Hence $A slash simq$ *is a partition of $A$*, and equivalence relations on $A$ c
 *AY24 Q9.* Divisibility on 10 primes is the identity relation: 10 classes *and* 10 minimal elements. Answer *C*. \
 *AY23 Q12.* For an equivalence relation $R$, all four hold: $R = R^(-1)$ (symmetry), so $R^(-1) compose R = R compose R^(-1) = R compose R$; $R compose R subset.eq R$ (transitivity: $x R y and y R z => x R z$); $R subset.eq R compose R$ (reflexivity: take the middle $y = x$). Hence $R compose R^(-1) = R$: *D*.]
 
-#proofb[Theorem Rel.2 · If $tilde.op$ is an equivalence relation on $A$, then $A slash simq$ is a partition of $A$ (Lecture 6)][
+#proofb[Theorem Rel.2 · Theorem 8.3.4 · If $tilde.op$ is an equivalence relation on $A$, then $A slash simq$ is a partition of $A$ (Lecture 6)][
 + $A slash simq$ is a set #j[by definition].
 + Every element is a non-empty subset of $A$: $[x] = {y in A : x tilde.op y} subset.eq A$, and $x in [x]$ #j[reflexivity].
 + Every $x in A$ is in exactly one class:
@@ -1306,9 +1260,10 @@ Hence $A slash simq$ *is a partition of $A$*, and equivalence relations on $A$ c
 #proofb[Theorem 8.3.1 · The relation induced by a partition $cal(C)$ of $A$ is an equivalence relation][
 + (Reflexive) Let $x in A$. $x$ lies in some component $S$ #j[definition of partition], so $x, x in S$ and $x R x$.
 + (Symmetric) If $x R y$, then $x, y$ lie in one component $S$, so $y, x in S$ and $y R x$.
-+ (Transitive) Let $x R y$ and $y R z$: $x, y in S_1$ and $y, z in S_2$ for components $S_1, S_2$. Then $y in S_1 inter S_2$, so $S_1 = S_2$ #j[each element lies in exactly one component], hence $x, z in S_1$ and $x R z$. #qed]
++ (Transitive) Let $x R y$ and $y R z$: $x, y in S_1$ and $y, z in S_2$ for components $S_1, S_2$. Then $y in S_1 inter S_2$, so $S_1 = S_2$ #j[each element lies in exactly one component], hence $x, z in S_1$ and $x R z$. #qed
+Together with Theorem Rel.2, this gives a one-to-one correspondence between partitions and equivalence relations on $A$. Counts: §28.]
 
-#proofb[Epp 8.3 · On $A = ZZ times (ZZ without {0})$, $(a, b) tilde.op (c, d) <-> a d = b c$ is an equivalence relation][
+#proofb[On $A = ZZ times (ZZ without {0})$, $(a, b) tilde.op (c, d) <-> a d = b c$ is an equivalence relation][
 + (Reflexive) $a b = b a$ #j[commutativity], so $(a, b) tilde.op (a, b)$.
 + (Symmetric) If $a d = b c$ then $c b = d a$ #j[commutativity], so $(c, d) tilde.op (a, b)$.
 + (Transitive) Let $a d = b c$ and $c f = d e$, with $b, d, f != 0$.
@@ -1337,8 +1292,7 @@ On $ZZ without {0}$ let $a tilde.op b <-> a b > 0$. (a) Prove $tilde.op$ is an e
   + So $a c$ and $b^2$ are both positive or both negative #j[T25].
   + Since $b^2 > 0$ #j[T21, as $b != 0$], $a c > 0$. Thus $a tilde.op c$.
 + Therefore $tilde.op$ is an equivalence relation. #qed
-(b) T25 rules out pairs of opposite signs; the product of two positive or two negative integers is positive. The classes are $[1] = ZZ^+$ and $[-1] = ZZ^-$, so $(ZZ without {0}) slash simq = {ZZ^+, ZZ^-}$. \
-_T21:_ $a != 0 => a^2 > 0$. $quad$ _Ord1:_ $a, b > 0 => a + b > 0 and a b > 0$. $quad$ _T25:_ $a b > 0 =>$ $a, b$ both positive or both negative.]
+(b) T25 rules out pairs of opposite signs; the product of two positive or two negative integers is positive. The classes are $[1] = ZZ^+$ and $[-1] = ZZ^-$, so $(ZZ without {0}) slash simq = {ZZ^+, ZZ^-}$.]
 
 #defn[Representative · Well-defined operation on $A slash simq$][
 Any $b in [a]$ is a *representative* of $[a]$, since then $[b] = [a]$: mod 5, $[2] = [7] = [12]$. \
@@ -1351,8 +1305,24 @@ Let $tilde.op$ be an equivalence relation on $A$ and $ast.op$ a binary operation
 E.g. mod 5: $[2] dot [4] = [8] = [3]$ and $[7] dot [9] = [63] = [3]$.]
 
 #trap[Check reflexive, symmetric, transitive first · then check well-definedness][
-- $a tilde.op b <-> a b >= 0$ is *not* transitive on $RR$ ($1 tilde.op 0$ and $0 tilde.op -1$, but $1 tilde.not -1$), so it does not give a partition into equivalence classes. On $RR without {0}$ it means "same sign": $(RR without {0}) slash simq = {[1], [-1]} = {(0, oo), (-oo, 0)}$.
+- $a tilde.op b <-> a b >= 0$ is reflexive and symmetric, but *not* transitive on either $ZZ$ or $RR$ ($1 tilde.op 0$ and $0 tilde.op -1$, but $1 tilde.not -1$), so it does not give a partition into equivalence classes. On $ZZ without {0}$ its classes are $ZZ^+$ and $ZZ^-$ (§23, T4 Q10). On $RR without {0}$ it means "same sign": $(RR without {0}) slash simq = {[1], [-1]} = {(0, oo), (-oo, 0)}$.
 - $a tilde.op b <-> a - b = 2k$ for some $k in ZZ$, on $RR$: $[a] = {a + 2k : k in ZZ}$ and $RR slash simq = {[r] : 0 <= r < 2}$ (infinitely many classes). $+$ is well defined, but $dot$ is *not*: $[0.5] = [2.5]$, yet $[0.5] dot [0.5] = [0.25] != [1.25] = [2.5] dot [0.5]$, since $1.25 - 0.25 = 1$ is not of the form $2k$.]
+
+#example[Equivalence relation and quotient][
+On $ZZ$ let $x R y <-> 3 dv (x^2 - y^2)$. Prove $R$ is an equivalence relation and find $ZZ slash R$.
+
++ (Reflexive) $x^2 - x^2 = 0 = 3 dot 0$, so $x R x$ #j[definition of divisibility].
++ (Symmetric) If $x^2 - y^2 = 3k$ then $y^2 - x^2 = 3(-k)$ with $-k in ZZ$, so $y R x$.
++ (Transitive) If $x^2 - y^2 = 3k$ and $y^2 - z^2 = 3l$, then $x^2 - z^2 = 3(k + l)$, so $x R z$.
++ (Classes) By the QR theorem $x = 3q + r$ with $r in {0,1,2}$; $x^2 = 9q^2 + 6 q r + r^2$, so $x^2 mod 3 = 0$ if $r = 0$ and $1$ if $r = 1, 2$. Hence
+  $ZZ slash R = {[0], [1]} = {{3k : k in ZZ}, {n in ZZ : 3 ndv n}}$. #qed]
+
+#example[Classes of a relation on pairs][
+On $ZZ times ZZ$ let $(a, b) tilde.op (c, d) <-> a + d = b + c$. Show $tilde.op$ is an equivalence relation and describe $(ZZ times ZZ) slash simq$.
+
++ Rewrite: $(a, b) tilde.op (c, d) <-> a - b = c - d$ #j[basic algebra]. Then reflexivity, symmetry and transitivity are those of $=$ on $ZZ$ (e.g. $a - b = c - d$ and $c - d = e - f$ give $a - b = e - f$).
++ So $[(a, b)] = {(c, d) : c - d = a - b}$, a diagonal line of lattice points, and each class contains exactly one point $(k, 0)$ with $k = a - b$.
++ $(ZZ times ZZ) slash simq = {[(k, 0)] : k in ZZ}$, with one class for each integer and no duplicates. #qed]
 
 == 24 · Partial orders
 
@@ -1365,8 +1335,8 @@ On strings over ${s, u}$, $a R b <-> op("len")(a) <= op("len")(b)$ is *not* a pa
 
 #proofb[$dv$ is a partial order on any set $A subset.eq ZZ^+$ (Lecture 6, Ex. 20)][
 + (Reflexive) Let $a in A$. $a = 1 dot a$, so $a dv a$ #j[by definition of divisibility].
-+ (Antisymmetric) Let $a, b in A$ with $a dv b$ and $b dv a$. Then $a <= b$ and $b <= a$ #j[by Theorem 4.4.1, as $a, b in ZZ^+$], so $a = b$.
-+ (Transitive) Let $a dv b$ and $b dv c$. Then $a dv c$ #j[by Theorem 4.4.3]. #qed]
++ (Antisymmetric) Let $a, b in A$ with $a dv b$ and $b dv a$. Then $a <= b$ and $b <= a$ #j[by Theorem 4.3.1, as $a, b in ZZ^+$], so $a = b$.
++ (Transitive) Let $a dv b$ and $b dv c$. Then $a dv c$ #j[by Theorem 4.3.3]. #qed]
 
 #grid(columns: (1fr, auto), gutter: 16pt,
   defn[Hasse diagram (Lecture 6.4.3)][
@@ -1400,8 +1370,8 @@ $(NN, <=)$ is well-ordered. $(ZZ, <=)$ is not: $ZZ$ itself (or $ZZ^-$) is a non-
 
 #thm[Extremal-element facts][
 #grid(columns: (1fr, 1fr), gutter: 12pt,
-[- Smallest $=>$ minimal; largest $=>$ maximal.
- - A largest (smallest) element, if it exists, is *unique*, and is then the *only* maximal (minimal) element.
+[- *Proposition (Lecture 6, slide 83):* smallest $=>$ minimal; largest $=>$ maximal. If $c$ is smallest and $x pleq c$, then also $c pleq x$, so $x = c$ by antisymmetry.
+ - A largest (smallest) element, if it exists, is *unique* (two largest elements precede each other, hence are equal by antisymmetry), and is then the *only* maximal (minimal) element.
  - Conversely, in a *finite* poset a unique maximal element is largest. This fails for infinite posets.
  - A finite non-empty poset has at least one maximal and one minimal element.],
 [- Distinct maximal elements are noncomparable (so are distinct minimal ones).
@@ -1409,19 +1379,21 @@ $(NN, <=)$ is well-ordered. $(ZZ, <=)$ is not: $ZZ$ itself (or $ZZ^-$) is a non-
  - Infinite posets may have none: $(ZZ, <=)$.
  - Every total order on a finite set is well-ordered: a non-empty subset has a minimal element, and in a total order a minimal element is smallest.])]
 
-#proofb[A smallest element is minimal (Lecture 6)][
-+ Let $c$ be a smallest element, and take any $x in A$ with $x pleq c$.
-+ By smallestness, $c pleq x$ too. So $c = x$ #j[by antisymmetry]. Hence $c$ is minimal. #qed]
-
-#proofb[A largest element is unique][
-+ Suppose $c$ and $c'$ are both largest. Then $c' pleq c$ #j[$c$ largest] and $c pleq c'$ #j[$c'$ largest].
-+ So $c = c'$ #j[by antisymmetry]. #qed]
 
 #exam[AY23 Q13, Q14 · Facts about partial orders][
 (i) "No element is both smallest and largest" is false: $({a}, {(a,a)})$. (ii) "An element can be maximal and minimal but neither largest nor smallest" is true: $({a, b}, {(a,a),(b,b)})$. (iii) "Distinct maximal elements are comparable" is false, as it would contradict maximality. (iv) "There may be no maximal or minimal element" is true: $(ZZ, <=)$. *C*. \
 *Q14.* On ${1,2,3}$: $P = {(1,1),(1,2),(2,2)}$ is not reflexive ($(3,3)$ missing); $Q = {(1,1),(1,2),(1,3),(2,2),(3,2),(3,3)}$ *is* a partial order; $R = {(1,1),(1,2),(2,2),(2,3),(3,3),(3,1)}$ is not transitive ($1 R 2$, $2 R 3$, not $1 R 3$), and $R^t = A times A$ is not antisymmetric. Only $Q$: *B*.]
 
-== 25 · Linearization and Kahn's algorithm #text(size: 8pt, fill: muted, weight: "regular")[(lecture-only; Epp calls it topological sorting)]
+#example[Partial order and extremal elements][
+On $ZZ^+$ let $a pleq b <-> b = a dot 2^k$ for some $k in NN$. Prove $pleq$ is a partial order; find its minimal and maximal elements.
+
++ (Reflexive) $a = a dot 2^0$ and $0 in NN$.
++ (Antisymmetric) If $b = a 2^j$ and $a = b 2^k$, then $a = a 2^(j + k)$, so $2^(j+k) = 1$, $j = k = 0$, and $a = b$.
++ (Transitive) If $b = a 2^j$ and $c = b 2^k$ then $c = a 2^(j + k)$ with $j + k in NN$ #j[closure].
++ (Minimal) $b pleq a$ with $b != a$ means $a = b 2^k$, $k >= 1$, which is possible iff $a$ is even. So the minimal elements are exactly the *odd* numbers.
++ (Maximal) None: $a pleq 2a$ and $2a != a$. Hence no largest or smallest element either. #qed]
+
+== 25 · Linearization and Kahn's algorithm
 
 #defn[Linearization (Lecture 6.4.7)][
 A *linearization* of a partial order $pleq$ on $A$ is a *total order* $plin$ on $A$ with $forall x, y in A thin (x pleq y -> x plin y)$. It lists the elements one at a time without breaking any precedence.]
@@ -1500,113 +1472,10 @@ Divisor counts: $11 -> 2$, $13 -> 2$, $14 -> 4$, $15 -> 4$, $16 -> 5$, $12 -> 6$
 Result: $1 plin 3 plin 2 plin 6 plin 5 plin 15 plin 10 plin 30$. Any other choice at steps 1–3 or 5 gives another valid linearization.]
 
 
-#example[Lecture 6 · Composition as "going through" a middle set][
-"takes" $subset.eq$ Students $times$ Modules and "held in" $subset.eq$ Modules $times$ Venues. Ann takes CS1010, CS1231, MA1101; Bryan takes CS1010, IS1103; Candy takes CS1231, IS1103; Danny takes nothing. CS1010 is held in LT15; CS1231 in ICube and SR1; IS1103 in SR1; CS2100 in LT15; MA1101 nowhere. \
-"held in $compose$ takes" = "goes to": Ann $->$ {LT15, ICube, SR1}; Bryan $->$ {LT15, SR1}; Candy $->$ {ICube, SR1}; Danny $->$ nothing. CS2100 contributes no pair, since nobody takes it.]
-
-#thm[Closure facts][
-The transitive closure of a *symmetric* relation is symmetric, and of a *reflexive* relation is reflexive (reverse or extend the paths). Hence the *smallest equivalence relation containing $R$* is $(R union R^(-1) union {(x, x) : x in A})^t$. Its classes are the connected components of the digraph of $R$ when arrow directions are ignored.]
-
 // ============================================================================
-= Part VI · Worked Examples
-// ============================================================================
-
-#text(size: 8.4pt, fill: muted)[Worked examples in the style of Part B. Each box contains a statement and its model solution, with justifications.]
-
-#example[1 · Logic laws][
-Without a truth table, show $(p -> q) and (p -> lnot q) equiv lnot p$.
-
-$(p -> q) and (p -> lnot q)$ \
-$equiv (lnot p or q) and (lnot p or lnot q)$ #j[implication law ×2] \
-$equiv lnot p or (q and lnot q)$ #j[distributive law] \
-$equiv lnot p or bold(c)$ #j[negation law] \
-$equiv lnot p$ #j[identity law]. #qed]
-
-#example[2 · Validity][
-Decide validity: (a) $p -> q$, $q -> r$, $lnot r$ $therefore lnot p$. $quad$ (b) $p -> q$, $lnot p$ $therefore lnot q$.
-
-(a) *Valid:* $p -> r$ #j[transitivity]; with $lnot r$, $lnot p$ #j[modus tollens]. \
-(b) *Invalid* (inverse error): the critical row $p = F$, $q = T$ makes both premises true and the conclusion $lnot q$ false.]
-
-#example[3 · Nested quantifiers][
-Decide and justify: (a) $forall x in ZZ thin exists y in ZZ thin (y > x^2)$; $quad$ (b) $exists y in ZZ thin forall x in ZZ thin (y > x^2)$.
-
-(a) *True.* Let $x in ZZ$ be arbitrary; take $y = x^2 + 1 in ZZ$ #j[closure]; then $y > x^2$. \
-(b) *False.* Its negation $forall y in ZZ thin exists x in ZZ thin (y <= x^2)$ holds: given $y$, take $x = y$; then $y <= y^2$ for every integer $y$ (if $y <= 0$ then $y <= 0 <= y^2$; if $y >= 1$ then $y^2 = y dot y >= y$).]
-
-#example[4 · Division into cases][
-Prove: for every integer $n$, $n^2 + n$ is even.
-
-+ Let $n$ be a particular but arbitrarily chosen integer. Then $n$ is even or odd #j[Assumption 1].
-  + *Case 1:* $n = 2k$ for some $k in ZZ$. Then $n^2 + n = 4k^2 + 2k = 2(2k^2 + k)$, and $2k^2 + k in ZZ$ #j[closure].
-  + *Case 2:* $n = 2k + 1$. Then $n^2 + n = (2k + 1)(2k + 2) = 2(2k + 1)(k + 1)$, and $(2k+1)(k+1) in ZZ$ #j[closure].
-+ In both cases $n^2 + n$ is even #j[by definition of even]. #qed]
-
-#example[5 · Contradiction][
-Prove: there is no smallest positive rational number.
-
-+ Suppose not: let $r$ be the smallest positive rational number.
-  + $r = a slash b$ for some integers $a, b$ with $b != 0$ #j[definition of rational]. Then $r slash 2 = a slash (2b)$, where $a, 2b in ZZ$ and $2b != 0$, so $r slash 2$ is rational.
-  + $r slash 2 > 0$ and $r slash 2 < r$ #j[as $r > 0$], contradicting the choice of $r$ as the smallest.
-+ Hence there is no smallest positive rational number. #qed]
-
-#example[6 · Contraposition][
-Prove: for all integers $a, b$, if $a b$ is even then $a$ is even or $b$ is even.
-
-+ Contrapositive: for all integers $a, b$, if $a$ is odd and $b$ is odd, then $a b$ is odd.
-+ Let $a, b$ be odd: $a = 2r + 1$, $b = 2s + 1$ for some $r, s in ZZ$ #j[definition of odd].
-  + $a b = 4 r s + 2r + 2s + 1 = 2(2 r s + r + s) + 1$ #j[basic algebra], with $2 r s + r + s in ZZ$ #j[closure]; so $a b$ is odd.
-+ Hence the original statement holds #j[a statement is equivalent to its contrapositive]. #qed]
-
-#example[7 · Set identity][
-Prove $A without (B union C) = (A without B) inter (A without C)$.
-
-$A without (B union C)$ \
-$= A inter overline(B union C)$ #j[set difference law] \
-$= A inter (overline(B) inter overline(C))$ #j[De Morgan's law] \
-$= (A inter A) inter (overline(B) inter overline(C))$ #j[idempotent law] \
-$= (A inter overline(B)) inter (A inter overline(C))$ #j[associative, commutative laws] \
-$= (A without B) inter (A without C)$ #j[set difference law]. #qed]
-
-#example[8 · Prove or disprove][
-(a) $A union (B without C) = (A union B) without C$; $quad$ (b) $PP(A union B) = PP(A) union PP(B)$; $quad$ (c) $A subset.eq C and B subset.eq C -> A union B subset.eq C$.
-
-(a) *False:* $A = {1}$, $B = nothing$, $C = {1}$: left side ${1}$, right side $nothing$. \
-(b) *False:* $A = {1}$, $B = {2}$: ${1, 2} in PP(A union B)$ but ${1,2} in.not PP(A) union PP(B)$. (Only $supset.eq$ holds.) \
-(c) *True:* let $x in A union B$; then $x in A$ or $x in B$ #j[definition of $union$]; in either case $x in C$ #j[as $A subset.eq C$, $B subset.eq C$]. #qed]
-
-#example[9 · Equivalence relation and quotient][
-On $ZZ$ let $x R y <-> 3 dv (x^2 - y^2)$. Prove $R$ is an equivalence relation and find $ZZ slash R$.
-
-+ (Reflexive) $x^2 - x^2 = 0 = 3 dot 0$, so $x R x$ #j[definition of divisibility].
-+ (Symmetric) If $x^2 - y^2 = 3k$ then $y^2 - x^2 = 3(-k)$ with $-k in ZZ$, so $y R x$.
-+ (Transitive) If $x^2 - y^2 = 3k$ and $y^2 - z^2 = 3l$, then $x^2 - z^2 = 3(k + l)$, so $x R z$.
-+ (Classes) By the QR theorem $x = 3q + r$ with $r in {0,1,2}$; $x^2 = 9q^2 + 6 q r + r^2$, so $x^2 mod 3 = 0$ if $r = 0$ and $1$ if $r = 1, 2$. Hence
-  $ZZ slash R = {[0], [1]} = {{3k : k in ZZ}, {n in ZZ : 3 ndv n}}$. #qed]
-
-#example[10 · Not an equivalence relation][
-On $ZZ$ let $x R y <-> x y >= 0$. Which properties hold?
-
-*Reflexive* ($x^2 >= 0$) and *symmetric* ($x y = y x$). *Not transitive:* $(-1) R 0$ and $0 R 1$ (both products are $0$), but $(-1)(1) = -1 < 0$. So $R$ is not an equivalence relation. (On $ZZ without {0}$ it is an equivalence relation, "has the same sign as", with classes $ZZ^+$ and $ZZ^-$.)]
-
-#example[11 · Partial order and extremal elements][
-On $ZZ^+$ let $a pleq b <-> b = a dot 2^k$ for some $k in NN$. Prove $pleq$ is a partial order; find its minimal and maximal elements.
-
-+ (Reflexive) $a = a dot 2^0$ and $0 in NN$.
-+ (Antisymmetric) If $b = a 2^j$ and $a = b 2^k$, then $a = a 2^(j + k)$, so $2^(j+k) = 1$, $j = k = 0$, and $a = b$.
-+ (Transitive) If $b = a 2^j$ and $c = b 2^k$ then $c = a 2^(j + k)$ with $j + k in NN$ #j[closure].
-+ (Minimal) $b pleq a$ with $b != a$ means $a = b 2^k$, $k >= 1$, which is possible iff $a$ is even. So the minimal elements are exactly the *odd* numbers.
-+ (Maximal) None: $a pleq 2a$ and $2a != a$. Hence no largest or smallest element either. #qed]
-
-#example[12 · Composition and closure][
-$A = {1,2,3,4}$, $R = {(1,2),(2,3),(3,4),(4,1)}$. Find $R compose R$, $R^(-1) compose R$ and $|R^t|$.
-
-$R compose R = {(1,3),(2,4),(3,1),(4,2)}$ (two steps round the 4-cycle). $R^(-1) compose R = {(1,1),(2,2),(3,3),(4,4)}$: follow an arrow of $R$, then return along the same arrow. From any vertex a path reaches every vertex, itself included, so $R^t = A times A$ and $|R^t| = 16$.]
-
-
 #grid(columns: (1fr, auto), gutter: 16pt,
   [
-    #example[13 · Hasse diagram and Kahn][
+    #example[Hasse diagram and Kahn][
     For $({1, 2, 3, 4, 6, 12}, dv)$: draw the Hasse diagram; give the minimal, maximal, smallest, largest elements; produce a linearization with Kahn's algorithm.
 
     Covers: $1 dv 2$, $1 dv 3$, $2 dv 4$, $2 dv 6$, $3 dv 6$, $4 dv 12$, $6 dv 12$ (diagram right). Minimal and smallest: *1*. Maximal and largest: *12*. Kahn: $A_0$ has the single minimal element 1; then 2 and 3 are minimal and we take 2; then 3 and 4, and we take 3; then 4 and 6, and we take 4; then 6; then 12. Linearization: $1 plin 2 plin 3 plin 4 plin 6 plin 12$ (also valid: $1, 3, 2, 6, 4, 12$).]
@@ -1616,27 +1485,7 @@ $R compose R = {(1,3),(2,4),(3,1),(4,2)}$ (two steps round the 4-cycle). $R^(-1)
     ((0,1),(0,2),(1,3),(1,4),(2,4),(3,5),(4,5)),
     w: 1.9cm, h: 2.95cm, u: 1cm, size: 8pt)))
 
-#example[14 · Power set of a set that contains $nothing$][
-Let $A = {nothing, {nothing}}$. Find $PP(A)$ and $A inter PP(A)$.
-
-$PP(A) = {nothing, {nothing}, {{nothing}}, {nothing, {nothing}}}$, with four subsets since $|A| = 2$. For $A inter PP(A)$ test each element of $A$: $nothing in PP(A)$ (as $nothing subset.eq A$), and ${nothing} in PP(A)$ (as ${nothing} subset.eq A$, since $nothing in A$). So $A inter PP(A) = {nothing, {nothing}} = A$, i.e. $A subset.eq PP(A)$.]
-
-
-#example[15 · Classes of a relation on pairs][
-On $ZZ times ZZ$ let $(a, b) tilde.op (c, d) <-> a + d = b + c$. Show $tilde.op$ is an equivalence relation and describe $(ZZ times ZZ) slash simq$.
-
-+ Rewrite: $(a, b) tilde.op (c, d) <-> a - b = c - d$ #j[basic algebra]. Then reflexivity, symmetry and transitivity are those of $=$ on $ZZ$ (e.g. $a - b = c - d$ and $c - d = e - f$ give $a - b = e - f$).
-+ So $[(a, b)] = {(c, d) : c - d = a - b}$, a diagonal line of lattice points, and each class contains exactly one point $(k, 0)$ with $k = a - b$.
-+ $(ZZ times ZZ) slash simq = {[(k, 0)] : k in ZZ}$, with one class for each integer and no duplicates. #qed]
-
-#example[16 · All the closures][
-$A = {1, 2, 3}$, $R = {(1,2), (2,3)}$. Find $R^r$, $R^s$, $R^t$ and the smallest equivalence relation containing $R$.
-
-$R^r = {(1,1), (1,2), (2,2), (2,3), (3,3)}$ (5 pairs); $quad R^s = {(1,2), (2,1), (2,3), (3,2)}$ (4); $quad R^t = {(1,2), (2,3), (1,3)}$ (3). \
-The smallest equivalence relation containing $R$ is $A times A$ (9 pairs): ignoring directions, 1–2–3 is one connected piece, so there is a single class.]
-
-// ============================================================================
-= Part VII · Exam Playbook and Definition Index
+= Part VI · Exam Playbook and Locators
 // ============================================================================
 
 == 26 · Part A: multiple-choice questions
@@ -1648,38 +1497,11 @@ The smallest equivalence relation containing $R$ is $A times A$ (9 pairs): ignor
 - *Nested $nothing$ / power sets:* write each layer out explicitly, especially for $PP$ of a set containing $nothing$.
 - *Counting questions:* use the table in §28, or enumerate the $n = 2$ case to test an option.]
 
-#table(columns: (1fr, 1.25fr, auto),
-  [#text(fill: rgb("#a23a2a"))[Common error]], [Correct statement], [Paper],
-  [$forall x (P and Q)$ read as "all $P$ are $Q$"], [It says *everything* is $P$ and $Q$; "all $P$ are $Q$" is $forall x (P -> Q)$], [AY23 Q2, AY24 Q2],
-  [A $forall$-statement needs a non-empty domain], [Over $nothing$ it is vacuously true], [AY23 Q2, AY25 Q2],
-  [Swapping $forall$ and $exists$], [$forall x exists y$ lets $y$ depend on $x$; $exists y forall x$ does not], [AY23 Q5],
-  [$nothing = {nothing}$, or $PP(nothing) = nothing$], [$PP(nothing) = {nothing}$ has one element], [AY23 Q6, AY24 Q16],
-  [$in$ is transitive], [Only $subset.eq$ is: $A in B subset.eq C => A in C$, but $A subset.eq B in C$ gives nothing], [AY23 Q8],
-  [A partition may repeat components or be a set of numbers], [Duplicates collapse; components must be non-empty *subsets*], [AY24 Q7],
-  [$A times B subset.eq B times C => A subset.eq C$], [Fails when $B = nothing$], [AY24 Q6],
-  [$S compose R$ applies $S$ first], [$R$ first: $x R y$, then $y S z$], [AY24 Q17, AY25 Q17],
-  [Antisymmetric = not symmetric], [Independent; subsets of the identity are both], [AY23 Q10],
-  [Equivalence relations and partial orders are disjoint], [$=$ is both; so is divisibility on primes], [AY23 Q10, AY24 Q9],
-  [$[x] subset.eq A slash simq$], [$[x] in A slash simq$ and $[x] subset.eq A$], [AY25 Q15],
-  [Maximal = largest], [Largest needs *everything* below it; several maximal elements rule it out], [AY23 Q13, Q18],
-  [Distinct maximal elements may be comparable], [Never; that contradicts maximality], [AY23 Q13],
-  [Any ordering of the elements is a linearization], [Every Hasse edge must point forward in the line-up], [AY23 Q15, AY24 Q15],
-  [$|R compose R|$ relates simply to $|R|$], [It can be larger, equal or smaller], [AY24 Q12],
-)
+*Before choosing an answer:* check quantifier connective and domain (§5–7), membership versus subset (§14), empty sets in products (§15), composition order (§20), antisymmetry (§21), class versus quotient (§23), and maximal versus largest (§24).
 
 == 27 · Part B: written answers
 
-#grid(columns: (1fr, 1fr), gutter: 14pt,
-  tip[Computations][
-  - Answer in *set-roster notation* with braces; list every element; working is usually not required.
-  - Write *"None"* rather than leaving a blank; a blank is treated as no answer (AY23 Q18, AY24 Q17c).
-  - For $A slash simq$, use one representative per class, with *no duplicates* (AY23 Q19c).
-  - Keep answers short; *marks may be deducted for excessively long answers.*],
-  tip[Proofs][
-  - State the goal, then *unpack every definition* you use.
-  - One claim per numbered line, each with its justification.
-  - For "prove or disprove", *state which first*, then the proof or one explicit counterexample.
-  - Finish by restating what was shown.])
+*Computations:* give complete set-roster answers; use “None” when appropriate. For a quotient, choose one representative per distinct class. *Proofs:* state the claim, unpack definitions, number and justify each step, then conclude (§9). For “prove or disprove”, state the verdict and supply a proof or one explicit counterexample.
 
 == 28 · Counting facts
 
@@ -1697,7 +1519,7 @@ The smallest equivalence relation containing $R$ is $A times A$ (9 pairs): ignor
     [total orders], $n!$, [2], [6],
   ),
   [
-    #text(size: 8.5pt)[*Derivation.* Each of the $n^2$ pairs is either in the relation or not; reflexivity fixes the $n$ diagonal pairs; symmetry decides each unordered pair once; antisymmetry allows 3 of the 4 states of each off-diagonal pair; asymmetry also forbids loops. For $n = 4$ there are 15 equivalence relations, 219 partial orders and 24 total orders. *AY25 Q12:* on ${0, 1}$ there are 2 equivalence relations and 3 partial orders, so $|F| + 1 = |G|$. Answer B.]
+    #text(size: 8.5pt)[*Derivation.* Each of the $n^2$ pairs is either in the relation or not; reflexivity fixes the $n$ diagonal pairs; symmetry decides each unordered pair once; antisymmetry allows 3 of the 4 states of each off-diagonal pair; asymmetry also forbids loops. For $n = 4$ there are 15 equivalence relations, 219 partial orders and 24 total orders. *AY25 Q4:* on a three-element set there are *5* equivalence relations. *AY25 Q12:* on ${0, 1}$ there are 2 equivalence relations and 3 partial orders, so $|F| + 1 = |G|$. Answer B.]
 
     #table(columns: (1fr, auto),
       [Other counts], [Value],
@@ -1709,39 +1531,9 @@ The smallest equivalence relation containing $R$ is $A times A$ (9 pairs): ignor
   ]))
 
 
-== 29 · Proof skeletons and question locators
+== 29 · Question locators
 
-#grid(columns: (1fr, 1fr), gutter: 14pt,
-  proofb[$forall x in D thin (P(x) -> Q(x))$, direct][
-  + Let $x$ be a particular but arbitrarily chosen element of $D$ with $P(x)$.
-    + Unpack $P(x)$ #j[by definition of …].
-    + Algebra / earlier results #j[by …].
-    + Repack as $Q(x)$ #j[by definition of …].
-  + Therefore $forall x in D thin (P(x) -> Q(x))$. #qed],
-  proofb[By contradiction][
-  + Suppose not: $lnot S$ (write the negation out explicitly).
-    + Derive consequences, each justified.
-    + Reach $R$ and $lnot R$ for some statement $R$.
-  + Hence the supposition is false, so $S$. #qed],
-  proofb[By contraposition][
-  + Contrapositive: $forall x in D thin (lnot Q(x) -> lnot P(x))$.
-  + Let $x in D$ be arbitrary with $lnot Q(x)$. … so $lnot P(x)$.
-  + Hence the original statement holds #j[equivalent to its contrapositive]. #qed],
-  proofb[Division into cases][
-  + Let $x$ be arbitrary. Then $x$ satisfies case 1, 2, … #j[Assumption 1 / QR theorem / trichotomy].
-    + *Case 1:* … so $Q(x)$.
-    + *Case 2:* … so $Q(x)$.
-  + In every case $Q(x)$. #qed],
-  proofb[Set inclusion $X subset.eq Y$ and equality][
-  + ($subset.eq$) Let $z in X$. … so $z in Y$.
-  + ($supset.eq$) Let $z in Y$. … so $z in X$.
-  + Therefore $X = Y$ #j[definition of set equality]. #qed],
-  proofb[$R$ is an equivalence relation / a partial order][
-  + (Reflexive) Let $x in A$. … $x R x$.
-  + (Symmetric) Let $x R y$. … $y R x$. #h(0.3em) *or* (Antisymmetric) Let $x R y$ and $y R x$. … $x = y$.
-  + (Transitive) Let $x R y$ and $y R z$. … $x R z$.
-  + Therefore $R$ is an equivalence relation / a partial order. #qed],
-)
+*Proof methods:* §9–12; set inclusion/equality: §17; relation properties: §21. Each worked example is beside its topic.
 
 #table(columns: (auto, 1fr), align: (left, left),
   [Past-paper question], [Solved in],
@@ -1751,7 +1543,7 @@ The smallest equivalence relation containing $R$ is $A times A$ (9 pairs): ignor
   [AY24 Q2, Q3, Q4, Q5], [§5, §2, §2, §4],
   [AY24 Q6, Q7, Q8, Q16], [§15, §18, §18, §18],
   [AY24 Q9, Q10, Q11, Q12, Q13–15, Q17], [§23, §21, §20, §20, §25, §20–§25],
-  [AY25 Q1, Q2, Q4, Q6, Q7, Q8, Q9, Q10, Q12], [§18, §6, §23, §8, §18, §18, §19, §19, §28],
+  [AY25 Q1, Q2, Q4, Q6, Q7, Q8, Q9, Q10, Q12], [§18, §6, §28, §8, §18, §18, §19, §19, §28],
   [AY25 Q11, Q13, Q14, Q15, Q16, Q17], [§21, §4, §21, §23, §4; Q17(a)–(e): §20, §13, §23, §23, §25],
 )
 
@@ -1771,7 +1563,6 @@ The smallest equivalence relation containing $R$ is $A times A$ (9 pairs): ignor
   [T5 Q7], [Asymmetric implies antisymmetric], [§21],
 )
 
-#pagebreak(weak: true)
 == 30 · Self-test: true or false?
 
 #text(size: 8.4pt, fill: muted)[Decide each statement before reading the reason.]
@@ -1816,91 +1607,30 @@ The smallest equivalence relation containing $R$ is $A times A$ (9 pairs): ignor
   $ZZ^+, ZZ_(>= 0)$, [positive / non-negative integers], $NN$, [${0, 1, 2, ...}$], $n "div" d, n mod d$, [quotient, remainder],
 )
 
-#pagebreak()
-== 32 · Definition index
+== 32 · Topic locator
 
-#set text(size: 9.3pt)
-#columns(2, gutter: 14pt)[
-#let e(term, body, where) = block(below: 0.42em)[*#term:* #body #text(fill: muted)[§#where]]
-#e[Absolute value][$|x| = x$ if $x >= 0$, $-x$ if $x < 0$.][10]
-#e[Antichain][no two distinct elements comparable.][24]
-#e[Antisymmetric][$x R y and y R x -> x = y$.][21]
-#e[Argument; valid; sound, unsound][premises then conclusion; valid if true premises force a true conclusion; sound if valid with true premises, else unsound.][4]
-#e[Asymmetric][$x R y -> y cancel(R) x$.][21]
-#e[Biconditional][$p <-> q$: true iff $p, q$ agree.][3]
-#e[Cardinality][$|S|$, the number of elements.][13]
-#e[Cartesian product][$A times B = {(a, b) : a in A and b in B}$.][15]
-#e[Chain; maximal chain; length][pairwise comparable subset; cannot be extended; one less than its size.][24]
-#e[Colorful][$n = 3k$ for some $k in ZZ$ (lecture only).][10]
-#e[Comparable][$a pleq b$ or $b pleq a$.][24]
-#e[Compatible][$exists c thin (a pleq c and b pleq c)$.][24]
-#e[Complement][$overline(A) = U without A$.][16]
-#e[Composite][$n > 1$, $n = r s$ with $1 < r, s < n$.][10]
-#e[Composition][$x (S compose R) z <-> exists y (x R y and y S z)$; $R$ first.][20]
-#e[Conditional][$p -> q$, false only for T $->$ F; hypothesis $p$, conclusion $q$.][3]
-#e[Congruence][$a equiv b space (mod n) <-> n dv (a - b)$.][23]
-#e[Contradiction][statement form false in every row.][1]
-#e[Contrapositive / converse / inverse][of $p -> q$: $lnot q -> lnot p$ / $q -> p$ / $lnot p -> lnot q$.][3]
-#e[Critical row][truth-table row with all premises true.][4]
-#e[Difference][$B without A = {x : x in B and x in.not A}$.][16]
-#e[Directed graph][one vertex per element; arrow $x -> y$ iff $x R y$.][19]
-#e[Disjoint; mutually disjoint][$A inter B = nothing$; $A_i inter A_j = nothing$ for $i != j$.][16]
-#e[div, mod][quotient and remainder of the QR theorem.][10]
-#e[Divides][$d dv n <-> exists k in ZZ thin (n = d k)$.][10]
-#e[Domain, co-domain, range][first coordinates used; $B$; second coordinates used.][19]
-#e[Empty set; singleton][$nothing$, no elements; exactly one element.][14]
-#e[Equivalence class][$[a] = {x in A : a tilde.op x}$.][23]
-#e[Equivalence relation][reflexive, symmetric and transitive.][23]
-#e[Even / odd][$n = 2k$ / $n = 2k + 1$ for some $k in ZZ$.][10]
-#e[Existential statement][true iff some element of the domain satisfies it.][5]
-#e[Hasse diagram][line $x$ below $y$ iff $x pleq y$ with nothing strictly between.][24]
-#e[Induced relation][same component of a partition.][23]
-#e[Intersection][$A inter B = {x : x in A and x in B}$.][16]
-#e[Interval notation][$(a, b)$, $[a, b]$, $(a, b]$, $[a, b)$, $[a, oo)$, … as subsets of $RR$.][13]
-#e[Inverse relation][$R^(-1) = {(y, x) : (x, y) in R}$.][19]
-#e[Largest / smallest][$forall x (x pleq c)$ / $forall x (c pleq x)$.][24]
-#e[Linearization][total order $plin$ with $x pleq y -> x plin y$.][25]
-#e[Logical equivalence][identical truth values in every row.][1]
-#e[Lowest terms][$a slash b$ where 1 is the largest common divisor.][10]
-#e[Maximal / minimal][$forall x (c pleq x -> c = x)$ / $forall x (x pleq c -> c = x)$.][24]
-#e[$n$-ary relation][subset of $A_1 times dots.c times A_n$.][19]
-#e[Necessary / sufficient][$r$ necessary for $s$: $s -> r$; sufficient: $r -> s$.][3]
-#colbreak()
-#e[Negation, conjunction, disjunction][$lnot p$; $p and q$; $p or q$.][1]
-#e[Only if][$p$ only if $q$: $p -> q$.][3]
-#e[Ordered pair; $n$-tuple][equal iff equal componentwise.][15]
-#e[Partial order; poset][reflexive, antisymmetric, transitive; $(A, pleq)$.][24]
-#e[Partition; component][non-empty subsets; each element in exactly one; its elements.][18]
-#e[Power set][$PP(A)$, the set of all subsets of $A$.][18]
-#e[Predicate; domain; truth set][sentence with variables; allowed values; ${x in D : P(x)}$.][5]
-#e[Prime][$n > 1$ whose only positive factorizations are $1 dot n$, $n dot 1$.][10]
-#e[Proper subset][$A subset.eq B$ and $A != B$.][14]
-#e[Quotient $A slash simq$][${[x] : x in A}$.][23]
-#e[Rational / irrational][$r = a slash b$ with $a, b in ZZ$, $b != 0$ / not rational.][10]
-#e[Reflexive][$forall x (x R x)$.][21]
-#e[Reflexive / symmetric closure][$R union {(x, x) : x in A}$ / $R union R^(-1)$.][22]
-#e[Relation; relation on $A$][subset of $A times B$; subset of $A times A$.][19]
-#e[Replacement notation][${t(x) : x in A}$.][13]
-#e[Representative][any member $b$ of $[a]$; then $[b] = [a]$.][23]
-#e[Set-builder notation][${x in U : P(x)}$.][13]
-#e[Set equality][$A subset.eq B$ and $B subset.eq A$.][14]
-#e[Set-roster notation][elements listed in braces.][13]
-#e[Statement; statement form][true or false, not both; built from variables and connectives.][1]
-#e[Subset; superset][$forall x (x in A -> x in B)$; $B supset.eq A$.][14]
-#e[Syllogism][two premises and a conclusion.][4]
-#e[Symmetric][$x R y -> y R x$.][21]
-#e[Symmetric difference][$A xor B = (A without B) union (B without A)$.][16]
-#e[Tautology][statement form true in every row.][1]
-#e[Total order][partial order in which every two elements are comparable.][24]
-#e[Transitive][$x R y and y R z -> x R z$.][21]
-#e[Transitive closure][smallest transitive relation containing $R$.][22]
-#e[Union][$A union B = {x : x in A or x in B}$.][16]
-#e[Uniqueness $exists!$][exactly one element satisfies it.][5]
-#e[Universal conditional; universal existential; existential universal][$forall x (P -> Q)$; $forall exists$; $exists forall$.][5]
-#e[Universal set][$U$, all objects under discussion.][16]
-#e[Universal statement][true iff every element of the domain satisfies it.][5]
-#e[Vacuous truth][$forall x (P(x) -> Q(x))$ with no $x$ satisfying $P$.][6]
-#e[Valid argument form][true premises force a true conclusion.][4, §8]
-#e[Well-defined operation][binary operation on $A$ inducing a rule on classes independent of representatives.][23]
-#e[Well-ordered][total order in which every non-empty subset has a smallest element.][24]
+#block(breakable: false)[
+#table(columns: (auto, 1fr, auto, 1fr),
+  [§], [Definitions / methods], [§], [Definitions / methods],
+  [1–3], [Statements, connectives, equivalence, conditional variants], [13–14], [Sets, notation, intervals, subset, equality, empty set],
+  [4], [Arguments, validity, soundness, inference rules], [15–16], [Pairs, products, set operations, disjointness],
+  [5–7], [Predicates, truth sets, quantifiers, negation, vacuity], [17–18], [Set proofs, partitions, power sets],
+  [8], [Quantified inference rules and worked negations], [19–20], [Relations, domain/range, inverse, composition],
+  [9], [Proof vocabulary, format, assumptions, biconditionals], [21–22], [Relation properties and closures],
+  [10], [Even/odd, prime, rational, divisibility, absolute value], [23], [Equivalence, classes, quotient, congruence, representatives],
+  [11–12], [Proof methods and number-theory examples], [24–25], [Posets, extrema, total/well orders, Hasse, Kahn],
+  [26–29], [Exam methods, counting, question locators], [30–31], [Self-test and symbols],
+  [33], [Complete Appendix A: field, order, algebra, LUB], [34], [Slide-numbered theorem locator],
+)
 ]
+
+// ============================================================================
+#set text(size: 10.3pt)
+= Part VII · Appendix A and Theorem Locator
+// ============================================================================
+
+#lecture-reference(thm, kbox, lnot, PP, dv, simq, pleq,
+  appendix-heading: [33 · Appendix A · Properties of the Real Numbers],
+  theorem-heading: [34 · Theorem locator · Slide numbering],
+  full-theorems: false,
+)

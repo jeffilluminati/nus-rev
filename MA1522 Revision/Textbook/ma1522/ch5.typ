@@ -29,6 +29,24 @@ It should be noted that the right-hand side does not exceed $1$ in modulus (by v
   In a Euclidean (but not in a unitary!) space, the Pythagorean theorem can be inverted: if $norm(bf(x) + bf(y))^2 = norm(bf(x))^2 + norm(bf(y))^2$, then $bf(x) dot bf(y) = 0$—this is obvious since $bf(x) dot bf(y) + bf(y) dot bf(x) = 2 bf(x) dot bf(y)$. However, in a unitary space the equality $ip(bf(x), bf(y)) + ip(bf(y), bf(x)) = 2 ip(bf(x), bf(y))$ is not true for arbitrary vectors.
 ]
 
+#subsec("Orthogonal Vectors and Orthogonal Sets", added: true) // added for MA1522: zero-vector convention; orthogonal and orthonormal sets; normalizing an orthogonal set
+
+Since $bf(0) dot bf(v) = 0$ for every $bf(v) in bb(R)^n$, the zero vector is orthogonal to every vector, itself included. If $bf(u) != bf(0)$ and $bf(v) != bf(0)$, then $bf(u) dot bf(v) = 0$ means $cos theta = 0$, that is, $theta = pi \/ 2$. Thus two vectors of $bb(R)^n$ are orthogonal if and only if one of them is the zero vector or they are perpendicular. Clearly, if $bf(u) perp bf(v)$, then $s bf(u) perp t bf(v)$ for all $s, t in bb(R)$.
+
+Recall (Section 3.2) that a _unit vector_ is a vector of norm $1$, and that for $bf(u) != bf(0)$ the unit vector $bf(u) \/ norm(bf(u))$ is obtained by _normalizing_ $bf(u)$.
+
+#definition[
+  A set $S = {bf(v)_1, ..., bf(v)_k}$ of vectors in $bb(R)^n$ is _orthogonal_ if its vectors are pairwise orthogonal, $bf(v)_i dot bf(v)_j = 0$ for all $i != j$. It is _orthonormal_ if, for all $i, j = 1, ..., k$,
+  $ bf(v)_i dot bf(v)_j = cases(0\, & quad i != j\,, 1\, & quad i = j\,) $
+  that is, if $S$ is orthogonal and consists of unit vectors.
+]
+
+#indent An orthogonal set in this sense may contain the zero vector; an orthonormal set cannot, since $norm(bf(0)) = 0$. Normalizing each vector of an orthogonal set of nonzero vectors produces an orthonormal set (multiplication by scalars preserves orthogonality); an orthogonal set that contains $bf(0)$ cannot be normalized. The book's own definition in Section 5.2 requires the vectors of an orthogonal set to be nonzero; where this matters we say "an orthogonal set of nonzero vectors".
+
+#example[
+  The set ${(1, 2, 2)^T, (2, 1, -2)^T, (2, -2, 1)^T}$ is orthogonal: the three pairwise dot products are $2 + 2 - 4$, $2 - 4 + 2$ and $4 - 2 - 2$, all equal to $0$. It is not orthonormal, since each of its vectors has norm $3$; dividing every vector by $3$ gives an orthonormal set. The set ${(1, 3)^T, (-3, 1)^T, bf(0)}$ in $bb(R)^2$ is orthogonal, but it cannot be normalized.
+]
+
 #subsec("Orthogonality of Sets") // Tyrtyshnikov §24.7
 
 
@@ -46,10 +64,60 @@ The set $M$ of all vectors in $bb(R)^n$, each of which is orthogonal to a given 
   By definition, the set $(L^perp)^perp$ contains all vectors orthogonal to $L^perp$, and hence all vectors from the set $L$.
 ]
 
+#subsec([Orthogonality to a Subspace; $V^perp = Null(bf(A)^T)$], added: true) // added for MA1522: vector orthogonal to a subspace; spanning-set test; V^perp = Null(A^T); Row(A)^perp = Null(A)
+
+Let $V$ be a subspace of $bb(R)^n$. In the notation above, a vector $bf(w)$ is _orthogonal to_ $V$, $bf(w) perp V$, if $bf(w) dot bf(v) = 0$ for every $bf(v) in V$, and the _orthogonal complement_ of $V$ is
+$ V^perp = {bf(w) in bb(R)^n : bf(w) dot bf(v) = 0 "for all" bf(v) in V}. $
+The zero vector is orthogonal to every subspace. For example, if $bf(a) in bb(R)^n$ is a nonzero vector, the solution set $V = {bf(v) in bb(R)^n : bf(v) dot bf(a) = 0}$ of the single homogeneous equation $a_1 v_1 + ... + a_n v_n = 0$ is a subspace, called a _hyperplane_ (a plane through the origin if $n = 3$), and $bf(a) perp V$; the vector $bf(a)$ is a _normal vector_ of the hyperplane. Thus the plane $a x + b y + c z = 0$ in $bb(R)^3$ consists of the vectors orthogonal to its normal vector $(a, b, c)^T$.
+
+#theorem(title: "Orthogonality Test")[
+  Let $S = {bf(u)_1, ..., bf(u)_k}$ be a spanning set for a subspace $V$ of $bb(R)^n$, $span(S) = V$. Then $bf(w) perp V$ if and only if $bf(w) dot bf(u)_i = 0$ for $i = 1, ..., k$.
+]
+
+#proof[
+  If $bf(w) perp V$, then $bf(w) dot bf(u)_i = 0$ because $bf(u)_i in V$. Conversely, let $bf(w) dot bf(u)_i = 0$ for all $i$. Each $bf(v) in V$ can be written as $bf(v) = c_1 bf(u)_1 + ... + c_k bf(u)_k$, and then $bf(w) dot bf(v) = c_1 (bf(w) dot bf(u)_1) + ... + c_k (bf(w) dot bf(u)_k) = 0$.
+]
+
+#indent So, to check that $bf(w) perp V$, it suffices to check that $bf(w)$ is orthogonal to each vector of a spanning set (for example, of a basis) of $V$. These $k$ conditions form one homogeneous linear system.
+
+#theorem(title: [$V^perp = Null(bf(A)^T)$])[
+  Let $S = {bf(u)_1, ..., bf(u)_k}$ be a spanning set for a subspace $V$ of $bb(R)^n$, and let $bf(A) = mat(bf(u)_1, bf(u)_2, dots.c, bf(u)_k)$ be the $n times k$ matrix with these columns. Then
+  $ bf(w) perp V quad <=> quad bf(A)^T bf(w) = bf(0) quad <=> quad bf(w) in Null(bf(A)^T). $
+  Consequently, the orthogonal complement of $V$ is $V^perp = Null(bf(A)^T)$.
+]
+
+#proof[
+  By block multiplication,
+  $ bf(A)^T bf(w) = mat(bf(u)_1^T; dots.v; bf(u)_k^T) bf(w) = mat(bf(u)_1^T bf(w); dots.v; bf(u)_k^T bf(w)) = mat(bf(u)_1 dot bf(w); dots.v; bf(u)_k dot bf(w)), $
+  so $bf(A)^T bf(w) = bf(0)$ if and only if $bf(w) dot bf(u)_i = 0$ for all $i$, that is, by the orthogonality test, if and only if $bf(w) perp V$. The set of all such $bf(w)$ is $V^perp$.
+]
+
+#algorithm(title: "Orthogonal complement of a subspace")[
+  + Choose a spanning set ${bf(u)_1, ..., bf(u)_k}$ of $V$ (for example, a basis) and form the $k times n$ matrix $bf(A)^T$ whose rows are $bf(u)_1^T, ..., bf(u)_k^T$.
+  + Reduce $bf(A)^T$ to RREF and write the general solution of the homogeneous system $bf(A)^T bf(w) = bf(0)$.
+  + The vectors multiplying the parameters in the general solution form a basis for $V^perp = Null(bf(A)^T)$. A given vector $bf(w)$ is orthogonal to $V$ exactly when $bf(A)^T bf(w) = bf(0)$.
+]
+
+#example[
+  Let $V = span{(1, 1, 0, 2)^T, (1, 2, 1, 3)^T} subset bb(R)^4$. A vector $bf(w) = (w_1, w_2, w_3, w_4)^T$ is orthogonal to $V$ if and only if $bf(A)^T bf(w) = bf(0)$, where
+  $ bf(A)^T = mat(1, 1, 0, 2; 1, 2, 1, 3) stretch(->)^"RREF" mat(1, 0, -1, 1; 0, 1, 1, 1). $
+  Hence $w_1 = s - t$, $w_2 = -s - t$, $w_3 = s$, $w_4 = t$ with $s, t in bb(R)$ arbitrary, and
+  $ V^perp = span{(1, -1, 1, 0)^T, (-1, -1, 0, 1)^T}. $
+]
+
+#corollary[
+  For every $m times n$ matrix $bf(A)$,
+  $ Row(bf(A))^perp = Null(bf(A)), quad Col(bf(A))^perp = Null(bf(A)^T). $
+]
+
+#proof[
+  The columns of $bf(A)$ span $Col(bf(A))$, so the theorem gives $Col(bf(A))^perp = Null(bf(A)^T)$. The rows of $bf(A)$ are the columns of $bf(A)^T$, so $Row(bf(A)) = Col(bf(A)^T)$ and $Row(bf(A))^perp = Null((bf(A)^T)^T) = Null(bf(A))$.
+]
+
 #subsec("Orthogonal Sum of Subspaces") // Tyrtyshnikov §24.8
 
 
-Recall that the _sum of subspaces_ $L_1, L_2, ..., L_m$ is the set $L$ of all vectors of the form $bf(x) = bf(x)_1 + bf(x)_2 + ... + bf(x)_m$, where $bf(x)_i in L_i$ for all $i$ (see Section 3.4). It is elementary to verify that $L$ is a subspace. Notation: $L = L_1 + ... + L_m$.
+Recall that the _sum of subspaces_ $L_1, L_2, ..., L_m$ is the set $L$ of all vectors of the form $bf(x) = bf(x)_1 + bf(x)_2 + ... + bf(x)_m$, where $bf(x)_i in L_i$ for all $i$ (see Tyrtyshnikov, §11.6). It is elementary to verify that $L$ is a subspace. Notation: $L = L_1 + ... + L_m$.
 
 Recall also that $L$ is called a _direct sum_ (see Tyrtyshnikov, §12.4) if the subspaces $L_i$ are nonzero and each vector $bf(x) in L$ has a unique decomposition of the form $bf(x) = bf(x)_1 + ... + bf(x)_m$, where $bf(x)_i in L_i$ (if $bf(x) = bf(x)'_1 + ... + bf(x)'_m$ and $bf(x)'_i in L_i quad forall i$, then necessarily $bf(x)'_i = bf(x)_i quad forall i$).
 
@@ -113,6 +181,37 @@ $ bf(X)^* bf(X) = mat(
 
 A real unitary matrix is called _orthogonal_. In the next subsection we note that the set of all orthogonal matrices of order $n$ is a group under the operation of matrix multiplication. The same holds with respect to the set of all unitary matrices of order $n$.
 
+#subsec("Orthogonal and Orthonormal Bases; Coordinates", added: true) // added for MA1522: orthogonal sets of nonzero vectors are independent; orthogonal/orthonormal bases; coordinates relative to them
+
+By Corollary 1 in Section 5.1 (Orthogonal Sum of Subspaces), _an orthogonal set of nonzero vectors is linearly independent_. Here is a direct argument. Let $bf(u)_1, ..., bf(u)_k$ be nonzero and pairwise orthogonal, and let $c_1 bf(u)_1 + ... + c_k bf(u)_k = bf(0)$. Taking the dot product with $bf(u)_i$, we get
+#eq($ 0 = bf(u)_i dot (c_1 bf(u)_1 + ... + c_k bf(u)_k) = c_i (bf(u)_i dot bf(u)_i) = c_i norm(bf(u)_i)^2, $, $(1)$)
+so $c_i = 0$ for every $i$. In particular, _every orthonormal set is linearly independent_. (An orthogonal set that contains $bf(0)$ is, of course, linearly dependent.)
+
+#definition[
+  Let $V$ be a subspace of $bb(R)^n$. A set $S$ is an _orthogonal basis_ (an _orthonormal basis_) for $V$ if $S$ is a basis for $V$ and $S$ is an orthogonal (an orthonormal) set.
+]
+
+#indent Since linear independence is automatic, any orthogonal set of $k$ nonzero vectors in a subspace $V$ of dimension $k$ is an orthogonal basis for $V$ (by the Basis Extension Lemma of Section 3.7, as every basis for $V$ has $k$ vectors). For example, the standard basis $E = {bf(e)_1, ..., bf(e)_n}$ is an orthonormal basis for $bb(R)^n$. The coordinates of a vector relative to an orthogonal basis are found by dot products alone, without solving a linear system.
+
+#theorem(title: "Coordinates Relative to an Orthogonal Basis")[
+  Let $S = {bf(u)_1, ..., bf(u)_k}$ be an orthogonal basis for a subspace $V$ of $bb(R)^n$. Then for every $bf(v) in V$
+  #eq($ bf(v) = (bf(v) dot bf(u)_1) / norm(bf(u)_1)^2 bf(u)_1 + (bf(v) dot bf(u)_2) / norm(bf(u)_2)^2 bf(u)_2 + ... + (bf(v) dot bf(u)_k) / norm(bf(u)_k)^2 bf(u)_k, $, $(2)$)
+  that is, $[bf(v)]_S = ((bf(v) dot bf(u)_1) \/ norm(bf(u)_1)^2, ..., (bf(v) dot bf(u)_k) \/ norm(bf(u)_k)^2)^T$. If $S$ is an orthonormal basis, then
+  #eq($ bf(v) = (bf(v) dot bf(u)_1) bf(u)_1 + (bf(v) dot bf(u)_2) bf(u)_2 + ... + (bf(v) dot bf(u)_k) bf(u)_k, quad [bf(v)]_S = mat(bf(v) dot bf(u)_1; dots.v; bf(v) dot bf(u)_k). $, $(3)$)
+]
+
+#proof[
+  Write $bf(v) = c_1 bf(u)_1 + ... + c_k bf(u)_k$. Exactly as in $(1)$, $bf(v) dot bf(u)_i = c_i norm(bf(u)_i)^2$, whence $c_i = (bf(v) dot bf(u)_i) \/ norm(bf(u)_i)^2$. For an orthonormal basis, $norm(bf(u)_i) = 1$.
+]
+
+#indent For the standard basis, $bf(v) dot bf(e)_i = v_i$, and $(3)$ gives $[bf(v)]_E = bf(v)$. The formulas use the orthogonality of $S$ in an essential way: for the basis $S = {(1, 0)^T, (1, 1)^T}$ of $bb(R)^2$ (which is not orthogonal) and $bf(w) = (0, 1)^T$, the right-hand side of $(2)$ equals $0 (1, 0)^T + 1/2 (1, 1)^T = (1\/2, 1\/2)^T != bf(w)$.
+
+#example[
+  The vectors $bf(u)_1 = (1, 1, 1)^T$ and $bf(u)_2 = (1, -2, 1)^T$ are orthogonal, so $S = {bf(u)_1, bf(u)_2}$ is an orthogonal basis for $V = span(S)$, the plane $x = z$ in $bb(R)^3$. For $bf(v) = (4, -1, 4)^T in V$ we have $bf(v) dot bf(u)_1 = 7$, $norm(bf(u)_1)^2 = 3$, $bf(v) dot bf(u)_2 = 10$, $norm(bf(u)_2)^2 = 6$; hence
+  $ bf(v) = 7/3 bf(u)_1 + 5/3 bf(u)_2, quad [bf(v)]_S = mat(7\/3; 5\/3). $
+  For the orthonormal basis $T = {bf(u)_1 \/ sqrt(3), bf(u)_2 \/ sqrt(6)}$ of the same plane, $(3)$ gives $[bf(v)]_T = (7 \/ sqrt(3), 10 \/ sqrt(6))^T$.
+]
+
 #subsec("Cartesian Systems and Orthogonal Matrices") // Tyrtyshnikov §20.2
 
 
@@ -163,6 +262,48 @@ Moreover, the product of two orthogonal matrices remains an orthogonal matrix: i
 #corollary[
   Let $bf(B) = bf(P) bf(A) bf(Q)$, where $bf(P), bf(Q)$ are arbitrary orthogonal matrices of order $n$ and $bf(A)$ is an arbitrary real
   matrix of order $n$. Then the sum of the squares of the entries of the matrix $bf(B)$ equals the sum of the squares of the entries of the matrix $bf(A)$.
+]
+
+#subsec("Orthogonal Matrices and Orthonormal Columns", added: true) // added for MA1522: Q^T Q and orthogonal/orthonormal columns; A^T = A^(-1); equivalent statements for orthogonal matrices
+
+Let $S = {bf(u)_1, ..., bf(u)_k}$ be vectors in $bb(R)^n$ and $bf(Q) = mat(bf(u)_1, bf(u)_2, dots.c, bf(u)_k)$ the $n times k$ matrix with these columns. By block multiplication, the $(i, j)$-entry of the $k times k$ matrix $bf(Q)^T bf(Q)$ is $bf(u)_i^T bf(u)_j = bf(u)_i dot bf(u)_j$:
+$ bf(Q)^T bf(Q) = mat(bf(u)_1^T; dots.v; bf(u)_k^T) mat(bf(u)_1, dots.c, bf(u)_k) = mat(
+  bf(u)_1 dot bf(u)_1, dots.c, bf(u)_1 dot bf(u)_k;
+  dots.v, dots.down, dots.v;
+  bf(u)_k dot bf(u)_1, dots.c, bf(u)_k dot bf(u)_k
+) $
+(this is the Gram matrix of $bf(u)_1, ..., bf(u)_k$, see Section 5.3). Hence
+$ S "is orthogonal" <=> bf(Q)^T bf(Q) "is diagonal", quad quad S "is orthonormal" <=> bf(Q)^T bf(Q) = bf(I)_k. $
+In particular, if $k = n$, then $S$ is orthonormal if and only if $bf(Q)^T bf(Q) = bf(I)_n$, that is, $bf(Q)^T = bf(Q)^(-1)$. The course takes the latter equality as the definition.
+
+#definition[
+  A square matrix $bf(A)$ of order $n$ is _orthogonal_ if $bf(A)^T = bf(A)^(-1)$, equivalently, $bf(A)^T bf(A) = bf(I) = bf(A) bf(A)^T$.
+]
+
+#indent This agrees with the definition in the preceding subsection, which asks only for $bf(A)^T bf(A) = bf(I)$: for a square matrix this equality already implies $bf(A)^T = bf(A)^(-1)$. Indeed, $det(bf(A))^2 = det(bf(A)^T) det(bf(A)) = det(bf(I)) = 1$, so $bf(A)$ is invertible (Sections 2.6 and 2.10), and multiplying $bf(A)^T bf(A) = bf(I)$ on the right by $bf(A)^(-1)$ gives $bf(A)^T = bf(A)^(-1)$.
+
+#theorem[
+  For a square matrix $bf(A)$ of order $n$ the following statements are equivalent:
+  #[
+    #set enum(numbering: "(i)")
+    + $bf(A)$ is an orthogonal matrix;
+    + the columns of $bf(A)$ form an orthonormal basis for $bb(R)^n$;
+    + the rows of $bf(A)$ form an orthonormal basis for $bb(R)^n$.
+  ]
+]
+
+#proof[
+  By the computation above (with $bf(Q) = bf(A)$ and $k = n$), the columns of $bf(A)$ form an orthonormal set if and only if $bf(A)^T bf(A) = bf(I)$, that is, if and only if $bf(A)$ is orthogonal; and $n$ orthonormal vectors in $bb(R)^n$ are linearly independent and therefore form a basis for $bb(R)^n$. This proves (i) $<=>$ (ii). The rows of $bf(A)$ are the columns of $bf(A)^T$, and $bf(A)$ is orthogonal if and only if $bf(A)^T$ is, since $(bf(A)^T)^T bf(A)^T = bf(A) bf(A)^T$. Applying (i) $<=>$ (ii) to $bf(A)^T$ gives (i) $<=>$ (iii).
+]
+
+#example[
+  Consider the matrices
+  $ bf(A) = 1/3 mat(1, 2, 2; 2, 1, -2; 2, -2, 1), quad bf(B) = mat(1, 2; 2, -1), quad bf(Q) = 1/3 mat(1, 2; 2, 1; 2, -2). $
+  The columns of $bf(A)$ form the orthonormal set obtained in Section 5.1, so $bf(A)$ is orthogonal: $bf(A)^T bf(A) = bf(A) bf(A)^T = bf(I)_3$. The columns of $bf(B)$ are orthogonal, but $bf(B)^T bf(B) = 5 bf(I)_2$, so $bf(B)$ is not orthogonal; matrices whose columns are merely orthogonal are given no special name. The $3 times 2$ matrix $bf(Q)$ has orthonormal columns, $bf(Q)^T bf(Q) = bf(I)_2$, but it is not square, hence not an orthogonal matrix; indeed $bf(Q) bf(Q)^T != bf(I)_3$, since $rank(bf(Q) bf(Q)^T) <= 2$.
+]
+
+#remark[
+  Some books call a square matrix with $bf(A)^T = bf(A)^(-1)$ an _orthonormal matrix_; the course, like most of the literature, calls it orthogonal.
 ]
 
 #sec("5.3", "Orthogonal Projection")
@@ -254,6 +395,32 @@ The vector $bf(x)_n equiv bf(x) - bf(z)_0$ in the case $bf(x)_n perp L$, $bf(z)_
   Let $P_n$ be the vector space of all real polynomials of degree at most $n$ with the inner product $ip(f, g) = integral_(-1)^1 f(t) g(t) dif t$. Prove that the distance from the polynomial $x^n$ to the subspace $P_(n - 1)$ does not exceed $sqrt(2) / 2^n$.
 ]
 
+#subsec("Projection Formula for an Orthogonal Basis", added: true) // added for MA1522: orthogonal projection theorem with the explicit formula; best approximation theorem
+
+In the notation of the course, the orthogonal projection theorem reads: _if $V$ is a subspace of $bb(R)^n$, then every $bf(w) in bb(R)^n$ can be written uniquely as $bf(w) = bf(w)_p + bf(w)_n$ with $bf(w)_p in V$ and $bf(w)_n perp V$_; the vector $bf(w)_p$ is the _orthogonal projection_ (or _projection_) of $bf(w)$ onto $V$. The second part of the theorem is the _best approximation theorem_: $bf(w)_p$ is the vector of $V$ closest to $bf(w)$,
+#eq($ norm(bf(w) - bf(w)_p) <= norm(bf(w) - bf(v)) quad "for all" bf(v) in V, $, $(1)$)
+with equality only for $bf(v) = bf(w)_p$. An orthogonal basis for $V$ makes the projection explicit: the Gram matrix of an orthogonal basis is diagonal, and the linear system for the coefficients of $bf(w)_p$ splits into separate equations.
+
+#theorem(title: "Orthogonal Projection Formula")[
+  Let $S = {bf(u)_1, ..., bf(u)_k}$ be an orthogonal basis for a subspace $V$ of $bb(R)^n$. Then for every $bf(w) in bb(R)^n$
+  #eq($ bf(w)_p = (bf(w) dot bf(u)_1) / (bf(u)_1 dot bf(u)_1) bf(u)_1 + (bf(w) dot bf(u)_2) / (bf(u)_2 dot bf(u)_2) bf(u)_2 + ... + (bf(w) dot bf(u)_k) / (bf(u)_k dot bf(u)_k) bf(u)_k. $, $(2)$)
+  If $S$ is orthonormal, then $bf(w)_p = (bf(w) dot bf(u)_1) bf(u)_1 + (bf(w) dot bf(u)_2) bf(u)_2 + ... + (bf(w) dot bf(u)_k) bf(u)_k$.
+]
+
+#proof[
+  Denote the right-hand side of $(2)$ by $bf(z)$; clearly $bf(z) in V$. Since $bf(u)_i dot bf(u)_j = 0$ for $i != j$,
+  $ (bf(w) - bf(z)) dot bf(u)_j = bf(w) dot bf(u)_j - (bf(w) dot bf(u)_j) / (bf(u)_j dot bf(u)_j) (bf(u)_j dot bf(u)_j) = 0, quad j = 1, ..., k, $
+  so $bf(w) - bf(z) perp V$ by the orthogonality test of Section 5.1. By the uniqueness of the decomposition, $bf(z) = bf(w)_p$ (and $bf(w) - bf(z) = bf(w)_n$).
+]
+
+#indent Several facts follow at once. The right-hand side of $(2)$ does not depend on the choice of the orthogonal basis for $V$, because $bf(w)_p$ is unique. For $k = 1$, $(2)$ is the projection of $bf(w)$ onto the line spanned by a nonzero vector $bf(u)$, namely $bf(w)_p = (bf(w) dot bf(u)) \/ (bf(u) dot bf(u)) thin bf(u)$. If $bf(w) in V$, then $bf(w)_p = bf(w)$ and $bf(w)_n = bf(0)$, and $(2)$ turns into the coordinate formula of Section 5.2. The distance from $bf(w)$ to $V$ is $norm(bf(w)_n) = norm(bf(w) - bf(w)_p)$.
+
+#example[
+  Let $V$ be the plane $x = z$ in $bb(R)^3$ with the orthogonal basis $bf(u)_1 = (1, 1, 1)^T$, $bf(u)_2 = (1, -2, 1)^T$ (Section 5.2), and let $bf(w) = (1, 2, 5)^T$. Then $bf(w) dot bf(u)_1 = 8$ and $bf(w) dot bf(u)_2 = 2$, so
+  $ bf(w)_p = 8/3 bf(u)_1 + 2/6 bf(u)_2 = mat(3; 2; 3), quad bf(w)_n = bf(w) - bf(w)_p = mat(-2; 0; 2). $
+  Indeed, $bf(w)_n dot bf(u)_1 = bf(w)_n dot bf(u)_2 = 0$. The vector of $V$ closest to $bf(w)$ is $(3, 2, 3)^T$, and the distance from $bf(w)$ to $V$ is $norm(bf(w)_n) = 2 sqrt(2)$.
+]
+
 #subsec("Gram–Schmidt Process") // Tyrtyshnikov §25.5
 
 
@@ -277,6 +444,40 @@ $ bf(h)_k = bf(v)_k - sum_(i=1)^(k - 1) (bf(v)_k dot bf(q)_i) bf(q)_i, quad bf(q
   $ L_k (x) = a_k x L_(k - 1)(x) + b_k L_(k - 1)(x) + c_k L_(k - 2)(x), \
     2 <= k <= n, quad a_k, b_k, c_k in bb(R), $
   hold.
+]
+
+#subsec("Gram–Schmidt Process: Orthogonal Form", added: true) // added for MA1522: Gram–Schmidt algorithm in the course's form; dependent input
+
+In the course, the Gram–Schmidt process first produces an orthogonal set and postpones normalization to the end, which avoids square roots in the intermediate steps. Let $S = {bf(u)_1, ..., bf(u)_k}$ be a linearly independent set in $bb(R)^n$.
+
+#algorithm(title: "Gram–Schmidt process")[
+  + Set $bf(v)_1 = bf(u)_1$.
+  + For $j = 2, ..., k$ set
+    #eq($ bf(v)_j = bf(u)_j - (bf(v)_1 dot bf(u)_j) / norm(bf(v)_1)^2 bf(v)_1 - (bf(v)_2 dot bf(u)_j) / norm(bf(v)_2)^2 bf(v)_2 - ... - (bf(v)_(j - 1) dot bf(u)_j) / norm(bf(v)_(j - 1))^2 bf(v)_(j - 1). $, $(3)$)
+  + Normalize: $bf(q)_j = bf(v)_j \/ norm(bf(v)_j)$, $j = 1, ..., k$.
+]
+
+#theorem[
+  The vectors $bf(v)_1, ..., bf(v)_k$ are nonzero and pairwise orthogonal, and
+  $ span{bf(v)_1, ..., bf(v)_j} = span{bf(u)_1, ..., bf(u)_j}, quad j = 1, ..., k. $
+  Hence ${bf(v)_1, ..., bf(v)_k}$ is an orthogonal basis and ${bf(q)_1, ..., bf(q)_k}$ is an orthonormal basis for $span(S)$.
+]
+
+#proof[
+  We use induction on $j$; for $j = 1$ there is nothing to prove. Suppose $bf(v)_1, ..., bf(v)_(j - 1)$ are nonzero, pairwise orthogonal, and span $V_(j - 1) = span{bf(u)_1, ..., bf(u)_(j - 1)}$; then they form an orthogonal basis for $V_(j - 1)$. By $(2)$, the vector subtracted from $bf(u)_j$ in $(3)$ is the projection $bf(p)$ of $bf(u)_j$ onto $V_(j - 1)$, so $bf(v)_j = bf(u)_j - bf(p) perp V_(j - 1)$; in particular, $bf(v)_j$ is orthogonal to $bf(v)_1, ..., bf(v)_(j - 1)$. If $bf(v)_j = bf(0)$, then $bf(u)_j = bf(p) in V_(j - 1)$, which contradicts the linear independence of $S$. Finally, $bf(v)_j in span{bf(u)_j, bf(v)_1, ..., bf(v)_(j - 1)} = span{bf(u)_1, ..., bf(u)_j}$ and $bf(u)_j = bf(v)_j + bf(p) in span{bf(v)_1, ..., bf(v)_j}$, which gives the equality of the spans.
+]
+
+#indent This is the process of the preceding subsection written differently: if the vectors denoted there by $bf(v)_1, bf(v)_2, ...$ (the input) are our $bf(u)_1, bf(u)_2, ...$, then our $bf(v)_j$ are exactly the perpendiculars $bf(h)_j$, since $(bf(v)_i dot bf(u)_j) \/ norm(bf(v)_i)^2 thin bf(v)_i = (bf(u)_j dot bf(q)_i) bf(q)_i$ with $bf(q)_i = bf(v)_i \/ norm(bf(v)_i)$, and the $bf(q)_j$ are the same orthonormal vectors. In hand computations one may replace any $bf(v)_j$ by a positive multiple (for instance, to clear fractions) before continuing: the terms of $(3)$ in the later steps and the vectors $bf(q)_j$ do not change.
+
+If the process is applied to a set $S$ that is not known to be linearly independent, the same argument shows that $bf(v)_j = bf(0)$ exactly when $bf(u)_j in span{bf(u)_1, ..., bf(u)_(j - 1)}$. Such zero vectors are discarded (they must not enter $(3)$ in the later steps), and the remaining nonzero $bf(v)_j$ form an orthogonal basis for $span(S)$. For instance, $bf(v)_4 = bf(0)$ means that $bf(u)_4$ is a linear combination of $bf(u)_1, bf(u)_2, bf(u)_3$, so that $S$ is linearly dependent.
+
+#example[
+  Apply the process to $bf(u)_1 = (1, 2, 2)^T$, $bf(u)_2 = (1, 0, 1)^T$, $bf(u)_3 = (0, 0, 1)^T$:
+  $ bf(v)_1 &= (1, 2, 2)^T, \
+    bf(v)_2 &= bf(u)_2 - 3/9 bf(v)_1 = (2\/3, -2\/3, 1\/3)^T, \
+    bf(v)_3 &= bf(u)_3 - 2/9 bf(v)_1 - (1\/3)/1 bf(v)_2 = (-4\/9, -2\/9, 4\/9)^T. $
+  Since $norm(bf(v)_1) = 3$, $norm(bf(v)_2) = 1$ and $norm(bf(v)_3) = 2\/3$, the resulting orthonormal basis for $bb(R)^3$ is
+  $ bf(q)_1 = 1/3 mat(1; 2; 2), quad bf(q)_2 = 1/3 mat(2; -2; 1), quad bf(q)_3 = 1/3 mat(-2; -1; 2). $
 ]
 
 #subsec("Completion to an Orthogonal Basis") // Tyrtyshnikov §25.6
@@ -351,6 +552,54 @@ $ bf(A) = bf(Q) bf(R), quad bf(Q) = mat(bf(q)_1, dots.c, bf(q)_m), quad bf(R) = 
   Let $bf(A)$ be a matrix of order $n$ with entries $a_(i j) = plus.minus 1$. Prove that if $abs(det(bf(A))) = n^(n / 2)$ (such matrices are called _Hadamard matrices_) and $n >= 3$, then $n$ is divisible by $4$.
 ]
 
+#subsec("Computing a QR Factorization", added: true) // added for MA1522: QR theorem in the course's form; R = Q^T A; QR algorithm; A^T A invertible and left inverse
+
+In the course, the QR factorization is considered for matrices with linearly independent columns and is normalized as follows.
+
+#theorem(title: "QR Factorization")[
+  Let $bf(A)$ be an $m times n$ matrix with linearly independent columns, that is, $rank(bf(A)) = n$. Then
+  $ bf(A) = bf(Q) bf(R), $
+  where $bf(Q)$ is an $m times n$ matrix with $bf(Q)^T bf(Q) = bf(I)_n$ (its columns are orthonormal) and $bf(R)$ is an invertible upper triangular matrix of order $n$ with positive diagonal entries. Such a decomposition is called a _QR factorization_ of $bf(A)$.
+]
+
+#proof[
+  Let $bf(A) = mat(bf(a)_1, bf(a)_2, dots.c, bf(a)_n)$, let $bf(v)_1, ..., bf(v)_n$ and $bf(q)_1, ..., bf(q)_n$ be the vectors produced from $bf(a)_1, ..., bf(a)_n$ by the Gram–Schmidt process (Section 5.3), and let $bf(Q) = mat(bf(q)_1, bf(q)_2, dots.c, bf(q)_n)$; then $bf(Q)^T bf(Q) = bf(I)_n$ (Section 5.2). Since $(bf(v)_i dot bf(a)_j) \/ norm(bf(v)_i)^2 thin bf(v)_i = (bf(q)_i dot bf(a)_j) bf(q)_i$ and $bf(v)_j = norm(bf(v)_j) bf(q)_j$, the Gram–Schmidt formula can be rewritten as
+  $ bf(a)_j = (bf(q)_1 dot bf(a)_j) bf(q)_1 + ... + (bf(q)_(j - 1) dot bf(a)_j) bf(q)_(j - 1) + norm(bf(v)_j) bf(q)_j, quad j = 1, ..., n. $
+  Thus $bf(A) = bf(Q) bf(R)$, where $bf(R) = (r_(i j))$ is upper triangular with $r_(i j) = bf(q)_i dot bf(a)_j$ for $i < j$ and $r_(j j) = norm(bf(v)_j) > 0$. Finally, $bf(R)$ is invertible: if $bf(R) bf(x) = bf(0)$, then $bf(A) bf(x) = bf(Q) bf(R) bf(x) = bf(0)$, whence $bf(x) = bf(0)$ because the columns of $bf(A)$ are linearly independent; so the columns of the square matrix $bf(R)$ are linearly independent, and $bf(R)$ is invertible (Section 2.6).
+]
+
+#indent Since $bf(Q)^T bf(Q) = bf(I)_n$, multiplying $bf(A) = bf(Q) bf(R)$ on the left by $bf(Q)^T$ gives
+$ bf(R) = bf(Q)^T bf(A), $
+in agreement with $r_(i j) = bf(q)_i dot bf(a)_j$. (The entries $bf(q)_i dot bf(a)_j$ with $i > j$ vanish, since $bf(a)_j in span{bf(q)_1, ..., bf(q)_j}$.) This gives a practical procedure for an $m times n$ matrix $bf(A)$ with linearly independent columns.
+
+#algorithm(title: "QR factorization")[
+  + Apply the Gram–Schmidt process to the columns $bf(a)_1, ..., bf(a)_n$ of $bf(A)$ to obtain an orthonormal set ${bf(q)_1, ..., bf(q)_n}$.
+  + Set $bf(Q) = mat(bf(q)_1, bf(q)_2, dots.c, bf(q)_n)$.
+  + Compute $bf(R) = bf(Q)^T bf(A)$. Then $bf(A) = bf(Q) bf(R)$.
+]
+
+#example[
+  Let
+  $ bf(A) = mat(1, 3, 0; 1, 1, 2; 1, 3, 2; 1, 1, 0). $
+  The Gram–Schmidt process applied to the columns of $bf(A)$ gives
+  $ bf(v)_1 = mat(1; 1; 1; 1), quad bf(v)_2 = bf(a)_2 - 8/4 bf(v)_1 = mat(1; -1; 1; -1), quad bf(v)_3 = bf(a)_3 - 4/4 bf(v)_1 - 0/4 bf(v)_2 = mat(-1; 1; 1; -1). $
+  All three vectors have norm $2$, so
+  $ bf(Q) = 1/2 mat(1, 1, -1; 1, -1, 1; 1, 1, 1; 1, -1, -1), quad bf(R) = bf(Q)^T bf(A) = mat(2, 4, 2; 0, 2, 0; 0, 0, 2), $
+  and one checks directly that $bf(Q) bf(R) = bf(A)$.
+]
+
+#corollary[
+  Let $bf(A)$ be an $m times n$ matrix with linearly independent columns. Then $bf(A)^T bf(A)$ is invertible, and $bf(A)$ has a left inverse: there is an $n times m$ matrix $bf(B)$ such that $bf(B) bf(A) = bf(I)_n$.
+]
+
+#proof[
+  Let $bf(A) = bf(Q) bf(R)$ be a QR factorization. Then $bf(A)^T bf(A) = bf(R)^T bf(Q)^T bf(Q) bf(R) = bf(R)^T bf(R)$ is a product of invertible matrices and hence invertible (Section 2.4). As $bf(B)$ one can take $bf(R)^(-1) bf(Q)^T$, since $bf(R)^(-1) bf(Q)^T bf(Q) bf(R) = bf(R)^(-1) bf(R) = bf(I)_n$; this matrix coincides with $(bf(A)^T bf(A))^(-1) bf(A)^T = (bf(R)^T bf(R))^(-1) bf(R)^T bf(Q)^T$.
+]
+
+#remark[
+  The invertibility of $bf(A)^T bf(A)$ can also be seen without the QR factorization. If $bf(A)^T bf(A) bf(x) = bf(0)$, then $norm(bf(A) bf(x))^2 = bf(x)^T bf(A)^T bf(A) bf(x) = 0$, so $bf(A) bf(x) = bf(0)$. Hence $Null(bf(A)^T bf(A)) = Null(bf(A))$ for every matrix $bf(A)$, and the square matrix $bf(A)^T bf(A)$ is invertible if and only if the columns of $bf(A)$ are linearly independent.
+]
+
 #sec("5.5", "Least Squares Approximation")
 
 #subsec("Method of Least Squares") // Tyrtyshnikov §35.5
@@ -395,6 +644,75 @@ _of the problem_. Such questions are connected with the so-called _regularizatio
   Find the least squares solution of minimum norm of the inconsistent system
   $ x_1 + x_2 + ... + x_n = 1, $
   $ x_1 + x_2 + ... + x_n = 0. $
+]
+
+#subsec("Computing Least Squares Solutions", added: true) // added for MA1522: LS solution <=> Au = projection of b <=> normal equation; uniqueness; LS via QR; projection A (A^T A)^(-1) A^T w
+
+Let $bf(A)$ be an $m times n$ matrix and $bf(b) in bb(R)^m$. Recall that $Col(bf(A)) = {bf(A) bf(u) : bf(u) in bb(R)^n}$ is precisely the set of vectors $bf(b)$ for which $bf(A) bf(x) = bf(b)$ is consistent (Sections 2.3 and 4.1). If $bf(b) in.not Col(bf(A))$, one looks for $bf(u)$ such that $bf(A) bf(u)$ is as close to $bf(b)$ as possible: in the form used in the course, $bf(u) in bb(R)^n$ is a _least squares solution_ of $bf(A) bf(x) = bf(b)$ if
+$ norm(bf(A) bf(u) - bf(b)) <= norm(bf(A) bf(v) - bf(b)) quad "for every" bf(v) in bb(R)^n, $
+which is the definition given above.
+
+#theorem[
+  For a vector $bf(u) in bb(R)^n$ the following statements are equivalent:
+  #[
+    #set enum(numbering: "(i)")
+    + $bf(u)$ is a least squares solution of $bf(A) bf(x) = bf(b)$;
+    + $bf(A) bf(u)$ is the orthogonal projection of $bf(b)$ onto $Col(bf(A))$;
+    + $bf(u)$ is a solution of the normal equation $bf(A)^T bf(A) bf(x) = bf(A)^T bf(b)$.
+  ]
+]
+
+#proof[
+  (i) $<=>$ (ii). As $bf(v)$ runs over $bb(R)^n$, the vector $bf(A) bf(v)$ runs over $Col(bf(A))$. By the best approximation theorem (Section 5.3), the projection $bf(b)_p$ of $bf(b)$ onto $Col(bf(A))$ is the unique vector of $Col(bf(A))$ closest to $bf(b)$; so $bf(u)$ minimizes $norm(bf(A) bf(u) - bf(b))$ if and only if $bf(A) bf(u) = bf(b)_p$. (This is the argument in the proof of the proposition above.)
+
+  (ii) $<=>$ (iii). Since $bf(A) bf(u) in Col(bf(A))$, we have $bf(A) bf(u) = bf(b)_p$ if and only if $bf(b) - bf(A) bf(u) perp Col(bf(A))$, that is, since $Col(bf(A))^perp = Null(bf(A)^T)$ (Section 5.1), if and only if $bf(A)^T (bf(b) - bf(A) bf(u)) = bf(0)$, which is $bf(A)^T bf(A) bf(u) = bf(A)^T bf(b)$.
+]
+
+#indent Consequently, least squares solutions always exist, because the normal equation is always consistent, and the vector $bf(A) bf(u) = bf(b)_p$ is the same for all least squares solutions $bf(u)$. The least squares solution itself need not be unique: if $bf(u)_0$ is one of them, all of them form the set $bf(u)_0 + Null(bf(A))$ (Section 4.2), in agreement with the proposition above. If the system $bf(A) bf(x) = bf(b)$ is consistent, then $bf(b) in Col(bf(A))$, $bf(b)_p = bf(b)$, and its least squares solutions are exactly its solutions.
+
+#theorem[
+  If the columns of $bf(A)$ are linearly independent, that is, $rank(bf(A)) = n$, then $bf(A) bf(x) = bf(b)$ has a unique least squares solution
+  $ bf(u) = (bf(A)^T bf(A))^(-1) bf(A)^T bf(b). $
+  If, moreover, $bf(A) = bf(Q) bf(R)$ is a QR factorization, then $bf(u) = bf(R)^(-1) bf(Q)^T bf(b)$; that is, $bf(u)$ is the solution of the upper triangular system $bf(R) bf(x) = bf(Q)^T bf(b)$, which is found by back substitution.
+]
+
+#proof[
+  By the corollary in Section 5.4, $bf(A)^T bf(A)$ is invertible, so the normal equation has the unique solution $(bf(A)^T bf(A))^(-1) bf(A)^T bf(b)$. If $bf(A) = bf(Q) bf(R)$, then $bf(A)^T bf(A) = bf(R)^T bf(R)$ and $bf(A)^T bf(b) = bf(R)^T bf(Q)^T bf(b)$, and multiplying $bf(R)^T bf(R) bf(u) = bf(R)^T bf(Q)^T bf(b)$ on the left by $(bf(R)^T)^(-1)$ gives $bf(R) bf(u) = bf(Q)^T bf(b)$.
+]
+
+#example(title: "Non-Unique Least Squares Solutions")[
+  Let
+  $ bf(A) = mat(1, 1, 2; 1, -1, 0; 1, 1, 2; 1, -1, 0), quad bf(b) = mat(2; 0; 4; 2). $
+  The system $bf(A) bf(x) = bf(b)$ is inconsistent: its first and third equations have the same left-hand side but different right-hand sides. For the normal equation,
+  $ (bf(A)^T bf(A) | bf(A)^T bf(b)) = mat(4, 0, 4, 8; 0, 4, 4, 4; 4, 4, 8, 12; augment: #3) stretch(->)^"RREF" mat(1, 0, 1, 2; 0, 1, 1, 1; 0, 0, 0, 0; augment: #3), $
+  so the least squares solutions are $bf(u) = (2, 1, 0)^T + t (-1, -1, 1)^T$, $t in bb(R)$; there are infinitely many of them, as $rank(bf(A)) = 2 < 3$. For every one of them $bf(A) bf(u) = (3, 1, 3, 1)^T = bf(b)_p$, and the least possible value of $norm(bf(A) bf(u) - bf(b))$ is $norm((1, 1, -1, -1)^T) = 2$.
+]
+
+#example(title: "A Unique Least Squares Solution")[
+  The matrix $bf(A)$ of the example in Section 5.4 has linearly independent columns. For $bf(b) = (1, 2, 3, 4)^T$, the QR factorization found there gives $bf(Q)^T bf(b) = (5, -1, 0)^T$, and back substitution in
+  $ bf(R) bf(x) = mat(2, 4, 2; 0, 2, 0; 0, 0, 2) mat(x_1; x_2; x_3) = mat(5; -1; 0) $
+  yields $x_3 = 0$, $x_2 = -1\/2$, $x_1 = 7\/2$. Thus $bf(u) = (7\/2, -1\/2, 0)^T$ is the unique least squares solution, and $bf(b)_p = bf(A) bf(u) = (2, 3, 2, 3)^T$. The same $bf(u)$ is obtained from the normal equation $bf(A)^T bf(A) bf(x) = bf(A)^T bf(b)$, where
+  $ bf(A)^T bf(A) = mat(4, 8, 4; 8, 20, 8; 4, 8, 8), quad bf(A)^T bf(b) = mat(10; 18; 10). $
+]
+
+#indent Least squares also give the orthogonal projection onto a subspace for which only an arbitrary (not necessarily orthogonal) basis is known.
+
+#theorem[
+  Let $V$ be a subspace of $bb(R)^n$ with a basis ${bf(u)_1, ..., bf(u)_k}$, and let $bf(A) = mat(bf(u)_1, bf(u)_2, dots.c, bf(u)_k)$. Then the orthogonal projection of a vector $bf(w) in bb(R)^n$ onto $V$ is
+  $ bf(w)_p = bf(A) (bf(A)^T bf(A))^(-1) bf(A)^T bf(w). $
+  If the basis is orthonormal, then $bf(A)^T bf(A) = bf(I)_k$ and $bf(w)_p = bf(A) bf(A)^T bf(w)$.
+]
+
+#proof[
+  Here $Col(bf(A)) = V$, and the columns of $bf(A)$ are linearly independent. By the preceding theorem, $bf(u) = (bf(A)^T bf(A))^(-1) bf(A)^T bf(w)$ is the least squares solution of $bf(A) bf(x) = bf(w)$, and by the first theorem of this subsection, $bf(A) bf(u)$ is the projection of $bf(w)$ onto $Col(bf(A)) = V$. For an orthonormal basis, $bf(A)^T bf(A) = bf(I)_k$ (Section 5.2).
+]
+
+#example[
+  The vectors $(1, 1, 1)^T$ and $(2, 0, 2)^T$ form a (non-orthogonal) basis for the plane $x = z$ in $bb(R)^3$ considered in Section 5.3. With
+  $ bf(A) = mat(1, 2; 1, 0; 1, 2), quad bf(A)^T bf(A) = mat(3, 4; 4, 8), quad bf(A) (bf(A)^T bf(A))^(-1) bf(A)^T = 1/2 mat(1, 0, 1; 0, 2, 0; 1, 0, 1), $
+  the projection of $bf(w) = (w_1, w_2, w_3)^T$ onto the plane is
+  $ bf(w)_p = 1/2 mat(w_1 + w_3; 2 w_2; w_1 + w_3). $
+  For $bf(w) = (1, 2, 5)^T$ this is $(3, 2, 3)^T$, as found in Section 5.3 with an orthogonal basis.
 ]
 
 #subsec("Pseudoinverse Matrix", beyond: true) // Tyrtyshnikov §35.6

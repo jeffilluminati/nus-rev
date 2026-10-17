@@ -63,6 +63,53 @@ A scalar $lambda$ is an eigenvalue of the matrix $bf(A)$ $<=>$ this system has a
 
 For $n <= 4$, the eigenvalues (as roots of a polynomial of degree $n <= 4$) can be expressed in radicals in terms of the coefficients of the characteristic polynomial and, consequently, in terms of the entries of the matrix. For $n >= 5$, such formulas no longer exist (the celebrated result of Abel, Ruffini, and Galois).
 
+#subsec("Finding Eigenvalues; the Eigenvalue Zero", added: true) // added for MA1522: geometric meaning of eigenvectors, finding eigenvalues via char(A), 0 is an eigenvalue iff A is singular, equivalent statements for invertibility
+
+A square matrix $bf(A)$ of order $n$ moves the vectors of $bb(R)^n$ by the rule $bf(u) |-> bf(A) bf(u)$. Its eigenvectors are the nonzero vectors that are merely stretched, shrunk or reversed by this map, and the eigenvalue is the factor by which such a vector is scaled. The condition $bf(v) != bf(0)$ in the definition cannot be dropped: $bf(A) bf(0) = lambda bf(0)$ holds for every $lambda$, so admitting the zero vector would make every real number an eigenvalue.
+
+By the criterion above, the eigenvalues of $bf(A)$ are the real roots of $char(bf(A))$, and the eigenvectors associated to an eigenvalue $lambda$ are the nontrivial solutions of the homogeneous system $(lambda bf(I) - bf(A)) bf(x) = bf(0)$.
+
+#example[
+  For the matrix
+  $ bf(A) = mat(1, 2; 2, 1) $
+  we find
+  $ char(bf(A)) = detmat(x - 1, -2; -2, x - 1) = (x - 1)^2 - 4 = (x - 3)(x + 1), $
+  so the eigenvalues are $3$ and $-1$. Indeed, $bf(A) (1, 1)^T = 3 (1, 1)^T$ and $bf(A) (1, -1)^T = -(1, -1)^T$: the matrix stretches the line $y = x$ by the factor $3$ and reverses the line $y = -x$.
+]
+
+#theorem[
+  A square matrix $bf(A)$ is invertible if and only if $0$ is not an eigenvalue of $bf(A)$.
+]
+
+#proof[
+  The number $0$ is an eigenvalue of $bf(A)$ if and only if $bf(A) bf(v) = 0 bf(v) = bf(0)$ for some $bf(v) != bf(0)$, that is, if and only if $det(0 bf(I) - bf(A)) = (-1)^n det(bf(A)) = 0$. By Section 2.6, $det(bf(A)) = 0$ means exactly that $bf(A)$ is not invertible.
+]
+
+#indent This adds one more item to the list of equivalent statements for invertibility assembled in Sections 2.6, 2.10, 3.6 and 4.2.
+
+#theorem(title: "equivalent statements for invertibility")[
+  For a square matrix $bf(A)$ of order $n$ the following statements are equivalent.
+  #set enum(numbering: "(i)")
+  + $bf(A)$ is invertible.
+  + $bf(A)^T$ is invertible.
+  + $bf(A)$ has a left inverse: $bf(B) bf(A) = bf(I)$ for some matrix $bf(B)$.
+  + $bf(A)$ has a right inverse: $bf(A) bf(B) = bf(I)$ for some matrix $bf(B)$.
+  + The reduced row-echelon form of $bf(A)$ is $bf(I)_n$.
+  + $bf(A)$ is a product of elementary matrices.
+  + The homogeneous system $bf(A) bf(x) = bf(0)$ has only the trivial solution.
+  + For every $bf(b) in bb(R)^n$ the system $bf(A) bf(x) = bf(b)$ has exactly one solution.
+  + $det(bf(A)) != 0$.
+  + The columns of $bf(A)$ are linearly independent; equivalently, the rows of $bf(A)$ are linearly independent.
+  + The columns of $bf(A)$ span $bb(R)^n$; equivalently, the rows of $bf(A)$ span $bb(R)^n$.
+  + $rank(bf(A)) = n$, that is, $bf(A)$ has full rank.
+  + $nullity(bf(A)) = 0$.
+  + $0$ is not an eigenvalue of $bf(A)$.
+]
+
+#proof[
+  The equivalence of (i)--(xiii) was established in Sections 2.6, 2.10, 3.6 and 4.2, and (i) $<=>$ (xiv) is the preceding theorem.
+]
+
 #subsec("Algebraic Multiplicity of an Eigenvalue") // Tyrtyshnikov §29.5
 
 
@@ -73,6 +120,31 @@ From the fundamental theorem of algebra we immediately obtain the following theo
 #theorem[
   Every complex matrix $bf(A)$ of order $n$ has $n$ complex eigenvalues counting algebraic multiplicities.
 ]
+
+#subsec("Real Eigenvalues and Triangular Matrices", added: true) // added for MA1522: factorization of char(A) and the sum of algebraic multiplicities over R, eigenvalues of triangular matrices
+
+Over $bb(R)$ the characteristic polynomial need not split into linear factors. If it does,
+$ char(bf(A)) = (x - lambda_1)^(r_1) (x - lambda_2)^(r_2) dots.c (x - lambda_k)^(r_k), quad r_1 + r_2 + dots.c + r_k = n, $
+with distinct real numbers $lambda_1, ..., lambda_k$, then these are the eigenvalues of $bf(A)$, the algebraic multiplicity of $lambda_i$ is $r_(lambda_i) = r_i$, and the algebraic multiplicities add up to $n$. In general $char(bf(A)) = (x - lambda_1)^(r_1) dots.c (x - lambda_k)^(r_k) q(x)$, where the polynomial $q(x)$ has no real roots; then $r_1 + dots.c + r_k <= n$, with equality exactly when $char(bf(A))$ splits into linear factors.
+
+#example[
+  The zero matrix $bf(0)$ of order $n$ has $char(bf(0)) = det(x bf(I)) = x^n$; its only eigenvalue is $0$, with $r_0 = n$. For the matrices
+  $ bf(B) = mat(0, -1; 1, 0), quad bf(C) = mat(2, 0, 0; 0, 0, -1; 0, 1, 0) $
+  we get $char(bf(B)) = x^2 + 1$ and $char(bf(C)) = (x - 2)(x^2 + 1)$. The matrix $bf(B)$ is the matrix of the rotation through the angle $pi \/ 2$; $char(bf(B))$ has no real roots, and indeed no nonzero vector of $bb(R)^2$ keeps its direction under a quarter-turn, so $bf(B)$ has no eigenvalues at all. The only eigenvalue of $bf(C)$ is $2$, with $r_2 = 1 < 3$.
+]
+
+#theorem[
+  The eigenvalues of a triangular matrix are its diagonal entries, and the algebraic multiplicity of each eigenvalue is the number of times it occurs on the diagonal.
+]
+
+#proof[
+  If $bf(A) = (a_(i j))_(n times n)$ is upper (lower) triangular, then so is $x bf(I) - bf(A)$, with diagonal entries $x - a_(1 1), ..., x - a_(n n)$. The determinant of a triangular matrix is the product of its diagonal entries: expand it along the first column (for a lower triangular matrix, along the first row), whose only possibly nonzero entry is the diagonal one, and repeat with the remaining triangular submatrix. Hence
+  $ char(bf(A)) = (x - a_(1 1))(x - a_(2 2)) dots.c (x - a_(n n)). $
+]
+
+#indent For example, the matrix
+$ mat(2, 5, -1; 0, 3, 4; 0, 0, 2) $
+has the eigenvalues $2$ and $3$, with $r_2 = 2$ and $r_3 = 1$.
 
 #subsec("Characteristic Polynomial and Similarity") // Tyrtyshnikov §29.6
 
@@ -125,6 +197,31 @@ Fix an eigenvalue $lambda$ of a linear transformation $T: V -> V$ (that is, $T(b
 
 #indent For a square matrix $bf(A)$ of order $n$, regarded as the linear transformation $T(bf(u)) = bf(A) bf(u)$ of $bb(R)^n$, the eigenspace is $E_lambda = {bf(v) in bb(R)^n | bf(A) bf(v) = lambda bf(v)} = Null(lambda bf(I) - bf(A))$, and the geometric multiplicity of $lambda$ is $dim(E_lambda) = nullity(lambda bf(I) - bf(A))$.
 
+#subsec("Computing Eigenspaces", added: true) // added for MA1522: bases for eigenspaces via RREF, eigenvalues and multiplicities of the transpose
+
+To find the eigenspace $E_lambda = Null(lambda bf(I) - bf(A))$, reduce $lambda bf(I) - bf(A)$ to reduced row-echelon form and read off a basis for the solution space of $(lambda bf(I) - bf(A)) bf(x) = bf(0)$; the geometric multiplicity $dim(E_lambda)$ is the number of non-pivot columns. Since $lambda$ is an eigenvalue, $dim(E_lambda) >= 1$.
+
+#example[
+  Let
+  $ bf(A) = mat(3, 0, 0; 0, 1, 2; 2, 2, 1). $
+  Expanding along the first row,
+  $ char(bf(A)) = detmat(x - 3, 0, 0; 0, x - 1, -2; -2, -2, x - 1) = (x - 3)((x - 1)^2 - 4) = (x - 3)^2 (x + 1), $
+  so the eigenvalues are $3$ and $-1$, with $r_3 = 2$ and $r_(-1) = 1$. Next,
+  $ 3 bf(I) - bf(A) = mat(0, 0, 0; 0, 2, -2; -2, -2, 2) stretch(->)^"RREF" mat(1, 0, 0; 0, 1, -1; 0, 0, 0), $
+  $ -bf(I) - bf(A) = mat(-4, 0, 0; 0, -2, -2; -2, -2, -2) stretch(->)^"RREF" mat(1, 0, 0; 0, 1, 1; 0, 0, 0), $
+  hence $E_3 = span{(0, 1, 1)^T}$ and $E_(-1) = span{(0, -1, 1)^T}$. Both eigenspaces are lines: $dim(E_3) = 1 < r_3 = 2$ and $dim(E_(-1)) = 1 = r_(-1)$.
+]
+
+#proposition[
+  A square matrix $bf(A)$ and its transpose $bf(A)^T$ have the same characteristic polynomial, and hence the same eigenvalues with the same algebraic multiplicities. Moreover, every eigenvalue $lambda$ has the same geometric multiplicity for $bf(A)$ as for $bf(A)^T$.
+]
+
+#proof[
+  Since $x bf(I) - bf(A)^T = (x bf(I) - bf(A))^T$ and a matrix and its transpose have equal determinants (Section 2.10), $char(bf(A)^T) = char(bf(A))$. Since a matrix and its transpose have equal ranks (Section 4.2), $rank(lambda bf(I) - bf(A)^T) = rank((lambda bf(I) - bf(A))^T) = rank(lambda bf(I) - bf(A))$, and therefore $nullity(lambda bf(I) - bf(A)^T) = nullity(lambda bf(I) - bf(A))$, since rank and nullity add up to $n$ (Section 4.2).
+]
+
+#indent The eigenvectors of $bf(A)$ and $bf(A)^T$, however, are in general different.
+
 #sec("6.2", "Diagonalization")
 
 #subsec("Similarity Transformation") // Tyrtyshnikov §28.4
@@ -161,7 +258,7 @@ $ s_2 = a_(1 1) + a_(2 2) + a_(3 3), $
 $ s_1 = det mat(a_(1 1), a_(1 2); a_(2 1), a_(2 2)) + det mat(a_(1 1), a_(1 3); a_(3 1), a_(3 3)) + det mat(a_(2 2), a_(2 3); a_(3 2), a_(3 3)), $
 $ s_0 = det mat(a_(1 1), a_(1 2), a_(1 3); a_(2 1), a_(2 2), a_(2 3); a_(3 1), a_(3 2), a_(3 3)). $
 
-#indent The question of diagonalizing matrices of order $3$ also arises when studying quadric surfaces (see Section 6.3)—when searching for a coordinate system in which the matrix of the quadratic part (a real symmetric matrix of order $3$) becomes diagonal.#footnote[In Section 6.3 it is proved that _every real symmetric matrix $bf(A)$ is orthogonally similar to a diagonal matrix $bf(D)$_—this means that $bf(A) = bf(P) bf(D) bf(P)^(-1) = bf(P) bf(D) bf(P)^T$, where $bf(P)$ is an orthogonal matrix, that is, $bf(A)$ is orthogonally diagonalizable. This same statement will soon appear as a consequence of more general results.]
+#indent The question of diagonalizing matrices of order $3$ also arises when studying quadric surfaces (see Tyrtyshnikov, §§20.1–20.5)—when searching for a coordinate system in which the matrix of the quadratic part (a real symmetric matrix of order $3$) becomes diagonal.#footnote[In Section 6.3 it is proved that _every real symmetric matrix $bf(A)$ is orthogonally similar to a diagonal matrix $bf(D)$_—this means that $bf(A) = bf(P) bf(D) bf(P)^(-1) = bf(P) bf(D) bf(P)^T$, where $bf(P)$ is an orthogonal matrix, that is, $bf(A)$ is orthogonally diagonalizable. This same statement will soon appear as a consequence of more general results.]
 
 #subsec("Eigenvectors for Distinct Eigenvalues") // Tyrtyshnikov §29.3
 
@@ -182,7 +279,115 @@ $ s_0 = det mat(a_(1 1), a_(1 2), a_(1 3); a_(2 1), a_(2 2), a_(2 3); a_(3 1), a
   If a matrix of order $n$ has $n$ distinct eigenvalues, then it is diagonalizable.
 ]
 
+#subsec("Independence of Eigenspaces and the Two Multiplicities", added: true) // added for MA1522: eigenspaces are linearly independent; geometric multiplicity is at most algebraic multiplicity (appendix)
+
+#theorem[
+  Let $lambda_1, ..., lambda_p$ be distinct eigenvalues of a square matrix $bf(A)$, and for each $i$ let $S_i$ be a linearly independent subset of the eigenspace $E_(lambda_i)$. Then the union $S_1 union S_2 union dots.c union S_p$ is linearly independent.
+]
+
+#proof[
+  Take a linear combination of the vectors of the union that equals $bf(0)$, and group its terms by eigenspace: $bf(w)_1 + bf(w)_2 + dots.c + bf(w)_p = bf(0)$, where $bf(w)_i in E_(lambda_i)$ is the part of the combination formed from the vectors of $S_i$. The nonzero vectors among $bf(w)_1, ..., bf(w)_p$ are eigenvectors associated to pairwise distinct eigenvalues, so by the theorem of the preceding subsection they are linearly independent, and their sum cannot be $bf(0)$ unless there are none of them. Hence $bf(w)_i = bf(0)$ for every $i$, and since $S_i$ is linearly independent, all the coefficients of the vectors of $S_i$ vanish.
+]
+
+#indent In particular, the union of bases for $E_(lambda_1), ..., E_(lambda_p)$ is a linearly independent set of $dim(E_(lambda_1)) + dots.c + dim(E_(lambda_p))$ eigenvectors, so this sum never exceeds $n$.
+
+#theorem[
+  The geometric multiplicity of an eigenvalue $lambda$ of a square matrix $bf(A)$ does not exceed its algebraic multiplicity: $1 <= dim(E_lambda) <= r_lambda$.
+]
+
+#proof[
+  Let $k = dim(E_lambda)$; then $k >= 1$, since an eigenvalue has an eigenvector. Let ${bf(u)_1, ..., bf(u)_k}$ be a basis for $E_lambda$, extend it to a basis ${bf(u)_1, ..., bf(u)_n}$ for $bb(R)^n$ (Section 3.7), and let $bf(Q) = mat(bf(u)_1, dots.c, bf(u)_n)$. This matrix is invertible, and $bf(Q)^(-1) bf(u)_j = bf(e)_j$ because $bf(Q) bf(e)_j = bf(u)_j$. For $j <= k$ we get $bf(Q)^(-1) bf(A) bf(u)_j = lambda bf(Q)^(-1) bf(u)_j = lambda bf(e)_j$, so the first $k$ columns of $bf(B) = bf(Q)^(-1) bf(A) bf(Q)$ are $lambda bf(e)_1, ..., lambda bf(e)_k$:
+  $ bf(B) = mat(lambda bf(I)_k, bf(C); bf(0), bf(F)) $
+  for some blocks $bf(C)$ and $bf(F)$, with $bf(F)$ square of order $n - k$. Expanding $det(x bf(I) - bf(B))$ successively along its first $k$ columns gives $char(bf(B)) = (x - lambda)^k char(bf(F))$. Similar matrices have the same characteristic polynomial (Section 6.1), so $char(bf(A)) = (x - lambda)^k char(bf(F))$, and therefore $r_lambda >= k$.
+]
+
+#subsec("Equivalent Statements for Diagonalizability", added: true) // added for MA1522: equivalent statements for diagonalizability, how to show that a matrix is not diagonalizable
+
+#theorem[
+  Let $bf(A)$ be a square matrix of order $n$ with distinct eigenvalues $lambda_1, ..., lambda_k$. The following statements are equivalent.
+  #set enum(numbering: "(i)")
+  + $bf(A)$ is diagonalizable.
+  + There is a basis ${bf(u)_1, ..., bf(u)_n}$ for $bb(R)^n$ consisting of eigenvectors of $bf(A)$.
+  + $char(bf(A))$ splits into linear factors, and the geometric multiplicity of each eigenvalue equals its algebraic multiplicity: $dim(E_(lambda_i)) = r_(lambda_i)$, $i = 1, ..., k$.
+  + $dim(E_(lambda_1)) + dim(E_(lambda_2)) + dots.c + dim(E_(lambda_k)) = n$.
+]
+
+#proof[
+  (i) $<=>$ (ii) is the theorem of Section 6.1: $bf(A) bf(P) = bf(P) bf(D)$ with $bf(P) = mat(bf(u)_1, dots.c, bf(u)_n)$ and $bf(D) = diag(mu_1, ..., mu_n)$ means exactly that $bf(A) bf(u)_j = mu_j bf(u)_j$ for all $j$, and $bf(P)$ is invertible exactly when its columns form a basis for $bb(R)^n$. Next, by the preceding theorem,
+  $ dim(E_(lambda_1)) + dots.c + dim(E_(lambda_k)) <= r_(lambda_1) + dots.c + r_(lambda_k) <= n, $
+  where the first inequality holds term by term, and the second is an equality exactly when $char(bf(A))$ splits into linear factors (Section 6.1). The sum on the left equals $n$ if and only if both inequalities are equalities, which proves (iii) $<=>$ (iv). If (iv) holds, the union of bases for the eigenspaces is a linearly independent set of $n$ eigenvectors (by the theorem on independence of eigenspaces), that is, a basis for $bb(R)^n$; this is (ii). Conversely, if (ii) holds, the vectors of the basis associated to $lambda_i$ form a linearly independent subset of $E_(lambda_i)$, so there are at most $dim(E_(lambda_i))$ of them; hence the sum in (iv) is at least $n$, and so equals $n$.
+]
+
+#indent Consequently, to show that a square matrix $bf(A)$ is _not_ diagonalizable, it suffices to show that $char(bf(A))$ does not split into linear factors over $bb(R)$, or that some eigenvalue has $dim(E_lambda) < r_lambda$. For example, the matrix $bf(C)$ with $char(bf(C)) = (x - 2)(x^2 + 1)$ considered in Section 6.1 is not diagonalizable, and neither is the matrix $bf(A)$ of the example in the subsection "Computing Eigenspaces" of Section 6.1, for which $dim(E_3) = 1 < 2 = r_3$. The corollary on $n$ distinct eigenvalues is a special case of the theorem: then $1 <= dim(E_(lambda_i)) <= r_(lambda_i) = 1$ for each of the $n$ eigenvalues, and the sum in (iv) equals $n$.
+
+#remark[
+  If a matrix $bf(A)$ of order $n$ has only one eigenvalue $lambda$, then $bf(A)$ is diagonalizable if and only if $bf(A) = lambda bf(I)_n$. Indeed, if $bf(A) = bf(P) bf(D) bf(P)^(-1)$, the diagonal entries of $bf(D)$ are eigenvalues of $bf(A)$, so $bf(D) = lambda bf(I)$ and $bf(A) = bf(P) (lambda bf(I)) bf(P)^(-1) = lambda bf(I)$. Thus a triangular matrix whose diagonal entries are all equal is diagonalizable only if it is diagonal; for instance,
+  $ mat(1, 2; 0, 1) $
+  is not diagonalizable.
+]
+
+#subsec("Algorithm for Diagonalization", added: true) // added for MA1522: the algorithm for diagonalization
+
+#algorithm(title: "diagonalization")[
+  Let $bf(A)$ be a square matrix of order $n$.
+  + Compute and factorize $char(bf(A))$. If it does not split into linear factors, then $bf(A)$ is not diagonalizable. Otherwise
+    $ char(bf(A)) = (x - lambda_1)^(r_(lambda_1)) dots.c (x - lambda_k)^(r_(lambda_k)) $
+    with distinct $lambda_1, ..., lambda_k$.
+  + For each $i$, find a basis $S_(lambda_i)$ for $E_(lambda_i)$, the solution space of $(lambda_i bf(I) - bf(A)) bf(x) = bf(0)$. If $dim(E_(lambda_i)) < r_(lambda_i)$ for some $i$, then $bf(A)$ is not diagonalizable. (Eigenvalues with $r_lambda = 1$ always pass this test, so it pays to treat first those with $r_lambda > 1$.)
+  + Otherwise $S = S_(lambda_1) union dots.c union S_(lambda_k) = {bf(u)_1, ..., bf(u)_n}$ is a basis for $bb(R)^n$ consisting of eigenvectors of $bf(A)$.
+  + Set $bf(P) = mat(bf(u)_1, dots.c, bf(u)_n)$ and $bf(D) = diag(mu_1, ..., mu_n)$, where $mu_j$ is the eigenvalue associated to $bf(u)_j$. Then $bf(A) = bf(P) bf(D) bf(P)^(-1)$.
+]
+
+#example[
+  Let
+  $ bf(A) = mat(3, 1, 0; -2, 0, 0; 4, 4, 2). $
+  Expanding along the third column,
+  $ char(bf(A)) = (x - 2) detmat(x - 3, -1; 2, x) = (x - 2)(x^2 - 3 x + 2) = (x - 1)(x - 2)^2. $
+  For the double eigenvalue $2$,
+  $ 2 bf(I) - bf(A) = mat(-1, -1, 0; 2, 2, 0; -4, -4, 0) stretch(->)^"RREF" mat(1, 1, 0; 0, 0, 0; 0, 0, 0), quad E_2 = span{mat(-1; 1; 0), mat(0; 0; 1)}, $
+  so $dim(E_2) = 2 = r_2$. For the simple eigenvalue $1$,
+  $ bf(I) - bf(A) = mat(-2, -1, 0; 2, 1, 0; -4, -4, -1) stretch(->)^"RREF" mat(1, 0, -1/4; 0, 1, 1/2; 0, 0, 0), quad E_1 = span{mat(1; -2; 4)}. $
+  Hence $bf(A)$ is diagonalizable, $bf(A) = bf(P) bf(D) bf(P)^(-1)$ with
+  $ bf(P) = mat(-1, 0, 1; 1, 0, -2; 0, 1, 4), quad bf(D) = mat(2, 0, 0; 0, 2, 0; 0, 0, 1), quad bf(P)^(-1) = mat(-2, -1, 0; 4, 4, 1; -1, -1, 0). $
+]
+
+#indent The matrices $bf(P)$ and $bf(D)$ are not unique: the eigenvectors may be listed in another order (which permutes the diagonal entries of $bf(D)$ in the same way), and each $S_(lambda_i)$ may be replaced by any other basis for $E_(lambda_i)$. For a given $bf(P)$, however, $bf(D) = bf(P)^(-1) bf(A) bf(P)$ is determined.
+
 #sec("6.3", "Orthogonally Diagonalizable Matrices")
+
+#subsec("Orthogonally Diagonalizable Matrices", added: true) // added for MA1522: definition of orthogonal diagonalizability, spectral theorem with equivalent statements, eigenspaces of a symmetric matrix are orthogonal
+
+Recall that a square matrix $bf(P)$ is orthogonal if $bf(P)^T = bf(P)^(-1)$, that is, if its columns form an orthonormal basis for $bb(R)^n$ (Section 5.2).
+
+#definition[
+  A square matrix $bf(A)$ is _orthogonally diagonalizable_ if $bf(A) = bf(P) bf(D) bf(P)^T$ for some orthogonal matrix $bf(P)$ and some diagonal matrix $bf(D)$.
+]
+
+#indent Since $bf(P)^T = bf(P)^(-1)$, an orthogonally diagonalizable matrix is diagonalizable, $bf(A) = bf(P) bf(D) bf(P)^(-1)$; what is required in addition is that the invertible matrix $bf(P)$ be orthogonal.
+
+#theorem(title: "spectral theorem")[
+  For a square matrix $bf(A)$ of order $n$ the following statements are equivalent.
+  #set enum(numbering: "(i)")
+  + $bf(A)$ is orthogonally diagonalizable.
+  + There is an orthonormal basis ${bf(u)_1, ..., bf(u)_n}$ for $bb(R)^n$ consisting of eigenvectors of $bf(A)$.
+  + $bf(A)$ is symmetric, $bf(A)^T = bf(A)$.
+]
+
+#proof[
+  (i) $<=>$ (ii): as in the diagonalization theorem (Section 6.2), $bf(A) = bf(P) bf(D) bf(P)^(-1)$ with $bf(D)$ diagonal means that the columns of $bf(P)$ are eigenvectors of $bf(A)$ forming a basis for $bb(R)^n$, and $bf(P)$ is orthogonal exactly when this basis is orthonormal. (i) $=>$ (iii): $bf(A)^T = (bf(P) bf(D) bf(P)^T)^T = bf(P) bf(D)^T bf(P)^T = bf(P) bf(D) bf(P)^T = bf(A)$, since a diagonal matrix is symmetric. (iii) $=>$ (i) is the theorem on the diagonalization of real symmetric matrices, proved below in this section.
+]
+
+#theorem[
+  Eigenvectors of a symmetric matrix associated to distinct eigenvalues are orthogonal. Thus the eigenspaces of a symmetric matrix associated to distinct eigenvalues are orthogonal to each other.
+]
+
+#proof[
+  Let $bf(A)^T = bf(A)$, $bf(A) bf(v)_1 = lambda_1 bf(v)_1$ and $bf(A) bf(v)_2 = lambda_2 bf(v)_2$ with $lambda_1 != lambda_2$. Then
+  $ lambda_1 (bf(v)_1 dot bf(v)_2) = (bf(A) bf(v)_1)^T bf(v)_2 = bf(v)_1^T bf(A)^T bf(v)_2 = bf(v)_1^T bf(A) bf(v)_2 = lambda_2 (bf(v)_1 dot bf(v)_2), $
+  so $(lambda_1 - lambda_2)(bf(v)_1 dot bf(v)_2) = 0$, and $bf(v)_1 dot bf(v)_2 = 0$.
+]
+
+#indent Consequently, to build an orthonormal basis of eigenvectors one need not orthogonalize all $n$ eigenvectors together: vectors from different eigenspaces are orthogonal already, and the Gram–Schmidt process has to be applied only within each eigenspace (see the algorithm at the end of this section).
 
 #subsec("The Method of Rotations", beyond: true) // Tyrtyshnikov §20.3
 
@@ -272,7 +477,7 @@ Moreover, for each $k$ we have: $bf(P)_k^T bf(P)_k = bf(I) => bf(P)^T bf(P) = bf
 #subsec("Orthogonal Diagonalization of Real Symmetric Matrices") // Tyrtyshnikov §20.6
 
 
-In fact, the very same method of rotations allows us to obtain a more general theorem.
+The following theorem is proved by the _method of rotations_ (Jacobi's method): one annihilates off-diagonal entries one at a time by rotating the coordinate system in coordinate planes. (For matrices of order $3$ the method is worked out in detail in Tyrtyshnikov, §§20.3–20.5.)
 
 #theorem(title: "on the diagonalization of real symmetric matrices")[
   A real symmetric matrix $bf(A)$ of arbitrary order $n$ can be reduced to a diagonal matrix $bf(D)$ by means of some orthogonal matrix $bf(P)$:
@@ -290,7 +495,7 @@ In fact, the very same method of rotations allows us to obtain a more general th
   $ mat(cos phi, -sin phi; sin phi, cos phi). $
   The matrix $bf(R)_k$ effects a rotation through the angle $phi$ in the coordinate plane determined by the indices $i != j$. Every rotation matrix of this form is obviously orthogonal.
 
-  Clearly, the symmetry of the matrix $bf(A)_0 = bf(A)$ is inherited by all the matrices $bf(A)_k$. From our previous investigations we already know that $phi$ can be chosen in such a way that $a_(i j)^((k)) = a_(j i)^((k)) = 0$. Denote by $d_k$ and $h_k$ the sums of the squares of the diagonal and off-diagonal entries of the matrix $bf(A)_k$. Then
+  Clearly, the symmetry of the matrix $bf(A)_0 = bf(A)$ is inherited by all the matrices $bf(A)_k$. Only the rows and columns with indices $i$ and $j$ change, and the $(2 times 2)$-submatrix of $bf(A)_k$ in these rows and columns is obtained from the corresponding submatrix of $bf(A)_(k - 1)$ by the same rotation; its off-diagonal entry equals $a_(i j)^((k - 1)) cos 2 phi - frac(1, 2) (a_(i i)^((k - 1)) - a_(j j)^((k - 1))) sin 2 phi$. Hence $phi$ can be chosen in such a way that $a_(i j)^((k)) = a_(j i)^((k)) = 0$ (if $a_(i j)^((k - 1)) != 0$, take $phi$ with $cot 2 phi = (a_(i i)^((k - 1)) - a_(j j)^((k - 1))) \/ (2 a_(i j)^((k - 1)))$). Denote by $d_k$ and $h_k$ the sums of the squares of the diagonal and off-diagonal entries of the matrix $bf(A)_k$. An orthogonal transformation preserves the sum of the squares of the entries of a matrix (Section 5.2); applying this to the whole matrix and to the $(2 times 2)$-submatrix (which becomes diagonal), and noting that the other diagonal entries do not change, we get $d_k + h_k = d_(k - 1) + h_(k - 1)$ and
   $ (a_(i i)^((k)))^2 + (a_(j j)^((k)))^2 = (a_(i i)^((k - 1)))^2 + (a_(j j)^((k - 1)))^2 + 2 (a_(i j)^((k - 1)))^2 quad => \
   => quad d_k - d_(k - 1) = 2 (a_(i j)^((k - 1)))^2. $
   For each $k$, we shall choose the plane of rotation (the indices $i < j$) in such a way that the eliminated entry $a_(i j)^((k - 1))$ is maximal in modulus among all off-diagonal entries of the matrix $bf(A)_(k - 1)$. The total number of off-diagonal entries is $n^2 - n$. Therefore
@@ -302,7 +507,7 @@ In fact, the very same method of rotations allows us to obtain a more general th
   $ bf(A)_k = bf(P)_k^T bf(A) bf(P)_k, quad k = 1, 2, ..., $
   where for all $k$ the matrices $bf(P)_k = (p_(i j)^((k)))$ are orthogonal (as products of orthogonal matrices).
 
-  For any fixed $i, j$, the sequences $a_(i j)^((k)), p_(i j)^((k))$ are bounded. By the lemma on bounded sequences, there exists a sequence of indices $k_1 < k_2 < ...$ such that each of the subsequences $a_(i j)^((k_l)), p_(i j)^((k_l))$ is convergent. Note that $a_(i j)^((k_l)) -> 0$ for $i != j$. Let
+  For any fixed $i, j$, the sequences $a_(i j)^((k)), p_(i j)^((k))$ are bounded. By the lemma on bounded sequences (from finitely many bounded sequences of numbers one can extract convergent subsequences with one and the same sequence of indices; this follows by applying the Bolzano–Weierstrass theorem to the sequences one after another, see Tyrtyshnikov, §20.4), there exists a sequence of indices $k_1 < k_2 < ...$ such that each of the subsequences $a_(i j)^((k_l)), p_(i j)^((k_l))$ is convergent. Note that $a_(i j)^((k_l)) -> 0$ for $i != j$. Let
   $ lim_(l -> infinity) a_(i i)^((k_l)) = lambda_i, quad i = 1, ..., n, quad lim_(l -> infinity) p_(i j)^((k_l)) = p_(i j), quad i, j = 1, ..., n. $
   Introduce the matrices
   $ bf(D) = mat(lambda_1, , ; , dots.down, ; , , lambda_n), quad bf(P) = (p_(i j)). $
@@ -410,18 +615,18 @@ $ bf(D)^* = f(bf(D)) => bf(A)^* = bf(Q) bf(D)^* bf(Q)^* = bf(Q) f(bf(D)) bf(Q)^*
 #subsec("Hermitian Matrices") // Tyrtyshnikov §33.4
 
 
-Recall that a matrix $bf(A)$ is called Hermitian if $bf(A)^* = bf(A)$ (see Tyrtyshnikov, §25.2). Obviously, any Hermitian matrix is normal.
+Recall that a matrix $bf(A)$ is called Hermitian if $bf(A)^* = bf(A)$ (see Tyrtyshnikov, §25.2). A square complex matrix $bf(A)$ is called _normal_ if $bf(A)^* bf(A) = bf(A) bf(A)^*$; obviously, any Hermitian matrix is normal. A matrix is normal if and only if $bf(A) = bf(Q) bf(D) bf(Q)^*$ for some unitary matrix $bf(Q)$ and some diagonal matrix $bf(D) = diag(lambda_1, ..., lambda_n)$, whose diagonal entries are then the eigenvalues of $bf(A)$ (this is proved in Tyrtyshnikov, §33.1, by means of Schur's theorem, §30.8).
 
 #proposition[
   A normal matrix is Hermitian if and only if all of its eigenvalues are real.
 ]
 
 #proof[
-  $bf(A)^* = bf(A) <=> bf(D)^* = bf(D) <=> overline(lambda)_i = lambda_i$, $1 <= i <= n$.
+  Let $bf(A) = bf(Q) bf(D) bf(Q)^*$ as above. Then $bf(A)^* = bf(Q) bf(D)^* bf(Q)^*$, so $bf(A)^* = bf(A) <=> bf(D)^* = bf(D) <=> overline(lambda)_i = lambda_i$, $1 <= i <= n$.
 ]
 
 #remark[
-  For a real matrix $bf(A)$ we have $bf(A)^* = bf(A)^T$, so the real Hermitian matrices are exactly the real symmetric matrices, $bf(A)^T = bf(A)$; by the proposition, their eigenvalues are real. The real symmetric case is the _spectral theorem_ of MA1522: a real square matrix $bf(A)$ is orthogonally diagonalizable, $bf(A) = bf(P) bf(D) bf(P)^T$ with $bf(P)$ orthogonal and $bf(D)$ diagonal, if and only if $bf(A)$ is symmetric. One direction is the theorem on the diagonalization of real symmetric matrices proved above; conversely, $bf(A) = bf(P) bf(D) bf(P)^T$ implies $bf(A)^T = bf(P) bf(D)^T bf(P)^T = bf(P) bf(D) bf(P)^T = bf(A)$.
+  For a real matrix $bf(A)$ we have $bf(A)^* = bf(A)^T$, so the real Hermitian matrices are exactly the real symmetric matrices, $bf(A)^T = bf(A)$; by the proposition, their eigenvalues are real. The real symmetric case is the _spectral theorem_ of MA1522 (stated at the beginning of this section): a real square matrix $bf(A)$ is orthogonally diagonalizable, $bf(A) = bf(P) bf(D) bf(P)^T$ with $bf(P)$ orthogonal and $bf(D)$ diagonal, if and only if $bf(A)$ is symmetric. One direction is the theorem on the diagonalization of real symmetric matrices proved above; conversely, $bf(A) = bf(P) bf(D) bf(P)^T$ implies $bf(A)^T = bf(P) bf(D)^T bf(P)^T = bf(P) bf(D) bf(P)^T = bf(A)$.
 ]
 
 #problem(number: 4)[
@@ -440,7 +645,193 @@ Recall that a matrix $bf(A)$ is called Hermitian if $bf(A)^* = bf(A)$ (see Tyrty
   Hermitian matrices $bf(A), bf(B) in bb(C)^(n times n)$ are such that $bf(A)^2 = bf(A)$ and $bf(B)^2 = bf(B)$. Prove that if $norm(bf(A) - bf(B))_2 < 1$, then $rank(bf(A)) = rank(bf(B))$.
 ]
 
+#subsec("Algorithm for Orthogonal Diagonalization", added: true) // added for MA1522: the algorithm for orthogonal diagonalization (Gram–Schmidt within eigenspaces)
+
+#algorithm(title: "orthogonal diagonalization")[
+  Let $bf(A)$ be a symmetric matrix of order $n$.
+  + Compute and factorize the characteristic polynomial,
+    $ char(bf(A)) = (x - lambda_1)^(r_(lambda_1)) dots.c (x - lambda_k)^(r_(lambda_k)), $
+    with distinct $lambda_1, ..., lambda_k$.
+  + For each $i$, find a basis $S_(lambda_i)$ for the eigenspace $E_(lambda_i)$, the solution space of $(lambda_i bf(I) - bf(A)) bf(x) = bf(0)$.
+  + Apply the Gram–Schmidt process (Section 5.3) to each $S_(lambda_i)$, obtaining an orthonormal basis $T_(lambda_i)$ for $E_(lambda_i)$. Then $T = T_(lambda_1) union dots.c union T_(lambda_k) = {bf(u)_1, ..., bf(u)_n}$ is an orthonormal basis for $bb(R)^n$.
+  + Set $bf(P) = mat(bf(u)_1, dots.c, bf(u)_n)$ and $bf(D) = diag(mu_1, ..., mu_n)$, where $mu_j$ is the eigenvalue associated to $bf(u)_j$. Then $bf(P)$ is orthogonal and $bf(A) = bf(P) bf(D) bf(P)^T$.
+]
+
+#indent The algorithm always succeeds. By the spectral theorem, $bf(A)$ is diagonalizable, so by Section 6.2 its characteristic polynomial splits into linear factors and $dim(E_(lambda_1)) + dots.c + dim(E_(lambda_k)) = n$; hence $T$ consists of $n$ unit vectors. Vectors of $T$ taken from the same $T_(lambda_i)$ are orthogonal by construction, and vectors from different eigenspaces are orthogonal by the theorem at the beginning of this section. An orthonormal set of $n$ vectors in $bb(R)^n$ is a basis.
+
+#example[
+  Let
+  $ bf(A) = mat(0, -2, -1; -2, 3, 2; -1, 2, 0). $
+  A direct computation gives $char(bf(A)) = x^3 - 3 x^2 - 9 x - 5 = (x + 1)^2 (x - 5)$, and
+  $ -bf(I) - bf(A) = mat(-1, 2, 1; 2, -4, -2; 1, -2, -1) stretch(->)^"RREF" mat(1, -2, -1; 0, 0, 0; 0, 0, 0), \
+  E_(-1) = span{mat(2; 1; 0), mat(1; 0; 1)}, $
+  $ 5 bf(I) - bf(A) = mat(5, 2, 1; 2, 2, -2; 1, -2, 5) stretch(->)^"RREF" mat(1, 0, 1; 0, 1, -2; 0, 0, 0), quad E_5 = span{mat(-1; 2; 1)}. $
+  As the theorem predicts, $(-1, 2, 1)^T$ is orthogonal to both basis vectors $bf(s)_1 = (2, 1, 0)^T$ and $bf(s)_2 = (1, 0, 1)^T$ of $E_(-1)$, while these two are not orthogonal to each other. The Gram–Schmidt process in $E_(-1)$ gives $bf(w)_1 = bf(s)_1$ and
+  $ bf(w)_2 = bf(s)_2 - (bf(s)_2 dot bf(w)_1) / norm(bf(w)_1)^2 bf(w)_1 = mat(1; 0; 1) - 2/5 mat(2; 1; 0) = 1/5 mat(1; -2; 5). $
+  Normalizing $bf(w)_1$, $bf(w)_2$ and the eigenvector $(-1, 2, 1)^T$, we obtain $bf(A) = bf(P) bf(D) bf(P)^T$ with
+  $ bf(P) = mat(2 \/ sqrt(5), 1 \/ sqrt(30), -1 \/ sqrt(6); 1 \/ sqrt(5), -2 \/ sqrt(30), 2 \/ sqrt(6); 0, 5 \/ sqrt(30), 1 \/ sqrt(6)), quad bf(D) = mat(-1, 0, 0; 0, -1, 0; 0, 0, 5). $
+]
+
 #sec("6.4", "Application of Diagonalization: Markov Chains")
+
+#subsec("Powers of Diagonalizable Matrices", added: true) // added for MA1522: A^k = P D^k P^(-1), powers of diagonal matrices, eigenvalues of powers (appendix lemma)
+
+#theorem[
+  If $bf(A) = bf(P) bf(B) bf(P)^(-1)$ with an invertible matrix $bf(P)$, then $bf(A)^k = bf(P) bf(B)^k bf(P)^(-1)$ for every positive integer $k$. If, moreover, $bf(A)$ is invertible, this holds for every integer $k$ (with $bf(A)^0 = bf(I)$ and $bf(A)^(-k) = (bf(A)^(-1))^k$).
+]
+
+#proof[
+  By induction on $k$: $bf(A)^(k + 1) = bf(A)^k bf(A) = bf(P) bf(B)^k bf(P)^(-1) bf(P) bf(B) bf(P)^(-1) = bf(P) bf(B)^(k + 1) bf(P)^(-1)$. If $bf(A)$ is invertible, then so is $bf(B) = bf(P)^(-1) bf(A) bf(P)$, and $bf(A)^(-1) = bf(P) bf(B)^(-1) bf(P)^(-1)$; applying the first part to $bf(A)^(-1)$ gives the negative powers, and $k = 0$ is trivial.
+]
+
+#indent The matrix $bf(B)$ need not be diagonal here. When it is, its powers are easy to compute: the product of two diagonal matrices is the diagonal matrix of the products of their diagonal entries, so by induction
+$ diag(d_1, ..., d_n)^k = diag(d_1^k, ..., d_n^k) $
+for every positive integer $k$, and for every integer $k$ if all $d_i != 0$.
+
+#corollary[
+  If $bf(A) = bf(P) diag(mu_1, ..., mu_n) bf(P)^(-1)$, then
+  $ bf(A)^k = bf(P) diag(mu_1^k, ..., mu_n^k) bf(P)^(-1) $
+  for every positive integer $k$, and for every integer $k$ if $bf(A)$ is invertible.
+]
+
+#indent (If $bf(A)$ is invertible, all $mu_i != 0$, since $0$ is not an eigenvalue of $bf(A)$.) Thus once a matrix has been diagonalized, its powers cost no more than the powers of $n$ numbers. In the same spirit:
+
+#proposition[
+  If $bf(A) bf(v) = lambda bf(v)$, then $bf(A)^k bf(v) = lambda^k bf(v)$ for every positive integer $k$: an eigenvector of $bf(A)$ associated to $lambda$ is an eigenvector of $bf(A)^k$ associated to $lambda^k$.
+]
+
+#proof[
+  By induction: $bf(A)^(k + 1) bf(v) = bf(A) (bf(A)^k bf(v)) = lambda^k bf(A) bf(v) = lambda^(k + 1) bf(v)$.
+]
+
+#subsec("Stochastic Matrices and Markov Chains", added: true) // added for MA1522: probability vectors, stochastic matrices, Markov chains, state vectors; long-run behaviour via diagonalization
+
+#definition[
+  A vector $bf(v) = (v_1, ..., v_n)^T in bb(R)^n$ is a _probability vector_ if $v_i >= 0$ for all $i$ and $v_1 + v_2 + dots.c + v_n = 1$. A _stochastic matrix_ is a square matrix whose columns are probability vectors. A _Markov chain_ is a sequence of probability vectors $bf(x)_0, bf(x)_1, bf(x)_2, ...$ together with a stochastic matrix $bf(P)$ such that
+  $ bf(x)_(k + 1) = bf(P) bf(x)_k, quad k = 0, 1, 2, ... $
+]
+
+#indent In applications, a Markov chain describes a system that at each step is in one of $n$ states. The $i$-th entry of the _state vector_ $bf(x)_k$ is the probability that after $k$ steps the system is in state $i$, and the entry $p_(i j)$ of $bf(P)$ is the probability of passing in one step from state $j$ to state $i$. Clearly, $bf(x)_k = bf(P)^k bf(x)_0$.
+
+Let $bf(1) = (1, 1, ..., 1)^T in bb(R)^n$. The sum of the entries of a vector $bf(v)$ is $bf(1)^T bf(v)$, so a square matrix $bf(P)$ with nonnegative entries is stochastic if and only if $bf(1)^T bf(P) = bf(1)^T$, that is, $bf(P)^T bf(1) = bf(1)$.
+
+#proposition[
+  If $bf(P)$ is a stochastic matrix and $bf(v)$ is a probability vector, then $bf(P) bf(v)$ is a probability vector. A product of stochastic matrices of the same order is stochastic; in particular, every power $bf(P)^k$ of a stochastic matrix is stochastic.
+]
+
+#proof[
+  The entries of $bf(P) bf(v)$ are sums of products of nonnegative numbers, and $bf(1)^T (bf(P) bf(v)) = (bf(1)^T bf(P)) bf(v) = bf(1)^T bf(v) = 1$. The $j$-th column of a product $bf(P) bf(Q)$ is $bf(P)$ times the $j$-th column of $bf(Q)$.
+]
+
+#indent Thus a stochastic matrix $bf(P)$ and any probability vector $bf(x)_0$ generate a Markov chain. Its long-run behaviour can often be found by diagonalizing $bf(P)$.
+
+#example[
+  Every working day a commuter travels either by bus (state 1) or by train (state 2). After a day on the bus she takes the bus again the next day with probability $0.9$ and the train with probability $0.1$; after a day on the train she switches to the bus with probability $0.2$ and stays with the train with probability $0.8$. The stochastic matrix of this Markov chain is
+  $ bf(P) = mat(0.9, 0.2; 0.1, 0.8). $
+  Its characteristic polynomial is $char(bf(P)) = x^2 - 1.7 x + 0.7 = (x - 1)(x - 0.7)$; the eigenspaces are $E_1 = span{(2, 1)^T}$ and $E_(0.7) = span{(-1, 1)^T}$, so that
+  $ bf(P) = bf(Q) mat(1, 0; 0, 0.7) bf(Q)^(-1), quad bf(Q) = mat(2, -1; 1, 1), quad bf(Q)^(-1) = 1/3 mat(1, 1; -1, 2), $
+  and by the corollary of the preceding subsection
+  $ bf(P)^k = bf(Q) mat(1, 0; 0, 0.7^k) bf(Q)^(-1) = 1/3 mat(2 + 0.7^k, 2 - 2 dot 0.7^k; 1 - 0.7^k, 1 + 2 dot 0.7^k). $
+  If she takes the train today, $bf(x)_0 = bf(e)_2$, then three days later
+  $ bf(x)_3 = bf(P)^3 bf(e)_2 = 1/3 mat(2 - 2 dot 0.343; 1 + 2 dot 0.343) = mat(0.438; 0.562). $
+  Since $0.7^k -> 0$ as $k -> infinity$, for every probability vector $bf(x)_0 = (a, b)^T$ we get
+  $ bf(P)^k bf(x)_0 -> 1/3 mat(2, 2; 1, 1) mat(a; b) = mat(2 \/ 3; 1 \/ 3) $
+  (because $a + b = 1$): in the long run she takes the bus on two days out of three, whatever she does today. The limit is the probability vector in $E_1$.
+]
+
+#subsec("Equilibrium Vectors", added: true) // added for MA1522: equilibrium (steady-state) vectors, 1 is an eigenvalue of every stochastic matrix, limits of Markov chains, algorithm for computing an equilibrium vector
+
+#definition[
+  An _equilibrium vector_ (or _steady-state vector_) of a stochastic matrix $bf(P)$ is a probability vector $bf(v)$ with $bf(P) bf(v) = bf(v)$, that is, a probability vector that is an eigenvector of $bf(P)$ associated to the eigenvalue $1$.
+]
+
+#proposition[
+  The number $1$ is an eigenvalue of every stochastic matrix $bf(P)$.
+]
+
+#proof[
+  Since $bf(P)^T bf(1) = bf(1)$, the number $1$ is an eigenvalue of $bf(P)^T$, and $bf(P)$ and $bf(P)^T$ have the same eigenvalues (Section 6.1).
+]
+
+#theorem[
+  Let $bf(P)$ be a stochastic matrix and let $bf(x)_(k + 1) = bf(P) bf(x)_k$ be a Markov chain. If the state vectors $bf(x)_k$ converge (entrywise) to a vector $bf(v)$ as $k -> infinity$, then $bf(v)$ is an equilibrium vector of $bf(P)$.
+]
+
+#proof[
+  As limits of nonnegative numbers, the entries of $bf(v)$ are nonnegative, and their sum is the limit of the sums of the entries of $bf(x)_k$, which all equal $1$. Each entry of $bf(P) bf(x)_k$ is a fixed linear combination of the entries of $bf(x)_k$, so $bf(P) bf(v) = lim_(k -> infinity) bf(P) bf(x)_k = lim_(k -> infinity) bf(x)_(k + 1) = bf(v)$.
+]
+
+#proposition[
+  Every stochastic matrix has an equilibrium vector.
+]
+
+#proof[
+  Take any probability vector $bf(x)_0$ and let $bf(y)_m = frac(1, m) (bf(x)_0 + bf(P) bf(x)_0 + dots.c + bf(P)^(m - 1) bf(x)_0)$, $m = 1, 2, ...$ Each $bf(y)_m$ is a probability vector, and
+  $ bf(P) bf(y)_m - bf(y)_m = frac(1, m) (bf(P)^m bf(x)_0 - bf(x)_0) $
+  has all its entries between $-1 \/ m$ and $1 \/ m$. The entries of the vectors $bf(y)_m$ lie in $[0, 1]$; by the Bolzano–Weierstrass theorem, applied to the $n$ coordinates one after another, some subsequence $bf(y)_(m_1), bf(y)_(m_2), ...$ converges to a vector $bf(v)$. As in the preceding proof, $bf(v)$ is a probability vector, and $bf(P) bf(v) - bf(v) = lim_(l -> infinity) (bf(P) bf(y)_(m_l) - bf(y)_(m_l)) = bf(0)$.
+]
+
+#indent An equilibrium vector is therefore found by solving a homogeneous linear system and rescaling.
+
+#algorithm(title: "equilibrium vector")[
+  Let $bf(P)$ be a stochastic matrix of order $n$.
+  + Find a nonzero solution $bf(u) = (u_1, ..., u_n)^T$ of $(bf(I) - bf(P)) bf(x) = bf(0)$ with nonnegative entries, that is, such an eigenvector of $bf(P)$ associated to $1$. If $dim(E_1) = 1$ (as for every regular stochastic matrix, see the next subsection), any nonzero solution will do, after a change of sign if necessary.
+  + Set $bf(v) = (u_1 + dots.c + u_n)^(-1) bf(u)$. Then $bf(v)$ is an equilibrium vector of $bf(P)$.
+]
+
+#indent Indeed, $bf(v) in E_1$ has nonnegative entries, and they add up to $(u_1 + dots.c + u_n) \/ (u_1 + dots.c + u_n) = 1$. When $dim(E_1) = 1$, the line $E_1$ is spanned by an equilibrium vector (one exists by the proposition above), so every nonzero $bf(u) in E_1$ is a nonzero multiple of it and has all its entries $>= 0$ or all $<= 0$; in this case the equilibrium vector is unique, since two probability vectors on one line through $bf(0)$ coincide. Equivalently, an equilibrium vector is a solution with nonnegative entries of the $(n + 1) times n$ linear system
+$ mat(bf(P) - bf(I)_n; bf(1)^T) bf(x) = mat(bf(0); 1), $
+which has exactly one solution when $dim(E_1) = 1$.
+
+#subsec("Regular Stochastic Matrices", added: true) // added for MA1522: regular stochastic matrices; dim(E_1) = 1 for positive stochastic matrices; uniqueness of the equilibrium vector and convergence of Markov chains (appendix)
+
+#definition[
+  A stochastic matrix $bf(P)$ is _regular_ if some power $bf(P)^k$, $k >= 1$, has all its entries positive.
+]
+
+#indent For example, the matrix $bf(P)$ of the commuter example above is regular: already $bf(P)^1$ has positive entries.
+
+#lemma[
+  If all the entries of a stochastic matrix $bf(A) = (a_(i j))_(n times n)$ are positive, then the eigenvalue $1$ of $bf(A)$ has geometric multiplicity $dim(E_1) = 1$.
+]
+
+#proof[
+  By Section 6.1 it suffices to prove this for $bf(A)^T$. Let $bf(A)^T bf(x) = bf(x)$, $bf(x) = (x_1, ..., x_n)^T$, and choose an index $m$ with $x_m = max_i x_i$. The $m$-th entry of the equality $bf(A)^T bf(x) = bf(x)$ reads $a_(1 m) x_1 + dots.c + a_(n m) x_n = x_m$; since $a_(1 m) + dots.c + a_(n m) = 1$, this means
+  $ a_(1 m) (x_m - x_1) + a_(2 m) (x_m - x_2) + dots.c + a_(n m) (x_m - x_n) = 0. $
+  All the terms are nonnegative and all $a_(i m) > 0$, so $x_i = x_m$ for every $i$. Hence the eigenspace of $bf(A)^T$ associated to $1$ is $span{bf(1)}$, of dimension $1$.
+]
+
+#theorem[
+  A regular stochastic matrix $bf(P)$ has a unique equilibrium vector $bf(v)$, and for every probability vector $bf(x)_0$ the Markov chain $bf(x)_(k + 1) = bf(P) bf(x)_k$ converges to $bf(v)$.
+]
+
+#proof[
+  Let $bf(B) = bf(P)^k$ have positive entries. The matrix $bf(B)$ is stochastic as a power of a stochastic matrix, so by the lemma its eigenspace associated to $1$ is a line. Every eigenvector of $bf(P)$ associated to $1$ is an eigenvector of $bf(B)$ associated to $1^k = 1$ (see the subsection on powers of matrices), so for $bf(P)$ we get $1 <= dim(E_1) <= 1$. By the preceding subsection, $bf(P)$ has exactly one equilibrium vector $bf(v)$.
+
+  To prove convergence, use the norm $norm(bf(y))_1 = abs(y_1) + dots.c + abs(y_n)$ on $bb(R)^n$. For a stochastic matrix $bf(Q) = (q_(i j))$ and any $bf(y) in bb(R)^n$,
+  $ norm(bf(Q) bf(y))_1 = sum_(i=1)^n abs(sum_(j=1)^n q_(i j) y_j) <= sum_(j=1)^n (sum_(i=1)^n q_(i j)) abs(y_j) = norm(bf(y))_1, $
+  and $bf(1)^T bf(Q) bf(y) = bf(1)^T bf(y)$, so $bf(Q)$ maps vectors with entry sum $0$ to vectors with entry sum $0$. Let $delta > 0$ be the smallest entry of $bf(B) = (b_(i j))$; since the columns of $bf(B)$ add up to $1$, we have $n delta <= 1$. If $bf(1)^T bf(y) = 0$, then $(bf(B) bf(y))_i = sum_j (b_(i j) - delta) y_j$, where $b_(i j) - delta >= 0$ and $sum_i (b_(i j) - delta) = 1 - n delta$, and the same estimate gives
+  $ norm(bf(B) bf(y))_1 <= (1 - n delta) norm(bf(y))_1. $
+  Now let $bf(x)_0$ be a probability vector and $bf(y) = bf(x)_0 - bf(v)$; then $bf(1)^T bf(y) = 0$ and $bf(x)_m - bf(v) = bf(P)^m bf(x)_0 - bf(P)^m bf(v) = bf(P)^m bf(y)$. Writing $m = q k + s$ with $0 <= s < k$, we obtain
+  $ norm(bf(x)_m - bf(v))_1 = norm(bf(B)^q bf(P)^s bf(y))_1 <= (1 - n delta)^q norm(bf(P)^s bf(y))_1 <= (1 - n delta)^q norm(bf(y))_1, $
+  which tends to $0$ as $m -> infinity$, because $0 <= 1 - n delta < 1$. Hence $bf(x)_m -> bf(v)$.
+]
+
+#indent For the commuter example this explains the limit found there: $(2 \/ 3, 1 \/ 3)^T$ is the equilibrium vector of $bf(P)$, and every Markov chain with this matrix converges to it.
+
+#subsec("Application: Ranking Web Pages", added: true) // added for MA1522: Google PageRank, adjacency matrix, probability transition matrix, ranking by the equilibrium vector
+
+The PageRank algorithm, on which the Google search engine of L. Page and S. Brin (1996) was originally based, ranks a set of web sites by the entries of an equilibrium vector. Its premise is that important sites receive more links from other sites. For sites $s_1, ..., s_n$, the _adjacency matrix_ $bf(A) = (a_(i j))_(n times n)$ has $a_(i j) = 1$ if site $s_j$ has an outgoing link to site $s_i$, and $a_(i j) = 0$ otherwise. The sum of the $i$-th row of $bf(A)$ is the number of links into $s_i$, and the sum of the $j$-th column is the number of links out of $s_j$. Assume that every site links to some other site, and divide each entry of $bf(A)$ by the sum of its column; the result is the _probability transition matrix_
+$ bf(P) = (p_(i j)), quad p_(i j) = a_(i j) / (a_(1 j) + a_(2 j) + dots.c + a_(n j)). $
+It is a stochastic matrix: $p_(i j)$ is the probability that a surfer who clicks a random link on $s_j$ arrives at $s_i$, and $bf(P)^k bf(x)_0$ describes where a random surfer is after $k$ clicks. If $bf(P)$ is regular, these probabilities converge, from any starting distribution $bf(x)_0$, to the unique equilibrium vector of $bf(P)$, which may also be read as the share of all surfers visiting each site; the sites are ranked by its entries.
+
+#example[
+  Let $s_1$ link to $s_2$ and $s_3$; $s_2$ to $s_3$ and $s_4$; $s_3$ to $s_1$; and $s_4$ to $s_1$ and $s_3$. Then
+  $ bf(A) = mat(0, 0, 1, 1; 1, 0, 0, 0; 1, 1, 0, 1; 0, 1, 0, 0), quad bf(P) = mat(0, 0, 1, 1/2; 1/2, 0, 0, 0; 1/2, 1/2, 0, 1/2; 0, 1/2, 0, 0). $
+  A surfer starting at $s_4$ has the state vectors $bf(x)_1 = bf(P) bf(e)_4 = (1/2, 0, 1/2, 0)^T$ and $bf(x)_2 = bf(P) bf(x)_1 = (1/2, 1/4, 1/4, 0)^T$. One checks that all the entries of $bf(P)^5$ are positive, so $bf(P)$ is regular. Next,
+  $ bf(I) - bf(P) = mat(1, 0, -1, -1/2; -1/2, 1, 0, 0; -1/2, -1/2, 1, -1/2; 0, -1/2, 0, 1) stretch(->)^"RREF" mat(1, 0, 0, -4; 0, 1, 0, -2; 0, 0, 1, -7/2; 0, 0, 0, 0), $
+  so $E_1$ is spanned by $bf(u) = (8, 4, 7, 2)^T$, and the equilibrium vector is $bf(v) = frac(1, 21) (8, 4, 7, 2)^T$. The sites are ranked $s_1, s_3, s_2, s_4$. Note that $s_3$ receives the most links, yet $s_1$ comes first: the single link out of $s_3$ passes all of its weight to $s_1$.
+]
 
 #subsec("Spectral Radius", beyond: true) // Tyrtyshnikov §30.7
 
@@ -551,7 +942,7 @@ The decomposition $(2)$ is called the _singular value decomposition_ of the matr
 ]
 
 #proof[
-  The case $bf(A) = bf(0)$ is trivial, so we shall assume that $bf(A) != bf(0)$. Set $sigma_1 = norm(bf(A))_2 = sup_(bf(x) != bf(0)) norm(bf(A) bf(x)) \/ norm(bf(x))$. By the compactness of the unit sphere in $bb(C)^n$, the continuity of the norm, and Weierstrass's theorem, there exists a vector $bf(x)_1$ such that $norm(bf(A) bf(x)_1) = norm(bf(A))_2$ and $norm(bf(x)_1) = 1$. Let $bf(y)_1 = bf(A) bf(x)_1 \/ norm(bf(A) bf(x)_1)$. Thus,
+  The case $bf(A) = bf(0)$ is trivial, so we shall assume that $bf(A) != bf(0)$. Set $sigma_1 = norm(bf(A))_2 = sup_(bf(x) != bf(0)) norm(bf(A) bf(x)) \/ norm(bf(x))$ (the matrix norm induced by the length of vectors, called the _spectral norm_; see Tyrtyshnikov, §27.3). By the compactness of the unit sphere in $bb(C)^n$, the continuity of the norm, and Weierstrass's theorem, there exists a vector $bf(x)_1$ such that $norm(bf(A) bf(x)_1) = norm(bf(A))_2$ and $norm(bf(x)_1) = 1$. Let $bf(y)_1 = bf(A) bf(x)_1 \/ norm(bf(A) bf(x)_1)$. Thus,
   #eq($ bf(A) bf(x)_1 = sigma_1 bf(y)_1, quad norm(bf(x)_1) = norm(bf(y)_1). $, $(3)$)
   Let us complete $bf(x)_1$ and $bf(y)_1$ to orthonormal bases and form the unitary matrices
   $ bf(U)_1 = mat(bf(y)_1, bf(y)_2, dots.c, bf(y)_m), quad bf(V)_1 = mat(bf(x)_1, bf(x)_2, dots.c, bf(x)_n). $
@@ -584,12 +975,13 @@ The decomposition $(2)$ is called the _singular value decomposition_ of the matr
 #indent Now it is clear that the largest singular value of a matrix and the smallest singular value of an invertible matrix are uniquely determined. The same holds for the entire set of singular values, but we shall prove this later. The singular value decomposition and its important consequences deserve a more thorough discussion, to which we shall return later in this section.
 
 #problem(number: 3)[
-  Prove the inequality $norm(bf(A))_F <= sqrt(rank(bf(A))) norm(bf(A))_2$.
+  Prove the inequality $norm(bf(A))_F <= sqrt(rank(bf(A))) norm(bf(A))_2$, where $norm(bf(A))_F = (sum_(i, j) abs(a_(i j))^2)^(1 \/ 2)$ is the _Frobenius norm_.
 ]
 
 #problem(number: 4)[
   Prove that
-  $ max_(bf(A) in bb(C)^(n times n), bf(A) != bf(0)) norm(bf(A))_2 / norm(bf(A))_1 = sqrt(n). $
+  $ max_(bf(A) in bb(C)^(n times n), bf(A) != bf(0)) norm(bf(A))_2 / norm(bf(A))_1 = sqrt(n), $
+  where $norm(bf(A))_1 = max_j sum_i abs(a_(i j))$ is the matrix norm induced by the vector norm $norm(bf(x))_1 = sum_i abs(x_i)$ (see Tyrtyshnikov, §27.3).
 ]
 
 #problem(number: 5)[
@@ -662,7 +1054,7 @@ $ bf(A) = sum_(k=1)^n sigma_k bf(u)_k bf(v)_k^*, quad bf(A)^(-1) = sum_(k=1)^n 1
 
 #indent 7) _Let_ $sigma_1 >= ... >= sigma_n$ _be the singular values of an invertible matrix_ $bf(A)$. _Then_ $sigma_n^(-1) >= ... >= sigma_1^(-1)$ _are the singular values of the matrix_ $bf(A)^(-1)$.
 
-8) $norm(bf(A))_2 = sigma_1$, $norm(bf(A))_F = sqrt(sigma_1^2 + ... + sigma_r^2)$.
+8) $norm(bf(A))_2 = sigma_1$, $norm(bf(A))_F = sqrt(sigma_1^2 + ... + sigma_r^2)$ (for the spectral and Frobenius norms, see the subsection "Singular Value Decomposition of a Matrix").
 
 #proof[
   The spectral and Frobenius norms are unitarily invariant. Therefore $norm(bf(A))_2 = norm(bf(Sigma))_2$ and $norm(bf(A))_F = norm(bf(Sigma))_F$. Obviously, $norm(bf(Sigma) bf(x)) <= sigma_1 norm(bf(x))$; equality is attained if $bf(x)$ has 1 in the first position and 0 in the remaining ones.
@@ -678,10 +1070,53 @@ $ bf(A) = sum_(k=1)^n sigma_k bf(u)_k bf(v)_k^*, quad bf(A)^(-1) = sum_(k=1)^n 1
   Let $bf(A) = bf(A)^T in bb(C)^(n times n)$. Prove that the matrix $bf(A)$ possesses a singular value decomposition $bf(A) = bf(U) bf(Sigma) bf(V)^*$ with the additional condition $bf(V)^* = bf(U)^T$.
 ]
 
+#subsec("Computing a Singular Value Decomposition", added: true) // added for MA1522: SVD in the course's block form, u_i = (1/sigma_i) A v_i is an orthonormal basis for Col(A) and rank(A) = r, the algorithm for an SVD
+
+For a real $m times n$ matrix $bf(A)$ the singular value decomposition is written in MA1522 as $bf(A) = bf(U) bf(Sigma) bf(V)^T$, with $bf(U)$ an orthogonal matrix of order $m$, $bf(V)$ an orthogonal matrix of order $n$, and
+$ bf(Sigma) = mat(bf(D), bf(0)_(r times (n - r)); bf(0)_((m - r) times r), bf(0)_((m - r) times (n - r))), \
+  bf(D) = diag(sigma_1, ..., sigma_r), quad sigma_1 >= sigma_2 >= dots.c >= sigma_r > 0, $
+where $sigma_1, ..., sigma_r$ are the nonzero singular values of $bf(A)$ and $r = rank(bf(A))$. The construction in the subsection "Singular Values and Singular Vectors" produces exactly such a decomposition. We restate its key step for real matrices, with a proof.
+
+#lemma[
+  Let ${bf(v)_1, ..., bf(v)_n}$ be an orthonormal basis for $bb(R)^n$ consisting of eigenvectors of $bf(A)^T bf(A)$, with eigenvalues $mu_1 >= dots.c >= mu_r > 0 = mu_(r + 1) = dots.c = mu_n$. Let $sigma_i = sqrt(mu_i)$ and $bf(u)_i = frac(1, sigma_i) bf(A) bf(v)_i$, $i = 1, ..., r$. Then ${bf(u)_1, ..., bf(u)_r}$ is an orthonormal basis for $Col(bf(A))$; in particular, $rank(bf(A)) = r$.
+]
+
+#proof[
+  First, $norm(bf(A) bf(v)_i)^2 = bf(v)_i^T bf(A)^T bf(A) bf(v)_i = mu_i bf(v)_i^T bf(v)_i = mu_i$ for every $i$; this shows once more that the eigenvalues of $bf(A)^T bf(A)$ are nonnegative, and that $bf(A) bf(v)_i = bf(0)$ for $i > r$. For $i, j <= r$,
+  $ bf(u)_i dot bf(u)_j = frac(1, sigma_i sigma_j) bf(v)_i^T bf(A)^T bf(A) bf(v)_j = frac(mu_j, sigma_i sigma_j) (bf(v)_i dot bf(v)_j), $
+  which is $0$ for $i != j$ and $1$ for $i = j$. Each $bf(u)_i$ lies in $Col(bf(A))$. Conversely, every vector of $Col(bf(A))$ has the form $bf(A) bf(x)$; writing $bf(x) = c_1 bf(v)_1 + dots.c + c_n bf(v)_n$, we get $bf(A) bf(x) = c_1 sigma_1 bf(u)_1 + dots.c + c_r sigma_r bf(u)_r$. Thus the orthonormal, and hence linearly independent, set ${bf(u)_1, ..., bf(u)_r}$ spans $Col(bf(A))$.
+]
+
+#indent Extending ${bf(u)_1, ..., bf(u)_r}$ to an orthonormal basis ${bf(u)_1, ..., bf(u)_m}$ for $bb(R)^m$ (Section 5.3) and setting $bf(U) = mat(bf(u)_1, dots.c, bf(u)_m)$, $bf(V) = mat(bf(v)_1, dots.c, bf(v)_n)$, we get
+$ bf(A) bf(V) = mat(sigma_1 bf(u)_1, dots.c, sigma_r bf(u)_r, bf(0), dots.c, bf(0)) = bf(U) bf(Sigma), $
+that is, $bf(A) = bf(U) bf(Sigma) bf(V)^T$. This gives the following procedure.
+
+#algorithm(title: "singular value decomposition")[
+  Let $bf(A)$ be a real $m times n$ matrix.
+  + Find the eigenvalues of the symmetric matrix $bf(A)^T bf(A)$ and list them, with multiplicities, in decreasing order: $mu_1 >= dots.c >= mu_r > 0 = mu_(r + 1) = dots.c = mu_n$; then $r = rank(bf(A))$. Set $sigma_i = sqrt(mu_i)$, $i = 1, ..., r$, and form $bf(Sigma)$ as above.
+  + Orthogonally diagonalize $bf(A)^T bf(A)$ (Section 6.3): find an orthonormal basis for each eigenspace (including $E_0$, if $r < n$), and let $bf(v)_i$ be the vector associated to $mu_i$, $i = 1, ..., n$. Set $bf(V) = mat(bf(v)_1, dots.c, bf(v)_n)$.
+  + Set $bf(u)_i = frac(1, sigma_i) bf(A) bf(v)_i$, $i = 1, ..., r$. If $r < m$, extend ${bf(u)_1, ..., bf(u)_r}$ to an orthonormal basis for $bb(R)^m$: find a basis for the solution space of $mat(bf(u)_1, dots.c, bf(u)_r)^T bf(x) = bf(0)$ and apply the Gram–Schmidt process to it. Set $bf(U) = mat(bf(u)_1, dots.c, bf(u)_m)$.
+
+  Then $bf(A) = bf(U) bf(Sigma) bf(V)^T$.
+]
+
+#example[
+  Let
+  $ bf(A) = mat(1, 1; 0, 1; 1, 0), quad "so that" quad bf(A)^T bf(A) = mat(2, 1; 1, 2), quad char(bf(A)^T bf(A)) = (x - 3)(x - 1). $
+  Thus $mu_1 = 3$, $mu_2 = 1$, $r = 2$, and
+  $ bf(Sigma) = mat(sqrt(3), 0; 0, 1; 0, 0). $
+  From
+  $ 3 bf(I) - bf(A)^T bf(A) = mat(1, -1; -1, 1), quad bf(I) - bf(A)^T bf(A) = mat(-1, -1; -1, -1) $
+  we obtain the unit eigenvectors $bf(v)_1 = frac(1, sqrt(2)) (1, 1)^T$ and $bf(v)_2 = frac(1, sqrt(2)) (-1, 1)^T$. Next, since $sigma_1 = sqrt(3)$ and $sigma_2 = 1$,
+  $ bf(u)_1 = frac(1, sqrt(3)) bf(A) bf(v)_1 = frac(1, sqrt(6)) mat(2; 1; 1), quad bf(u)_2 = bf(A) bf(v)_2 = frac(1, sqrt(2)) mat(0; 1; -1). $
+  The system $mat(bf(u)_1, bf(u)_2)^T bf(x) = bf(0)$ is equivalent to $2 x_1 + x_2 + x_3 = 0$, $x_2 - x_3 = 0$, whose solution space is $span{(-1, 1, 1)^T}$; normalizing, $bf(u)_3 = frac(1, sqrt(3)) (-1, 1, 1)^T$. Hence
+  $ mat(1, 1; 0, 1; 1, 0) = mat(2 \/ sqrt(6), 0, -1 \/ sqrt(3); 1 \/ sqrt(6), 1 \/ sqrt(2), 1 \/ sqrt(3); 1 \/ sqrt(6), -1 \/ sqrt(2), 1 \/ sqrt(3)) mat(sqrt(3), 0; 0, 1; 0, 0) mat(1 \/ sqrt(2), 1 \/ sqrt(2); -1 \/ sqrt(2), 1 \/ sqrt(2)). $
+]
+
 #subsec("Best Low-Rank Approximations", beyond: true) // Tyrtyshnikov §35.7
 
 
-In each matrix $sigma_k bf(u)_k bf(v)_k^*$, the entry in position $(i, j)$ may be regarded as a function of $i$ and $j$ with separated discrete variables $i$ and $j$: $f(i, j) = f_1(i) f_2(j)$. Thus, writing $bf(A)$ in the form $bf(A) = sum_(i=1)^r sigma_i bf(u)_i bf(v)_i^*$ describes a certain special way of separating variables in each term of the sum or, in matrix terminology, a skeleton decomposition of the matrix $bf(A)$—moreover, with the important additional property of orthonormality of the sets ${bf(u)_1, ..., bf(u)_r}$ and ${bf(v)_1, ..., bf(v)_r}$.
+In each matrix $sigma_k bf(u)_k bf(v)_k^*$, the entry in position $(i, j)$ may be regarded as a function of $i$ and $j$ with separated discrete variables $i$ and $j$: $f(i, j) = f_1(i) f_2(j)$. Thus, writing $bf(A)$ in the form $bf(A) = sum_(i=1)^r sigma_i bf(u)_i bf(v)_i^*$ describes a certain special way of separating variables in each term of the sum or, in matrix terminology, a skeleton decomposition of the matrix $bf(A)$ (see Tyrtyshnikov, §7.2)—moreover, with the important additional property of orthonormality of the sets ${bf(u)_1, ..., bf(u)_r}$ and ${bf(v)_1, ..., bf(v)_r}$.
 
 The special value and breadth of applications of the singular value decomposition are due above all to the fact that it provides a simple and reliable mechanism for eliminating the "least significant information" from a matrix—by approximating it with a sum of a _smaller number of summands_ with separated variables $i$ and $j$. What is at issue is finding an element of best approximation for a given matrix $bf(A)$ on a rather complicated set—the set of matrices whose rank is bounded by a given number.
 

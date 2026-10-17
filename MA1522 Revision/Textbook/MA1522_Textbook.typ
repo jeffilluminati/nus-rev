@@ -9,6 +9,10 @@
 #show: ma-setup
 #set document(title: "Matrix Analysis and Linear Algebra: MA1522 Edition")
 
+// Whether the book's subsections beyond the MA1522 syllabus (tagged `beyond: true`) are printed.
+#let show-beyond = false
+#let chapter-body(body) = if show-beyond { body } else { filter-beyond(body) }
+
 #page(header: none, footer: none)[
   #set par(first-line-indent: 0pt, justify: false)
   #v(2.6cm)
@@ -30,8 +34,9 @@
     A reading companion to the course, not a replacement for its slides. The sections of
     Tyrtyshnikov's _Matrix Analysis and Linear Algebra_ that bear on the MA1522 syllabus are
     arranged under the course's chapters and sections and rewritten in the course's notation
-    and terminology. Material that goes beyond the syllabus is kept and marked
-    #beyond-tag. Each subsection notes in the source the section of the book it comes from.
+    and terminology. Course topics the book does not treat are supplied in subsections marked
+    #added-tag. #if show-beyond [Material that goes beyond the syllabus is kept and marked #beyond-tag.] else [The book's material beyond the syllabus is omitted from this printing.]
+    Each subsection notes in the source the section of the book it comes from.
   ]
   #v(1.2cm)
 ]
@@ -81,12 +86,12 @@ The notation follows the MA1522 lecture slides.
 }
 
 #v(0.6em)
-Material marked #beyond-tag works over the complex numbers or in general vector spaces. There $bf(A)^*$ denotes the conjugate transpose ($bf(A)^* = bf(A)^T$ for real matrices), and $ip(bf(u), bf(v))$ a general inner product, which for real column vectors is $bf(u) dot bf(v) = bf(v)^T bf(u)$.
+Some passages work over the complex numbers or in general vector spaces. There $bf(A)^*$ denotes the conjugate transpose ($bf(A)^* = bf(A)^T$ for real matrices), and $ip(bf(u), bf(v))$ a general inner product, which for real column vectors is $bf(u) dot bf(v) = bf(v)^T bf(u)$.
 
-#include "ma1522/ch1.typ"
-#include "ma1522/ch2.typ"
-#include "ma1522/ch3.typ"
-#include "ma1522/ch4.typ"
-#include "ma1522/ch5.typ"
-#include "ma1522/ch6.typ"
-#include "ma1522/ch7.typ"
+#chapter-body(include "ma1522/ch1.typ")
+#chapter-body(include "ma1522/ch2.typ")
+#chapter-body(include "ma1522/ch3.typ")
+#chapter-body(include "ma1522/ch4.typ")
+#chapter-body(include "ma1522/ch5.typ")
+#chapter-body(include "ma1522/ch6.typ")
+#chapter-body(include "ma1522/ch7.typ")

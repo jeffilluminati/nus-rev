@@ -4,6 +4,44 @@
 
 #sec("3.1", "Euclidean Vector Spaces")
 
+#subsec([Vectors in $bb(R)^n$], added: true) // added for MA1522: n-vectors, the Euclidean n-space, geometric interpretation, vector algebra in R^n
+
+An _$n$-vector_ (or simply a _vector_) is an ordered collection of $n$ real numbers written as a column,
+$ bf(v) = mat(v_1; v_2; dots.v; v_n), quad v_1, ..., v_n in bb(R), $
+that is, a matrix of size $n times 1$ (Section 1.1); the number $v_i$ is the _$i$-th coordinate_ (or entry) of $bf(v)$. In running text we write $bf(v) = (v_1, ..., v_n)^T$.
+
+#definition[
+  The _Euclidean $n$-space_ $bb(R)^n$ is the set of all $n$-vectors:
+  $ bb(R)^n = {(v_1, v_2, ..., v_n)^T | v_1, v_2, ..., v_n in bb(R)}. $
+]
+
+#indent Vectors are added and multiplied by real numbers entrywise, as $n times 1$ matrices (Section 2.2):
+$ bf(u) + bf(v) = (u_1 + v_1, ..., u_n + v_n)^T, quad c bf(u) = (c u_1, ..., c u_n)^T. $
+The _zero vector_ is $bf(0) = (0, ..., 0)^T$, the _negative_ of $bf(v)$ is $-bf(v) = (-1) bf(v)$, and $bf(u) - bf(v) = bf(u) + (-bf(v))$.
+
+For $n = 2$ and $n = 3$ a vector $bf(v)$ has a double geometric meaning: it is the point with coordinates $v_1, ..., v_n$ in a Cartesian coordinate system, and it is the arrow (directed segment) from the origin $O$ to that point. Thus $(1, 1, 1)^T in bb(R)^3$ is both the point $(1, 1, 1)$ and the arrow from $O$ to it. The sum $bf(u) + bf(v)$ is then the arrow obtained by placing the tail of $bf(v)$ at the head of $bf(u)$, and $c bf(u)$ is the arrow $bf(u)$ stretched by the factor $abs(c)$ and reversed when $c < 0$. These are the geometric operations on free vectors described in the next subsection; in Cartesian coordinates they act entrywise, as above.
+
+#theorem(title: [Vector algebra in $bb(R)^n$])[
+  Let $bf(u), bf(v), bf(w) in bb(R)^n$ and $a, b in bb(R)$. Then:
+  #set enum(numbering: "(i)")
+  + $bf(u) + bf(v) in bb(R)^n$;
+  + $bf(u) + bf(v) = bf(v) + bf(u)$ (commutativity);
+  + $bf(u) + (bf(v) + bf(w)) = (bf(u) + bf(v)) + bf(w)$ (associativity);
+  + $bf(0) + bf(v) = bf(v)$ (zero vector);
+  + $-bf(v) in bb(R)^n$ and $bf(v) - bf(v) = bf(0)$ (negative);
+  + $a bf(v) in bb(R)^n$;
+  + $a (bf(u) + bf(v)) = a bf(u) + a bf(v)$ (distributivity);
+  + $(a + b) bf(u) = a bf(u) + b bf(u)$ (distributivity);
+  + $(a b) bf(u) = a (b bf(u))$ (associativity of scalar multiplication);
+  + if $a bf(u) = bf(0)$, then $a = 0$ or $bf(u) = bf(0)$.
+]
+
+#proof[
+  Since the operations act entrywise, (i)–(ix) reduce to the corresponding laws for real numbers in each coordinate; for instance, the $i$-th entry of $a (bf(u) + bf(v))$ is $a (u_i + v_i) = a u_i + a v_i$, the $i$-th entry of $a bf(u) + a bf(v)$. For (x), if $a != 0$, then $a u_i = 0$ gives $u_i = 0$ for every $i$.
+]
+
+#indent Together with the obvious rule $1 bf(u) = bf(u)$, properties (i)–(ix) are exactly the axioms of a vector space listed in the subsection "Abstract Vector Spaces" below. Hence $bb(R)^n$ is a vector space, and property (x) is also a consequence of the axioms (Proposition 4 there).
+
 #subsec("Linear Operations on Vectors") // Tyrtyshnikov §9.5
 
 
@@ -178,7 +216,7 @@ $ norm(bf(a)) = sqrt(bf(a) dot bf(a)), quad cos theta = (bf(a) dot bf(b)) / (nor
 
 #indent For example, relying on $(7)$, one can introduce length and angle in this way for vectors $bf(a), bf(b) in bb(R)^n$. Here it is important that
 $ |bf(a) dot bf(b)| <= sqrt(bf(a) dot bf(a)) sqrt(bf(b) dot bf(b)). $
-This inequality (known as the Cauchy–Bunyakovsky–Schwarz inequality) is easily deduced from $(7)$, but in fact it holds for all conceivable ways of specifying an inner product—we shall discuss this in detail later in this section.
+This inequality (known as the Cauchy–Bunyakovsky–Schwarz inequality) is easily deduced from $(7)$, but in fact it holds for all conceivable ways of specifying an inner product. A short proof for the dot product on $bb(R)^n$ is given in the subsection "Norm, Distance and Angle in $bb(R)^n$" below; for a general inner product, see Tyrtyshnikov, §24.4.
 
 #subsec("Euclidean Space") // Tyrtyshnikov §24.1
 
@@ -201,6 +239,60 @@ It is called the _natural_ inner product on $bb(R)^n$; this is the dot product.
 However, on $bb(R)^n$ an inner product can also be introduced in many other ways: for example, if we fix numbers $lambda_1, ..., lambda_n > 0$, then the expression
 $ ip(bf(x), bf(y)) = sum_(i=1)^n lambda_i x_i y_i = bf(y)^T mat(lambda_1, , 0; , dots.down, ; 0, , lambda_n) bf(x) $
 possesses properties (i)–(iv) and, consequently, defines an inner product.
+
+#subsec([Norm, Distance and Angle in $bb(R)^n$], added: true) // added for MA1522: norm in R^2, R^3, R^n; properties of dot product and norm; unit vectors and normalizing; distance; angle
+
+In $bb(R)^n$ we always use the dot product $(7)$: $bf(u) dot bf(v) = u_1 v_1 + ... + u_n v_n = bf(u)^T bf(v)$.
+
+By Pythagoras' theorem, the point $bf(u) = (x, y)^T$ of the plane lies at distance $sqrt(x^2 + y^2)$ from the origin. In space, the point $bf(v) = (x, y, z)^T$ lies above (or below) the point $(x, y, 0)$, whose distance from the origin is $sqrt(x^2 + y^2)$; applying Pythagoras' theorem once more, now in a vertical right triangle, we find the distance $sqrt((sqrt(x^2 + y^2))^2 + z^2) = sqrt(x^2 + y^2 + z^2)$. In both cases the distance from the origin equals $sqrt(bf(u) dot bf(u))$, which suggests the general definition.
+
+#definition[
+  The _norm_ (also _length_ or _magnitude_) of a vector $bf(u) = (u_1, ..., u_n)^T in bb(R)^n$ is
+  $ norm(bf(u)) = sqrt(bf(u) dot bf(u)) = sqrt(u_1^2 + u_2^2 + ... + u_n^2). $
+]
+
+#theorem[
+  For all $bf(u), bf(v), bf(w) in bb(R)^n$ and $a, b, c in bb(R)$:
+  #set enum(numbering: "(i)")
+  + $bf(u) dot bf(v) = bf(v) dot bf(u)$ (symmetry);
+  + $(c bf(u)) dot bf(v) = c (bf(u) dot bf(v)) = bf(u) dot (c bf(v))$;
+  + $bf(u) dot (a bf(v) + b bf(w)) = a (bf(u) dot bf(v)) + b (bf(u) dot bf(w))$ (distributivity);
+  + $bf(u) dot bf(u) >= 0$, and $bf(u) dot bf(u) = 0$ if and only if $bf(u) = bf(0)$ (positive definiteness);
+  + $norm(c bf(u)) = abs(c) norm(bf(u))$.
+]
+
+#proof[
+  Properties (i)–(iii) follow at once from $bf(u) dot bf(v) = sum_i u_i v_i$; for example, $bf(u) dot (a bf(v) + b bf(w)) = sum_i u_i (a v_i + b w_i) = a sum_i u_i v_i + b sum_i u_i w_i$. (iv) The number $bf(u) dot bf(u) = u_1^2 + ... + u_n^2$ is a sum of nonnegative terms; it vanishes if and only if every $u_i^2 = 0$, that is, $bf(u) = bf(0)$. (v) By (ii), $norm(c bf(u))^2 = (c bf(u)) dot (c bf(u)) = c^2 (bf(u) dot bf(u))$, and $sqrt(c^2) = abs(c)$.
+]
+
+#indent Thus the dot product satisfies the axioms (i)–(iv) of an inner product given in the preceding subsection, and $bb(R)^n$ with the dot product is a Euclidean space.
+
+#definition[
+  A vector $bf(u) in bb(R)^n$ is a _unit vector_ if $norm(bf(u)) = 1$.
+]
+
+#indent Every column $bf(e)_i$ of the identity matrix $bf(I)_n$ is a unit vector, and so is $1/2 (1, 1, 1, 1)^T in bb(R)^4$. If $bf(u) != bf(0)$, then $bf(u) \/ norm(bf(u))$ (that is, $(1 \/ norm(bf(u))) bf(u)$) is a unit vector pointing in the same direction as $bf(u)$, since by property (v) its norm is $norm(bf(u)) \/ norm(bf(u)) = 1$. Passing from $bf(u)$ to $bf(u) \/ norm(bf(u))$ is called _normalizing_ $bf(u)$. For example, $bf(u) = (2, -1, 2)^T$ has $norm(bf(u)) = sqrt(4 + 1 + 4) = 3$, and normalizing it gives the unit vector $(2/3, -1/3, 2/3)^T$.
+
+By Pythagoras' theorem, the distance between the points $(x_1, y_1)$ and $(x_2, y_2)$ of the plane is $sqrt((x_1 - x_2)^2 + (y_1 - y_2)^2)$; in space a third term $(z_1 - z_2)^2$ appears under the root. In both cases the distance is the norm of the difference of the two vectors.
+
+#definition[
+  The _distance_ between vectors $bf(u), bf(v) in bb(R)^n$ is $d(bf(u), bf(v)) = norm(bf(u) - bf(v))$.
+]
+
+#indent For example, if $bf(u) = (1, 0, 2, -1)^T$ and $bf(v) = (0, 2, 2, 1)^T$, then $bf(u) - bf(v) = (1, -2, 0, -2)^T$ and $d(bf(u), bf(v)) = sqrt(1 + 4 + 0 + 4) = 3$.
+
+To define angles we need the Cauchy–Bunyakovsky–Schwarz inequality, which in $bb(R)^n$ has a two-line proof. Let $bf(v) != bf(0)$. For every real $t$, by the theorem above,
+$ 0 <= norm(bf(u) + t bf(v))^2 = norm(bf(u))^2 + 2 t (bf(u) dot bf(v)) + t^2 norm(bf(v))^2, $
+so the discriminant of this quadratic polynomial in $t$ is nonpositive: $(bf(u) dot bf(v))^2 <= norm(bf(u))^2 norm(bf(v))^2$. Hence
+$ abs(bf(u) dot bf(v)) <= norm(bf(u)) norm(bf(v)) quad "for all" bf(u), bf(v) in bb(R)^n $
+(for $bf(v) = bf(0)$ both sides vanish).
+
+#definition[
+  The _angle_ between nonzero vectors $bf(u), bf(v) in bb(R)^n$ is the number $theta$, $0 <= theta <= pi$, such that
+  $ cos theta = (bf(u) dot bf(v)) / (norm(bf(u)) norm(bf(v))). $
+]
+
+#indent By the inequality just proved, the right-hand side lies in $[-1, 1]$, so $theta$ exists and is unique. For $n = 2, 3$ it is the usual angle between the arrows $bf(u)$ and $bf(v)$: by formula $(6)$ (and Remark 2 for the plane), the geometric dot product $norm(bf(u)) norm(bf(v)) cos theta$ of the first subsection equals $bf(u) dot bf(v)$ in Cartesian coordinates. For example, for $(1, 1, 0)^T$ and $(1, 0, 1)^T$ we get $cos theta = 1 \/ (sqrt(2) sqrt(2)) = 1/2$, so $theta = pi \/ 3$; and since $(1, 2, -1)^T dot (3, -1, 1)^T = 0$, the angle between these two vectors is $pi \/ 2$: they are orthogonal (see Section 5.1).
 
 #subsec("Length of a Vector", beyond: true) // Tyrtyshnikov §24.4
 
@@ -252,7 +344,98 @@ is called the _length_ of the vector $bf(x) in V$.
 
 #sec("3.3", "Linear Combinations and Linear Spans")
 
-#see-section("2.3", [Linear Combinations])
+#see-section("2.3", [The definitions of a linear combination and of the linear span $span{bf(u)_1, ..., bf(u)_k}$, and the fact that $bf(A) bf(x) = bf(b)$ is consistent if and only if $bf(b)$ lies in the span of the columns of $bf(A)$,])
+
+#subsec("Checking Linear Combinations and Spanning Sets", added: true) // added for MA1522: algorithm to check for a linear combination, when span(S) = R^n and the algorithm to check it, standard basis
+
+Throughout, $S = {bf(u)_1, ..., bf(u)_k}$ is a set of vectors in $bb(R)^n$, $span(S) = span{bf(u)_1, ..., bf(u)_k}$, and $bf(A) = mat(bf(u)_1, bf(u)_2, dots.c, bf(u)_k)$ is the $n times k$ matrix with these columns. Since $bf(A) bf(c) = c_1 bf(u)_1 + ... + c_k bf(u)_k$ for $bf(c) = (c_1, ..., c_k)^T$ (Section 2.3), the vector equation $c_1 bf(u)_1 + ... + c_k bf(u)_k = bf(v)$ is the same as the linear system $bf(A) bf(c) = bf(v)$.
+
+#algorithm(title: [membership in $span(S)$])[
+  + Form the augmented matrix $(bf(A) | bf(v)) = mat(bf(u)_1, dots.c, bf(u)_k, bf(v), augment: #(-1))$ and reduce it to row-echelon (or reduced row-echelon) form.
+  + If the last column is a pivot column, the system is inconsistent and $bf(v) in.not span(S)$.
+  + Otherwise $bf(v) in span(S)$, and the solutions $(c_1, ..., c_k)^T$ of $bf(A) bf(c) = bf(v)$ are exactly the coefficients with $bf(v) = c_1 bf(u)_1 + ... + c_k bf(u)_k$; they are unique if and only if the system has a unique solution.
+]
+
+#indent The algorithm combines the fact just recalled with the consistency criterion of Section 1.4.
+
+#example[
+  Let $bf(u)_1 = (1, 2, 0)^T$, $bf(u)_2 = (0, 1, 1)^T$, $bf(u)_3 = (1, 3, 1)^T$. For $bf(v) = (2, 3, -1)^T$,
+  $ mat(1, 0, 1, 2; 2, 1, 3, 3; 0, 1, 1, -1; augment: #3) stretch(->)^"RREF" mat(1, 0, 1, 2; 0, 1, 1, -1; 0, 0, 0, 0; augment: #3), $
+  so $bf(v) in span{bf(u)_1, bf(u)_2, bf(u)_3}$. The general solution $c_1 = 2 - s$, $c_2 = -1 - s$, $c_3 = s$ ($s in bb(R)$) gives $bf(v) = (2 - s) bf(u)_1 - (1 + s) bf(u)_2 + s bf(u)_3$ for every $s$ (for instance, $bf(v) = 2 bf(u)_1 - bf(u)_2$): here the coefficients are not unique. For an arbitrary vector $(x, y, z)^T$ the operations $R_2 - 2 R_1$ and $R_3 - R_2$ give
+  $ mat(1, 0, 1, x; 2, 1, 3, y; 0, 1, 1, z; augment: #3) -> mat(1, 0, 1, x; 0, 1, 1, y - 2x; 0, 0, 0, 2x - y + z; augment: #3), $
+  so $(x, y, z)^T in span{bf(u)_1, bf(u)_2, bf(u)_3}$ if and only if $2x - y + z = 0$. The span is a plane through the origin, and, for example, $(1, 0, 0)^T$ does not lie in it.
+]
+
+#indent Instead of a single vector $bf(v)$ one may ask whether _every_ vector of $bb(R)^n$ lies in $span(S)$, that is, whether $span(S) = bb(R)^n$.
+
+#theorem[
+  $span(S) = bb(R)^n$ if and only if the reduced row-echelon form of $bf(A) = mat(bf(u)_1, dots.c, bf(u)_k)$ has no zero rows.
+]
+
+#proof[
+  We have $span(S) = bb(R)^n$ if and only if the system $bf(A) bf(x) = bf(v)$ is consistent for every $bf(v) in bb(R)^n$. Let $bf(R)$ be the reduced row-echelon form of $bf(A)$. Then $bf(R) = bf(E) bf(A)$, where $bf(E)$ is an invertible matrix, a product of elementary matrices (Section 1.3), and the same row operations take $(bf(A) | bf(v))$ to $(bf(R) | bf(E) bf(v))$. If $bf(R)$ has no zero rows, every row of $(bf(R) | bf(E) bf(v))$ has its leading entry to the left of the bar, so the last column is not a pivot column and the system is consistent, whatever $bf(v)$ is. If $bf(R)$ has a zero row, then its last row is zero; for $bf(v) = bf(E)^(-1) bf(e)_n$ the matrix $(bf(A) | bf(v))$ reduces to $(bf(R) | bf(e)_n)$, whose last row is $(0, ..., 0 | 1)$. This system is inconsistent, and $bf(v) in.not span(S)$.
+]
+
+#indent Since every row-echelon form of $bf(A)$ has exactly $rank(bf(A))$ nonzero rows (by the proposition of Section 1.2, as row operations do not change the rank, Section 4.2), the condition can also be checked on any row-echelon form, and it means that $rank(bf(A)) = n$.
+
+#corollary[
+  If $k < n$, then $span{bf(u)_1, ..., bf(u)_k} != bb(R)^n$: fewer than $n$ vectors never span $bb(R)^n$.
+]
+
+#proof[
+  Each nonzero row of the reduced row-echelon form of the $n times k$ matrix $bf(A)$ has its leading entry in a different column, so there are at most $k < n$ nonzero rows, and there is a zero row.
+]
+
+#example(title: "the standard basis")[
+  The identity matrix $bf(I)_n = mat(bf(e)_1, dots.c, bf(e)_n)$ is in reduced row-echelon form and has no zero rows, so its columns span $bb(R)^n$; explicitly, every $bf(w) = (w_1, ..., w_n)^T$ equals $w_1 bf(e)_1 + w_2 bf(e)_2 + ... + w_n bf(e)_n$. The set $E = {bf(e)_1, ..., bf(e)_n}$ is called the _standard basis_ of $bb(R)^n$; it is linearly independent (Section 3.5) and hence a basis in the sense of Section 3.6.
+]
+
+#example[
+  For $S = {(1, 1, 0)^T, (0, 1, 1)^T, (1, 0, 1)^T, (1, 1, 1)^T}$,
+  $ mat(1, 0, 1, 1; 1, 1, 0, 1; 0, 1, 1, 1) stretch(->)^"RREF" mat(1, 0, 0, 1/2; 0, 1, 0, 1/2; 0, 0, 1, 1/2) $
+  has no zero rows, so $span(S) = bb(R)^3$. In contrast, the reduced row-echelon form of $mat(bf(u)_1, bf(u)_2, bf(u)_3)$ in the previous example has a zero row, in accordance with the fact that these three vectors span only a plane.
+]
+
+#subsec("Properties of Linear Spans", added: true) // added for MA1522: properties of linear spans, closure under linear combinations, algorithm for set relations between spans
+
+#theorem[
+  Let $S = {bf(u)_1, ..., bf(u)_k} subset.eq bb(R)^n$. Then:
+  #set enum(numbering: "(i)")
+  + $bf(0) in span(S)$;
+  + $span(S)$ is closed under scalar multiplication: if $bf(v) in span(S)$ and $alpha in bb(R)$, then $alpha bf(v) in span(S)$;
+  + $span(S)$ is closed under addition: if $bf(u), bf(v) in span(S)$, then $bf(u) + bf(v) in span(S)$.
+]
+
+#proof[
+  $bf(0) = 0 bf(u)_1 + ... + 0 bf(u)_k$. If $bf(u) = sum_i c_i bf(u)_i$ and $bf(v) = sum_i d_i bf(u)_i$, then $alpha bf(v) = sum_i (alpha d_i) bf(u)_i$ and $bf(u) + bf(v) = sum_i (c_i + d_i) bf(u)_i$.
+]
+
+#indent Properties (ii) and (iii) together are equivalent to a single property: (ii$'$) _if $bf(u), bf(v) in span(S)$ and $alpha, beta in bb(R)$, then $alpha bf(u) + beta bf(v) in span(S)$_, that is, $span(S)$ is closed under linear combinations. Applying (ii$'$) repeatedly (induction on $m$), we see that $c_1 bf(v)_1 + ... + c_m bf(v)_m in span(S)$ whenever $bf(v)_1, ..., bf(v)_m in span(S)$. Since the coefficients $c_i$ are arbitrary, we obtain
+
+#corollary[
+  If $bf(v)_1, ..., bf(v)_m in span(S)$, then $span{bf(v)_1, ..., bf(v)_m} subset.eq span(S)$.
+]
+
+#indent (This is the transitivity of linear dependence stated in Section 3.5.) Now let $T = {bf(v)_1, ..., bf(v)_m}$ be a second set of vectors in $bb(R)^n$. By the corollary, $span(T) subset.eq span(S)$ as soon as each $bf(v)_j in span(S)$, that is, as soon as each of the $m$ systems $mat(bf(u)_1, dots.c, bf(u)_k, bf(v)_j, augment: #(-1))$ is consistent. These systems have the same coefficient matrix, so they can be solved simultaneously.
+
+#theorem[
+  Let $S = {bf(u)_1, ..., bf(u)_k}$ and $T = {bf(v)_1, ..., bf(v)_m}$ be sets of vectors in $bb(R)^n$. Then $span(T) subset.eq span(S)$ if and only if the augmented matrix
+  $ (S | T) = mat(bf(u)_1, dots.c, bf(u)_k, bf(v)_1, dots.c, bf(v)_m, augment: #3) $
+  is consistent, that is, each of the systems $mat(bf(u)_1, dots.c, bf(u)_k) bf(x) = bf(v)_j$, $j = 1, ..., m$, is consistent. Equivalently, no row of the reduced row-echelon form of $(S | T)$ is zero to the left of the bar and nonzero to the right of it.
+]
+
+#proof[
+  If $span(T) subset.eq span(S)$, then every $bf(v)_j in span(S)$, so every system is consistent; the converse is the corollary above. The same row operations reduce $(S | T)$ and each $mat(bf(u)_1, dots.c, bf(u)_k, bf(v)_j, augment: #(-1))$; the $j$-th system is inconsistent exactly when some row of the reduced matrix has zeros to the left of the bar and a nonzero entry in the column of $bf(v)_j$.
+]
+
+#indent Consequently, $span(S) = span(T)$ if and only if both $(S | T)$ and $(T | S) = mat(bf(v)_1, dots.c, bf(v)_m, bf(u)_1, dots.c, bf(u)_k, augment: #3)$ are consistent.
+
+#example[
+  Let $S = {(1, 2, 0)^T, (0, 1, 1)^T}$ and $T = {(1, 3, 1)^T, (2, 3, -1)^T}$. Then
+  $ (S | T) = mat(1, 0, 1, 2; 2, 1, 3, 3; 0, 1, 1, -1; augment: #2) stretch(->)^"RREF" mat(1, 0, 1, 2; 0, 1, 1, -1; 0, 0, 0, 0; augment: #2), $
+  $ (T | S) = mat(1, 2, 1, 0; 3, 3, 2, 1; 1, -1, 0, 1; augment: #2) stretch(->)^"RREF" mat(1, 0, 1/3, 2/3; 0, 1, 1/3, -1/3; 0, 0, 0, 0; augment: #2). $
+  Both are consistent, so $span(S) = span(T)$: it is the plane $2x - y + z = 0$ of the preceding subsection. The first reduction shows, moreover, that $(1, 3, 1)^T$ and $(2, 3, -1)^T$ are, respectively, the sum and the combination $2 bf(u)_1 - bf(u)_2$ of the vectors $bf(u)_1 = (1, 2, 0)^T$ and $bf(u)_2 = (0, 1, 1)^T$ of $S$.
+]
 
 #sec("3.4", "Subspaces")
 
@@ -273,6 +456,78 @@ $ span{bf(a)_1, ..., bf(a)_n} subset.eq W. $
 #problem(number: 1)[
   Prove that the vector space $bb(R)^n$ cannot be represented as the union of a finite number of sets, each of which does not coincide with $bb(R)^n$ and is a subspace of it.
 ]
+
+#subsec([Subspaces of $bb(R)^n$], added: true) // added for MA1522: subspace definition (three conditions), equivalent conditions, subspaces as linear spans, showing a set is (not) a subspace, subspaces of R^2 and R^3
+
+#definition[
+  A subset $V subset.eq bb(R)^n$ is a _subspace_ of $bb(R)^n$ if
+  #set enum(numbering: "(i)")
+  + $V$ contains the zero vector: $bf(0) in V$;
+  + $V$ is closed under scalar multiplication: if $bf(v) in V$ and $alpha in bb(R)$, then $alpha bf(v) in V$;
+  + $V$ is closed under addition: if $bf(u), bf(v) in V$, then $bf(u) + bf(v) in V$.
+]
+
+#indent This is the definition of the preceding subsection for $bb(R)^n$: a set satisfying (i)–(iii) is nonempty, and a nonempty set closed under the two operations contains $bf(0) = 0 bf(v)$ for any of its vectors $bf(v)$. Accordingly, condition (i) may be replaced by (i$'$) _$V$ is nonempty_, and conditions (ii) and (iii) together may be replaced by (ii$'$) _$V$ is closed under linear combinations: $alpha bf(u) + beta bf(v) in V$ for all $bf(u), bf(v) in V$ and $alpha, beta in bb(R)$_. A subset satisfying (i)–(iii) satisfies all the axioms of a vector space, because the operations do not lead out of it and the axioms hold in $bb(R)^n$ (Section 3.1). The _zero space_ ${bf(0)}$ and $bb(R)^n$ itself are subspaces of $bb(R)^n$.
+
+#theorem[
+  A subset $V subset.eq bb(R)^n$ is a subspace if and only if $V = span(S)$ for some finite set $S = {bf(u)_1, ..., bf(u)_k}$ of vectors in $bb(R)^n$.
+]
+
+#proof[
+  If $V = span(S)$, conditions (i)–(iii) are the properties of linear spans (Section 3.3). Conversely, let $V$ be a subspace. If $V = {bf(0)}$, take $S = {bf(0)}$. Otherwise choose $bf(u)_1 in V$, $bf(u)_1 != bf(0)$, and, as long as $span{bf(u)_1, ..., bf(u)_i} != V$, choose $bf(u)_(i+1) in V$ outside this span. All these spans lie in $V$, since $V$ is closed under linear combinations. No $bf(u)_j$ is a linear combination of the preceding vectors, so by Lemma 1 of Section 3.5 the vectors $bf(u)_1, ..., bf(u)_i$ are linearly independent; as they lie in $bb(R)^n = span{bf(e)_1, ..., bf(e)_n}$, Lemma 4 of Section 3.5 gives $i <= n$. Hence the process stops after at most $n$ steps, and then $span{bf(u)_1, ..., bf(u)_i} = V$.
+]
+
+#remark[
+  To show that $V subset.eq bb(R)^n$ is a subspace, either find a finite set $S$ with $V = span(S)$ or verify conditions (i)–(iii). To show that $V$ is _not_ a subspace, it suffices to exhibit one of the following: $bf(0) in.not V$; a vector $bf(v) in V$ and a scalar $alpha$ with $alpha bf(v) in.not V$; vectors $bf(u), bf(v) in V$ with $bf(u) + bf(v) in.not V$.
+]
+
+#example[
+  (a) $V = {(x + 2y, y, x - y)^T | x, y in bb(R)}$ is a subspace of $bb(R)^3$, since $(x + 2y, y, x - y)^T = x (1, 0, 1)^T + y (2, 1, -1)^T$, so that $V = span{(1, 0, 1)^T, (2, 1, -1)^T}$.
+
+  (b) The plane $x + 2y - z = 3$ in $bb(R)^3$ is not a subspace: it does not contain $bf(0)$.
+
+  (c) $V = {(t, abs(t))^T | t in bb(R)} subset bb(R)^2$ is not a subspace: $(1, 1)^T in V$, but $(-1) (1, 1)^T = (-1, -1)^T in.not V$.
+
+  (d) $V = {(x, y)^T | x y = 0}$, the union of the two coordinate axes of $bb(R)^2$, contains $bf(0)$ and is closed under scalar multiplication, but it is not closed under addition: $(1, 0)^T + (0, 1)^T = (1, 1)^T in.not V$. So conditions (i) and (ii) do not imply (iii).
+]
+
+#proposition[
+  The subspaces of $bb(R)^2$ are: the zero space ${bf(0)}$ (a point); the lines through the origin $span{bf(u)}$, $bf(u) != bf(0)$; and $bb(R)^2$ itself. The subspaces of $bb(R)^3$ are: ${bf(0)}$; the lines through the origin $span{bf(u)}$, $bf(u) != bf(0)$; the planes through the origin $span{bf(u), bf(v)}$, where neither of $bf(u), bf(v)$ is a scalar multiple of the other; and $bb(R)^3$ itself.
+]
+
+#proof[
+  Each listed set is a span and hence a subspace. Conversely, let $V$ be a subspace of $bb(R)^3$ and $d = dim(V)$; by Section 3.7, $d <= dim(bb(R)^3) = 3$, and $d = 3$ only for $V = bb(R)^3$. If $d = 0$, then $V = {bf(0)}$. If $d = 1$ or $d = 2$, then $V$ is the span of a basis consisting of one nonzero vector, or of two linearly independent vectors, that is, two vectors neither of which is a multiple of the other (Section 3.5). The case of $bb(R)^2$ is the same.
+]
+
+#indent Lines and planes that do not pass through the origin are not subspaces (they do not contain $bf(0)$). Note also that, strictly speaking, $bb(R)^2$ is not a subset of $bb(R)^3$, since its elements have two entries, not three; but the plane $z = 0$ in $bb(R)^3$ is a subspace that is identified with $bb(R)^2$ by taking coordinates relative to its basis ${bf(e)_1, bf(e)_2}$ (Section 3.6).
+
+#subsec("Solution Sets of Linear Systems", added: true) // added for MA1522: implicit and explicit solution sets, solution space, subspace iff homogeneous, solution set of a non-homogeneous system as a translate
+
+The solution set of a linear system $bf(A) bf(x) = bf(b)$ in $n$ variables is a subset of $bb(R)^n$ (empty if the system is inconsistent). It can be described _implicitly_, by the equations,
+$ {bf(u) in bb(R)^n | bf(A) bf(u) = bf(b)}, $
+or _explicitly_, by the general solution (Section 4.2),
+$ {bf(u) + s_1 bf(v)_1 + ... + s_k bf(v)_k | s_1, ..., s_k in bb(R)}. $
+For example, solving $x_1 - x_2 + 2 x_3 = 1$, $x_2 - x_3 = 2$ with the parameter $x_3 = t$ gives $x_2 = 2 + t$ and $x_1 = 3 - t$, so the solution set is the line ${(3, 2, 0)^T + t (-1, 1, 1)^T | t in bb(R)}$. In the opposite direction, the set $W = {(1, 0, 2)^T + s (1, 1, 0)^T + t (0, 1, 1)^T | s, t in bb(R)}$ consists of the vectors with $x = 1 + s$, $y = s + t$, $z = 2 + t$; eliminating $s = x - 1$ and $t = z - 2$, we obtain the implicit description $W = {(x, y, z)^T | x - y + z = 3}$.
+
+#theorem[
+  The solution set $V = {bf(u) in bb(R)^n | bf(A) bf(u) = bf(b)}$ of a linear system $bf(A) bf(x) = bf(b)$ is a subspace of $bb(R)^n$ if and only if $bf(b) = bf(0)$, that is, the system is homogeneous.
+]
+
+#proof[
+  If $V$ is a subspace, then $bf(0) in V$, so $bf(b) = bf(A) bf(0) = bf(0)$. Conversely, let $bf(b) = bf(0)$. Then $bf(0) in V$; and if $bf(A) bf(u) = bf(A) bf(v) = bf(0)$ and $alpha in bb(R)$, then $bf(A) (alpha bf(v)) = alpha bf(A) bf(v) = bf(0)$ and $bf(A) (bf(u) + bf(v)) = bf(A) bf(u) + bf(A) bf(v) = bf(0)$.
+]
+
+#definition[
+  The solution set of a homogeneous linear system $bf(A) bf(x) = bf(0)$ is called its _solution space_. It is the nullspace $Null(bf(A))$ of the matrix $bf(A)$ (Section 4.1).
+]
+
+#indent If $s_1 bf(v)_1 + ... + s_k bf(v)_k$ ($s_1, ..., s_k in bb(R)$) is the general solution of $bf(A) bf(x) = bf(0)$, the solution space is $span{bf(v)_1, ..., bf(v)_k}$, which gives a second proof that it is a subspace.
+
+#see-section("4.2", [The solution space of a homogeneous system as the span of the (linearly independent) vectors of its general solution])
+
+#indent For $bf(b) != bf(0)$ the solution set $W$ of $bf(A) bf(x) = bf(b)$ is never a subspace, since $bf(0) in.not W$. If the system is consistent and $bf(u)$ is a particular solution, then
+$ W = bf(u) + V = {bf(u) + bf(v) | bf(v) in V}, $
+where $V = Null(bf(A))$ is the solution space of the associated homogeneous system (the theorem on the general solution in Section 4.2). Thus $W$ is the translate of the subspace $V$ by the vector $bf(u)$ (an affine set in the sense of the subsection "Affine Sets" below), "parallel" to $V$ and passing through $bf(u)$ instead of $bf(0)$. In the example above, the solution set of $x_1 - x_2 + 2 x_3 = 1$, $x_2 - x_3 = 2$ is the line through $(3, 2, 0)^T$ parallel to the line $V = span{(-1, 1, 1)^T}$, the solution space of $x_1 - x_2 + 2 x_3 = 0$, $x_2 - x_3 = 0$.
 
 #subsec("Sum and Intersection of Subspaces", beyond: true) // Tyrtyshnikov §11.6
 
@@ -353,7 +608,7 @@ If $W$ is a finite-dimensional space, then its dimension is also called the _dim
 #indent When studying affine sets, the elements of a vector space are usually called _points_. By analogy with geometric space, one can think of vectors as position vectors laid off from a common initial point identified with the zero vector.
 
 #problem(number: 3)[
-  Prove that two affine sets $bf(a)_1 + L_1$ and $bf(a)_2 + L_2$ with direction subspaces $L_1$ and $L_2$ intersect if and only if $bf(a)_1 - bf(a)_2 in L_1 + L_2$.
+  Prove that two affine sets $bf(a)_1 + L_1$ and $bf(a)_2 + L_2$ with direction subspaces $L_1$ and $L_2$ intersect if and only if $bf(a)_1 - bf(a)_2 in L_1 + L_2$, where $L_1 + L_2 = {bf(l)_1 + bf(l)_2 | bf(l)_1 in L_1, bf(l)_2 in L_2}$ is the sum of the subspaces.
 ]
 
 #sec("3.5", "Linear Independence")
@@ -457,6 +712,74 @@ $ span{bf(c)_1, ..., bf(c)_r} subset.eq span{bf(a)_1, ..., bf(a)_k}. $
 
 #indent Note that the lemma remains valid even without the assumption that the system $bf(a)_1, ..., bf(a)_k$ is linearly independent—prove this!
 
+#subsec("Checking Linear Independence", added: true) // added for MA1522: redundant vectors, algorithm to check linear independence, standard basis, special cases, more than n vectors in R^n
+
+In MA1522 linear independence is a property of a set: $S = {bf(u)_1, ..., bf(u)_k}$ is _linearly independent_ if the only coefficients with $c_1 bf(u)_1 + c_2 bf(u)_2 + ... + c_k bf(u)_k = bf(0)$ are $c_1 = c_2 = ... = c_k = 0$, and _linearly dependent_ otherwise. The idea behind the definition is redundancy: a vector of $S$ that is a linear combination of the others can be dropped without changing the span (Section 3.3). Testing each vector separately would require $k$ linear systems; a single homogeneous system tests all of them at once.
+
+#proposition[
+  A set ${bf(u)_1, ..., bf(u)_k}$ with $k >= 2$ is linearly dependent if and only if one of its vectors is a linear combination of the others.
+]
+
+#proof[
+  If $bf(u)_i = sum_(j != i) c_j bf(u)_j$, then $sum_(j != i) c_j bf(u)_j - bf(u)_i = bf(0)$ is a linear combination equal to zero in which the coefficient of $bf(u)_i$ is $-1 != 0$. Conversely, if $c_1 bf(u)_1 + ... + c_k bf(u)_k = bf(0)$ with, say, $c_i != 0$, then $bf(u)_i = sum_(j != i) (-c_j \/ c_i) bf(u)_j$.
+]
+
+#theorem[
+  Let $S = {bf(u)_1, ..., bf(u)_k} subset.eq bb(R)^n$ and $bf(A) = mat(bf(u)_1, dots.c, bf(u)_k)$. The following statements are equivalent:
+  #set enum(numbering: "(i)")
+  + $S$ is linearly independent;
+  + the homogeneous system $bf(A) bf(x) = bf(0)$ has only the trivial solution;
+  + the reduced row-echelon form of $bf(A)$ has no non-pivot columns.
+]
+
+#proof[
+  Since $bf(A) bf(c) = c_1 bf(u)_1 + ... + c_k bf(u)_k$, statements (i) and (ii) say the same thing. Row operations do not change the solution set, so $bf(A) bf(x) = bf(0)$ is equivalent to $bf(R) bf(x) = bf(0)$, where $bf(R)$ is the reduced row-echelon form of $bf(A)$. If $bf(R)$ has a non-pivot column $j$, the variable $x_j$ is free: setting $x_j = 1$ and the other free variables equal to $0$, and solving for the variables of the pivot columns, we obtain a nontrivial solution. If all $k$ columns of $bf(R)$ are pivot columns, then $bf(R)$ consists of the identity matrix $bf(I)_k$ followed by $n - k$ zero rows, and $bf(R) bf(x) = bf(0)$ forces $bf(x) = bf(0)$.
+]
+
+#algorithm(title: "linear independence")[
+  + Form the matrix $bf(A) = mat(bf(u)_1, dots.c, bf(u)_k)$ and reduce it to row-echelon (or reduced row-echelon) form; both have the same pivot columns.
+  + If every column is a pivot column, $S$ is linearly independent. If some column is a non-pivot column, $S$ is linearly dependent, and any nontrivial solution of $bf(A) bf(x) = bf(0)$ gives a linear relation among the vectors of $S$.
+]
+
+#example[
+  For $S = {(1, 2, 1)^T, (2, 1, 0)^T, (0, 3, 2)^T}$,
+  $ mat(1, 2, 0; 2, 1, 3; 1, 0, 2) stretch(->)^"RREF" mat(1, 0, 2; 0, 1, -1; 0, 0, 0). $
+  The third column is a non-pivot column, so $S$ is linearly dependent; taking $x_3 = 1$ we get $x_1 = -2$, $x_2 = 1$, that is, $(0, 3, 2)^T = 2 (1, 2, 1)^T - (2, 1, 0)^T$. On the other hand, the vectors $(1, 0, 1, 1)^T$, $(0, 1, 1, 0)^T$, $(1, 1, 0, 1)^T$ are linearly independent: the reduced row-echelon form of the $4 times 3$ matrix with these columns consists of $bf(I)_3$ followed by a zero row. Likewise, $bf(I)_n$ has only pivot columns, so the standard basis ${bf(e)_1, ..., bf(e)_n}$ is linearly independent; directly, $c_1 bf(e)_1 + ... + c_n bf(e)_n = (c_1, ..., c_n)^T$ is zero only for $c_1 = ... = c_n = 0$.
+]
+
+#proposition(title: "special cases")[
+  #set enum(numbering: "(i)")
+  + The empty set $emptyset$ is linearly independent (vacuously: there is no linear combination to check).
+  + The set ${bf(0)}$ is linearly dependent, since $1 dot bf(0) = bf(0)$.
+  + If $bf(v) != bf(0)$, then ${bf(v)}$ is linearly independent.
+  + A set ${bf(v)_1, bf(v)_2}$ is linearly dependent if and only if one of the two vectors is a scalar multiple of the other.
+  + Every set of $k > n$ vectors in $bb(R)^n$ is linearly dependent.
+]
+
+#proof[
+  (iii) If $c bf(v) = bf(0)$ and $bf(v) != bf(0)$, then $c = 0$ (property (x) of Section 3.1). (iv) is the case $k = 2$ of the proposition above. (v) The reduced row-echelon form of the $n times k$ matrix $bf(A)$ has at most $n$ nonzero rows and hence at most $n < k$ pivot columns, so it has a non-pivot column. (Alternatively, apply Lemma 4 with $bb(R)^n = span{bf(e)_1, ..., bf(e)_n}$.)
+]
+
+#subsec("Adding and Removing Vectors", added: true) // added for MA1522: linear dependence when adding or removing vectors (with the proofs from the appendix)
+
+#theorem[
+  If $S = {bf(u)_1, ..., bf(u)_k}$ is linearly dependent, then $S union {bf(u)}$ is linearly dependent for every vector $bf(u)$. In particular, every set containing the zero vector is linearly dependent.
+]
+
+#proof[
+  A nontrivial linear combination $c_1 bf(u)_1 + ... + c_k bf(u)_k = bf(0)$ remains nontrivial and equal to $bf(0)$ when the term $0 bf(u)$ is added. The second assertion follows because ${bf(0)}$ is linearly dependent.
+]
+
+#theorem[
+  If $S = {bf(u)_1, ..., bf(u)_k}$ is linearly independent and $bf(u) in.not span(S)$, then $S union {bf(u)} = {bf(u)_1, ..., bf(u)_k, bf(u)}$ is linearly independent.
+]
+
+#proof[
+  Let $c_1 bf(u)_1 + ... + c_k bf(u)_k + c bf(u) = bf(0)$. If $c != 0$, then $bf(u) = -(c_1 \/ c) bf(u)_1 - ... - (c_k \/ c) bf(u)_k in span(S)$, a contradiction. Hence $c = 0$, and then $c_1 = ... = c_k = 0$ because $S$ is linearly independent.
+]
+
+#indent In terms of the algorithm: all columns of the reduced row-echelon form of $mat(bf(u)_1, dots.c, bf(u)_k)$ are pivot columns, and $bf(u) in.not span(S)$ means that the last column of the reduced row-echelon form of $mat(bf(u)_1, dots.c, bf(u)_k, bf(u), augment: #(-1))$ is a pivot column too. In the other direction, removing vectors preserves linear independence: every subset of a linearly independent set is linearly independent (Lemma 2).
+
 #sec("3.6", "Basis and Coordinates")
 
 #subsec("Basis and Dimension") // Tyrtyshnikov §3.7
@@ -502,7 +825,74 @@ A linearly independent set of vectors ${bf(b)_1, ..., bf(b)_m} subset.eq V = spa
   The vectors $bf(a)_1, ..., bf(a)_(k+1)$ are linearly independent. Prove that in the linear span $span{bf(a)_1, ..., bf(a)_(k+1)}$ there exists a basis containing no vector from the linear span $span{bf(a)_1, ..., bf(a)_k}$.
 ]
 
-#subsec("Basis and Dimension of an Abstract Vector Space", beyond: true) // Tyrtyshnikov §11.4
+#subsec([Bases of Subspaces of $bb(R)^n$], added: true) // added for MA1522: basis of a subspace, unique representation, basis for a solution space, non-uniqueness of bases, basis for the zero space
+
+#definition[
+  Let $V$ be a subspace of $bb(R)^n$. A set $S = {bf(u)_1, ..., bf(u)_k} subset.eq V$ is a _basis_ for $V$ if
+  #set enum(numbering: "(i)")
+  + $S$ spans $V$: $span(S) = V$; and
+  + $S$ is linearly independent.
+]
+
+#indent Every subspace of $bb(R)^n$ is a linear span (Section 3.4), so this is the definition given above for linear spans. In particular, all bases for $V$ contain the same number of vectors (Basis Theorem), and every vector $bf(v) in V$ can be written as a linear combination of the vectors of a basis $S$ in exactly one way: such a combination exists because $S$ spans $V$, and its coefficients are unique by Lemma 3 of Section 3.5. Conversely, if every vector of $V$ is a linear combination of the vectors of $S$ in exactly one way, then $S$ spans $V$ and, by the uniqueness of the representation of $bf(0)$, is linearly independent.
+
+#example[
+  The standard basis $E = {bf(e)_1, ..., bf(e)_n}$ is a basis for $bb(R)^n$ (Sections 3.3 and 3.5). The plane $V = {(x, y, z)^T | x - y + 2z = 0}$ in $bb(R)^3$ is the solution space of a single equation; with the parameters $y = s$, $z = t$ its general solution is $s (1, 1, 0)^T + t (-2, 0, 1)^T$. Hence $S = {(1, 1, 0)^T, (-2, 0, 1)^T}$ spans $V$, and it is linearly independent because neither vector is a multiple of the other: $S$ is a basis for $V$. The set $T = {(-1, 1, 1)^T, (3, 1, -1)^T}$ is another basis for $V$: both vectors satisfy $x - y + 2z = 0$ and are not multiples of each other, so $T$ is a basis by (B1) of Section 3.7. Thus a subspace $V != {bf(0)}$ has many bases.
+]
+
+#see-section("4.2", [The fact that the vectors $bf(v)_1, ..., bf(v)_k$ of the general solution $s_1 bf(v)_1 + ... + s_k bf(v)_k$ of a homogeneous system form a basis for its solution space])
+
+#remark(title: "basis for the zero space")[
+  The zero space ${bf(0)}$ has no basis made of vectors: the set ${bf(0)}$ spans it but is linearly dependent, and a set containing a nonzero vector spans more than ${bf(0)}$. MA1522 takes the empty set $emptyset$ as the basis for ${bf(0)}$. To make sense of $span(emptyset)$, one regards the span of a set $S$ as the _smallest subspace of $bb(R)^n$ containing $S$_; for a nonempty finite set $S$ this is the set of all linear combinations (it is a subspace containing $S$, and every subspace containing $S$ contains all linear combinations of vectors of $S$). The smallest subspace containing $emptyset$ is ${bf(0)}$, so $span(emptyset) = {bf(0)}$; and $emptyset$ is linearly independent vacuously. Accordingly, $dim({bf(0)}) = 0$ (Section 3.7).
+]
+
+#subsec([Bases of $bb(R)^n$ and Invertibility], added: true) // added for MA1522: basis for R^n and invertibility, n vectors in R^n, rows of an invertible matrix, equivalent statements for invertibility
+
+In general, linear independence and spanning are unrelated properties. For $n$ vectors in $bb(R)^n$, however, they coincide.
+
+#theorem[
+  For a square matrix $bf(A)$ of order $n$ the following are equivalent: (a) $bf(A)$ is invertible; (b) the columns of $bf(A)$ are linearly independent; (c) the columns of $bf(A)$ span $bb(R)^n$.
+]
+
+#proof[
+  (a) $<=>$ (b) is the invertibility criterion of Section 2.6. (a) $=>$ (c): for every $bf(b) in bb(R)^n$ the system $bf(A) bf(x) = bf(b)$ has the solution $bf(x) = bf(A)^(-1) bf(b)$, so $bf(b)$ is a linear combination of the columns. (c) $=>$ (b): suppose the columns span $bb(R)^n$ but are linearly dependent. Then one of them is a linear combination of the others (Section 3.5) and can be removed without changing the span (Section 3.3), leaving $n - 1$ vectors that span $bb(R)^n$; this is impossible, since fewer than $n$ vectors never span $bb(R)^n$ (Section 3.3). (For $n = 1$, a linearly dependent column is $bf(0)$, which does not span $bb(R)^1$.)
+]
+
+#indent In terms of the reduced row-echelon form $bf(R)$ of $bf(A)$: (b) says that $bf(R)$ has no non-pivot columns and (c) that it has no zero rows (Sections 3.5 and 3.3); for a square matrix each of these means $bf(R) = bf(I)_n$.
+
+#corollary(title: "1")[
+  A set of exactly $n$ vectors in $bb(R)^n$ is linearly independent if and only if it spans $bb(R)^n$.
+]
+
+#corollary(title: "2")[
+  Let $S = {bf(u)_1, ..., bf(u)_k} subset.eq bb(R)^n$ and $bf(A) = mat(bf(u)_1, dots.c, bf(u)_k)$. Then $S$ is a basis for $bb(R)^n$ if and only if $k = n$ and $bf(A)$ is invertible.
+]
+
+#proof[
+  If $k < n$, then $S$ does not span $bb(R)^n$ (Section 3.3); if $k > n$, then $S$ is linearly dependent (Section 3.5). Hence a basis for $bb(R)^n$ has exactly $n$ vectors, and for $k = n$ the theorem shows that $S$ is a basis if and only if $bf(A)$ is invertible.
+]
+
+#indent Since $bf(A)$ is invertible if and only if $bf(A)^T$ is (Section 2.4), and the rows of $bf(A)$ are the columns of $bf(A)^T$, the theorem holds for rows as well: _a square matrix $bf(A)$ of order $n$ is invertible if and only if its rows are linearly independent, if and only if its rows span $bb(R)^n$, if and only if its rows form a basis for $bb(R)^n$_. For example, $S = {(1, 1, 0)^T, (0, 1, 1)^T, (1, 0, 1)^T}$ is a basis for $bb(R)^3$, since the matrix with these columns has determinant $2 != 0$.
+
+#theorem(title: "Equivalent statements for invertibility")[
+  For a square matrix $bf(A)$ of order $n$ the following statements are equivalent:
+  #set enum(numbering: "(i)")
+  + $bf(A)$ is invertible;
+  + $bf(A)^T$ is invertible;
+  + there is a matrix $bf(B)$ with $bf(B) bf(A) = bf(I)$ (left inverse);
+  + there is a matrix $bf(B)$ with $bf(A) bf(B) = bf(I)$ (right inverse);
+  + the reduced row-echelon form of $bf(A)$ is $bf(I)_n$;
+  + $bf(A)$ is a product of elementary matrices;
+  + the homogeneous system $bf(A) bf(x) = bf(0)$ has only the trivial solution;
+  + for every $bf(b) in bb(R)^n$ the system $bf(A) bf(x) = bf(b)$ has a unique solution;
+  + $det(bf(A)) != 0$;
+  + the columns of $bf(A)$ (equivalently, its rows) are linearly independent;
+  + the columns of $bf(A)$ (equivalently, its rows) span $bb(R)^n$.
+]
+
+#indent The equivalence of (i)–(ix) is proved in Chapter 2 (the equivalent statements for invertibility; see Sections 2.4–2.6 and 2.10); statements (x) and (xi) are added by the theorem above and the remark on rows following Corollary 2.
+
+#subsec("Basis and Dimension of an Abstract Vector Space") // Tyrtyshnikov §11.4
 
 
 Let $V$ be a finite-dimensional vector space. By definition, it is the linear span of a finite number of its vectors:
@@ -540,6 +930,40 @@ By virtue of $(**)$, the matrix $bf(P)$ is called the _transition matrix from $T
 $ mat(bf(f)_1, dots.c, bf(f)_n) = mat(bf(g)_1, dots.c, bf(g)_n) bf(P), $
 whence follows the invertibility of the matrix $bf(P)$ and the fact that $bf(P)^(-1)$ is the transition matrix from $S$ to $T$. Since this equality expresses the vectors $bf(f)_j$ through the vectors $bf(g)_i$, some books (the full textbook among them) use the opposite name and call $bf(P)$ the transition matrix from ${bf(g)_i}$ to ${bf(f)_i}$, that is, from $S$ to $T$. However, the name is not what matters—what is important is that the matrix $bf(P)$ be used properly when recalculating coordinates!
 
+#subsec("Computing Coordinates Relative to a Basis", added: true) // added for MA1522: coordinates relative to a basis of a subspace of R^n, remarks, algorithm for computing coordinates, properties of coordinates
+
+Let $V$ be a subspace of $bb(R)^n$ and $S = {bf(u)_1, ..., bf(u)_k}$ a basis for $V$. As in the preceding subsection, every $bf(v) in V$ is written uniquely as $bf(v) = c_1 bf(u)_1 + ... + c_k bf(u)_k$, and the column
+$ [bf(v)]_S = mat(c_1; dots.v; c_k) in bb(R)^k $
+is called the _coordinate vector_ of $bf(v)$ (the coordinates of $bf(v)$) relative to $S$. Thus a basis identifies $V$ with $bb(R)^k$ through the one-to-one correspondence $bf(v) <-> [bf(v)]_S$; note that $[bf(v)]_S$ has $k$ entries even though $bf(v)$ itself has $n$. Three remarks:
+- for the standard basis $E$ of $bb(R)^n$ we have $bf(w) = w_1 bf(e)_1 + ... + w_n bf(e)_n$, so $[bf(w)]_E = bf(w)$;
+- the correspondence is one-to-one only because $S$ is a basis: for a linearly dependent spanning set, different coefficient columns give the same vector (see the first example in Section 3.3);
+- $[bf(v)]_S$ depends on the order in which the vectors of $S$ are listed. For $S = {bf(e)_1, bf(e)_2}$ and $T = {bf(e)_2, bf(e)_1}$ in $bb(R)^2$ and $bf(v) = (1, 2)^T$, we get $[bf(v)]_S = (1, 2)^T$ but $[bf(v)]_T = (2, 1)^T$. So a basis is always understood as an _ordered_ set.
+
+#algorithm(title: "coordinates relative to a basis")[
+  + To find $[bf(v)]_S$ for $bf(v) in V$, solve $c_1 bf(u)_1 + ... + c_k bf(u)_k = bf(v)$: reduce the augmented matrix $mat(bf(u)_1, dots.c, bf(u)_k, bf(v), augment: #(-1))$ to reduced row-echelon form.
+  + Since the columns $bf(u)_1, ..., bf(u)_k$ are linearly independent and $bf(v) in span(S)$, the result has the form
+    $ mat(bf(I)_k, bf(c); bf(0), bf(0), augment: #1) $
+    (Sections 3.3 and 3.5), and $[bf(v)]_S = bf(c)$. (If the system is inconsistent, then $bf(v) in.not V$.)
+]
+
+#example[
+  Take the basis $S = {(1, 1, 0)^T, (-2, 0, 1)^T}$ of the plane $V = {(x, y, z)^T | x - y + 2z = 0}$ (see the example in the subsection on bases of subspaces above) and $bf(v) = (1, 3, 1)^T in V$. Then
+  $ mat(1, -2, 1; 1, 0, 3; 0, 1, 1; augment: #2) stretch(->)^"RREF" mat(1, 0, 3; 0, 1, 1; 0, 0, 0; augment: #2), quad "so" quad [bf(v)]_S = mat(3; 1); $
+  indeed, $3 (1, 1, 0)^T + (-2, 0, 1)^T = (1, 3, 1)^T$.
+]
+
+#theorem[
+  Let $B$ be a basis for a subspace $V$ of $bb(R)^n$. Then:
+  #set enum(numbering: "(i)")
+  + for $bf(u), bf(v) in V$, $bf(u) = bf(v)$ if and only if $[bf(u)]_B = [bf(v)]_B$;
+  + for $bf(v)_1, ..., bf(v)_m in V$ and $c_1, ..., c_m in bb(R)$,
+    $ [c_1 bf(v)_1 + ... + c_m bf(v)_m]_B = c_1 [bf(v)_1]_B + ... + c_m [bf(v)_m]_B. $
+]
+
+#proof[
+  Let $B = {bf(u)_1, ..., bf(u)_k}$ and $bf(U) = mat(bf(u)_1, dots.c, bf(u)_k)$; by definition, $bf(v) = bf(U) [bf(v)]_B$ for every $bf(v) in V$. (i) If $[bf(u)]_B = [bf(v)]_B$, then $bf(u) = bf(U) [bf(u)]_B = bf(U) [bf(v)]_B = bf(v)$; the converse holds by the uniqueness of coordinates. (ii) We have $bf(U) (c_1 [bf(v)_1]_B + ... + c_m [bf(v)_m]_B) = c_1 bf(v)_1 + ... + c_m bf(v)_m$, so the column $c_1 [bf(v)_1]_B + ... + c_m [bf(v)_m]_B$ consists of coefficients expressing $c_1 bf(v)_1 + ... + c_m bf(v)_m$ through $B$; by uniqueness, it is the coordinate vector of this linear combination.
+]
+
 #sec("3.7", "Dimensions")
 
 #subsec("Completion to a Basis") // Tyrtyshnikov §3.8
@@ -560,9 +984,165 @@ Does a basis exist for every linear span? By the Basis Extension Lemma, a basis 
 
 Thus, there is no basis only in the case of the zero space ${bf(0)}$, the linear span which contains a single vector—the zero vector. By definition, the dimension of the zero space is equal to zero. (MA1522 regards the empty set $emptyset$ as the basis for the zero space; this agrees with $dim({bf(0)}) = 0$.)
 
+#subsec([Dimension of Subspaces of $bb(R)^n$], added: true) // added for MA1522: coordinates preserve linear independence and spanning, dimension, hyperplanes, dimension of the solution space, spanning set theorem, linear independence theorem, dimension and subspaces, equivalent ways to check for a basis (B1, B2)
+
+A basis $B$ of $k$ vectors identifies a subspace $V$ of $bb(R)^n$ with $bb(R)^k$ through coordinates (Section 3.6). This identification respects linear independence and spanning.
+
+#theorem[
+  Let $B$ be a basis for a subspace $V$ of $bb(R)^n$ consisting of $k$ vectors, and let $bf(v)_1, ..., bf(v)_m in V$. Then:
+  #set enum(numbering: "(i)")
+  + $bf(v)_1, ..., bf(v)_m$ are linearly independent (dependent) if and only if $[bf(v)_1]_B, ..., [bf(v)_m]_B$ are linearly independent (dependent) in $bb(R)^k$;
+  + ${bf(v)_1, ..., bf(v)_m}$ spans $V$ if and only if ${[bf(v)_1]_B, ..., [bf(v)_m]_B}$ spans $bb(R)^k$.
+]
+
+#proof[
+  (i) By the properties of coordinates (Section 3.6), $c_1 bf(v)_1 + ... + c_m bf(v)_m = bf(0)$ if and only if $c_1 [bf(v)_1]_B + ... + c_m [bf(v)_m]_B = [bf(0)]_B = bf(0)$: the two collections satisfy the same linear relations.
+
+  (ii) Let $B = {bf(u)_1, ..., bf(u)_k}$. Suppose the coordinate vectors span $bb(R)^k$, and let $bf(v) in V$. Then $[bf(v)]_B = c_1 [bf(v)_1]_B + ... + c_m [bf(v)_m]_B = [c_1 bf(v)_1 + ... + c_m bf(v)_m]_B$ for some $c_1, ..., c_m$, whence $bf(v) = c_1 bf(v)_1 + ... + c_m bf(v)_m$. Conversely, suppose $bf(v)_1, ..., bf(v)_m$ span $V$, and let $bf(w) = (w_1, ..., w_k)^T in bb(R)^k$. The vector $bf(v) = w_1 bf(u)_1 + ... + w_k bf(u)_k in V$ has $[bf(v)]_B = bf(w)$; writing $bf(v) = c_1 bf(v)_1 + ... + c_m bf(v)_m$, we get $bf(w) = c_1 [bf(v)_1]_B + ... + c_m [bf(v)_m]_B$.
+]
+
+#corollary[
+  Let $V$ be a subspace of $bb(R)^n$ with a basis of $k$ vectors, and let $S = {bf(v)_1, ..., bf(v)_m} subset.eq V$. If $m > k$, then $S$ is linearly dependent; if $m < k$, then $S$ does not span $V$.
+]
+
+#proof[
+  More than $k$ vectors in $bb(R)^k$ are linearly dependent (Section 3.5), and fewer than $k$ vectors do not span $bb(R)^k$ (Section 3.3); now apply the theorem to the coordinate vectors $[bf(v)_1]_B, ..., [bf(v)_m]_B$.
+]
+
+#indent In particular, any two bases for $V$ have the same number of vectors (this is the Basis Theorem of Section 3.6), and the _dimension_ $dim(V)$ is the number of vectors in any basis for $V$: $V$ is $k$-dimensional exactly when coordinates relative to a basis identify $V$ with $bb(R)^k$. For example, $dim(bb(R)^n) = n$, since the standard basis has $n$ vectors; $dim({bf(0)}) = 0$, its basis being $emptyset$; and the plane $x - y + 2z = 0$ of Section 3.6 has dimension $2$.
+
+#theorem(title: "dimension of the solution space")[
+  Let $bf(A)$ be an $m times n$ matrix. The dimension of the solution space $V = {bf(u) in bb(R)^n | bf(A) bf(u) = bf(0)}$ equals the number of non-pivot columns of the reduced row-echelon form of $bf(A)$, that is, the number of parameters in the general solution of $bf(A) bf(x) = bf(0)$.
+]
+
+#proof[
+  Let $bf(R)$ be the reduced row-echelon form of $bf(A)$. Since $bf(R) = bf(E) bf(A)$ with $bf(E)$ invertible, $rank(bf(R)) = rank(bf(A))$ (Section 4.2), and $rank(bf(R))$ is the number of nonzero rows of $bf(R)$ (Section 1.2), which is the number of its pivot columns. So the number of non-pivot columns is $n - rank(bf(A)) = nullity(bf(A)) = dim(V)$ by the Rank–Nullity Theorem (Section 4.2). In the general solution one parameter is assigned to the variable of each non-pivot column, and the vectors multiplying the parameters form a basis for $V$ (Section 4.2).
+]
+
+#indent For instance, a _hyperplane_ in $bb(R)^n$, the solution space $V = {bf(x) in bb(R)^n | a_1 x_1 + a_2 x_2 + ... + a_n x_n = 0}$ of one equation with not all $a_i = 0$, has dimension $n - 1$: the reduced row-echelon form of the nonzero $1 times n$ coefficient matrix has one pivot column and $n - 1$ non-pivot columns. Hyperplanes in $bb(R)^3$ are the planes through the origin.
+
+#example[
+  For
+  $ bf(A) = mat(1, 2, 0, -1, 3; 2, 4, 1, 0, 1; 1, 2, 1, 1, -2) stretch(->)^"RREF" mat(1, 2, 0, -1, 3; 0, 0, 1, 2, -5; 0, 0, 0, 0, 0) $
+  the pivot columns are the first and the third, and there are three non-pivot columns; hence $dim(Null(bf(A))) = 3$. With the parameters $x_2 = s$, $x_4 = t$, $x_5 = r$, the general solution of $bf(A) bf(x) = bf(0)$ is
+  $ bf(x) = s (-2, 1, 0, 0, 0)^T + t (1, 0, -2, 1, 0)^T + r (-3, 0, 5, 0, 1)^T, quad s, t, r in bb(R), $
+  and these three vectors form a basis for the solution space.
+]
+
+#indent The following two theorems restate results proved above for linear spans in the form used in MA1522.
+
+#theorem(title: "spanning set theorem")[
+  Let $S$ be a finite set of vectors in $bb(R)^n$ such that $V = span(S) != {bf(0)}$. Then some subset of $S$ is a basis for $V$.
+]
+
+#proof[
+  If $S$ is linearly dependent, one of its vectors is a linear combination of the others (Section 3.5); removing it does not change the span (Section 3.3). Repeating this, we arrive at a linearly independent subset of $S$ with the same span $V$, that is, at a basis for $V$; it is not empty, since $V != {bf(0)}$. (Compare the proposition on bases and maximal linearly independent subsystems in Section 3.6.)
+]
+
+#theorem(title: "linear independence theorem")[
+  Let $V$ be a subspace of $bb(R)^n$ and $S subset.eq V$ a linearly independent set. Then there is a basis $T$ for $V$ such that $S subset.eq T$.
+]
+
+#proof[
+  As long as $span(S) != V$, add to $S$ a vector of $V$ that is not in $span(S)$; the enlarged set is still linearly independent (Section 3.5, "Adding and Removing Vectors") and lies in $V$. The subspace $V$ has a basis (it is a span by Section 3.4; use the spanning set theorem, or $emptyset$ if $V = {bf(0)}$), so by the corollary above a linearly independent subset of $V$ has at most $dim(V)$ vectors. Hence the process stops, and the final set $T$ spans $V$. (This is also the Basis Extension Lemma of the first subsection, applied to the linear span $V$.)
+]
+
+#theorem(title: "dimension and subspaces")[
+  Let $U$ and $V$ be subspaces of $bb(R)^n$ with $U subset.eq V$. Then $dim(U) <= dim(V)$, and $dim(U) = dim(V)$ if and only if $U = V$. In particular, $dim(U) < dim(V)$ if $U$ is a proper subset of $V$.
+]
+
+#proof[
+  A basis $S$ for $U$ is a linearly independent subset of $V$, so by the linear independence theorem $S subset.eq T$ for some basis $T$ for $V$. Hence $dim(U) = |S| <= |T| = dim(V)$. If $dim(U) = dim(V)$, then $T = S$ and $V = span(T) = span(S) = U$.
+]
+
+#indent To check that a set $S$ is a basis for a subspace $V$ one must, by definition, verify that $span(S) = V$ and that $S$ is linearly independent. When $dim(V)$ is known and $S$ has exactly $dim(V)$ vectors, one of the two conditions suffices.
+
+#theorem(title: "B1")[
+  Let $V$ be a subspace of $bb(R)^n$ with $dim(V) = k$, and let $S subset.eq V$ be a linearly independent set of $k$ vectors. Then $S$ is a basis for $V$.
+]
+
+#proof[
+  The subspace $U = span(S)$ lies in $V$, and $S$ is a basis for $U$, so $dim(U) = k = dim(V)$. By the dimension theorem above, $U = V$.
+]
+
+#theorem(title: "B2")[
+  Let $V$ be a subspace of $bb(R)^n$ with $dim(V) = k$, and let $S$ be a set of $k$ vectors in $bb(R)^n$ such that $V subset.eq span(S)$. Then $S$ is a basis for $V$.
+]
+
+#proof[
+  Let $U = span(S)$. By the theorem on the dimension of a linear span (Section 3.6), $dim(U) <= k$, and $V subset.eq U$ gives $k = dim(V) <= dim(U)$. Hence $dim(U) = dim(V)$, and $V = U = span(S)$ by the dimension theorem above. If $S$ were linearly dependent, one of its vectors could be removed without changing the span, and then $dim(U) <= k - 1$, a contradiction. So $S$ is linearly independent.
+]
+
+#indent In summary, each of the following three sets of conditions means that $S$ is a basis for $V$:
+#align(center, {
+  set par(first-line-indent: 0pt, justify: false)
+  table(
+    columns: 3,
+    align: left,
+    inset: 6pt,
+    stroke: 0.4pt,
+    [*Definition*], [*(B1)*], [*(B2)*],
+    [$span(S) = V$; \ $S$ is linearly independent],
+    [$S subset.eq V$; \ $|S| = dim(V)$; \ $S$ is linearly independent],
+    [$|S| = dim(V)$; \ $V subset.eq span(S)$],
+  )
+})
+With (B1) one need not check that $S$ spans $V$; with (B2) one need not check that $S$ is linearly independent.
+
+#example[
+  (a) Let $V = {bf(x) in bb(R)^4 | x_1 + x_2 + x_3 = 0, x_2 - x_4 = 0}$. The coefficient matrix reduces as
+  $ mat(1, 1, 1, 0; 0, 1, 0, -1) stretch(->)^"RREF" mat(1, 0, 1, 1; 0, 1, 0, -1), $
+  with two non-pivot columns, so $dim(V) = 2$. The vectors $(1, 0, -1, 0)^T$ and $(1, 1, -2, 1)^T$ satisfy both equations, and neither is a multiple of the other; by (B1) they form a basis for $V$, and there is no need to check that they span $V$.
+
+  (b) Let $V = span(T)$, where $T = {(1, 0, 0, 1)^T, (0, 1, 0, 1)^T, (0, 0, 1, 1)^T}$; looking at the first three entries, we see that $T$ is linearly independent, so $dim(V) = 3$. For $S = {(1, 1, 0, 2)^T, (0, 1, 1, 2)^T, (1, 0, 1, 2)^T}$,
+  $ (S | T) = mat(1, 0, 1, 1, 0, 0; 1, 1, 0, 0, 1, 0; 0, 1, 1, 0, 0, 1; 2, 2, 2, 1, 1, 1; augment: #3) stretch(->)^"RREF" mat(1, 0, 0, 1/2, 1/2, -1/2; 0, 1, 0, -1/2, 1/2, 1/2; 0, 0, 1, 1/2, -1/2, 1/2; 0, 0, 0, 0, 0, 0; augment: #3) $
+  is consistent, so $V = span(T) subset.eq span(S)$ (Section 3.3), and $S$ is a basis for $V$ by (B2); its linear independence need not be checked separately.
+]
+
 #sec("3.8", "Transition Matrices")
 
-#see-section("3.6", [Expansion in a Basis])
+#see-section("3.6", [The definition of the transition matrix from $T$ to $S$ and the formula $[bf(w)]_S = bf(P) [bf(w)]_T$ (subsection "Expansion in a Basis")])
+
+#subsec("Computing Transition Matrices", added: true) // added for MA1522: transition matrix (definition recalled), algorithm (S | T) -> (I | P), inverse of a transition matrix, geometric interpretation (appendix)
+
+Let $S = {bf(u)_1, ..., bf(u)_k}$ and $T = {bf(v)_1, ..., bf(v)_k}$ be two bases for a subspace $V$ of $bb(R)^n$. By Section 3.6, the _transition matrix from $T$ to $S$_ (sometimes written $bf(P)_(T -> S)$) is the $k times k$ matrix
+$ bf(P) = mat([bf(v)_1]_S, [bf(v)_2]_S, dots.c, [bf(v)_k]_S) $
+whose columns are the coordinate vectors of the vectors of $T$ relative to $S$, and
+$ [bf(w)]_S = bf(P) [bf(w)]_T quad "for every" bf(w) in V. $
+(The derivation in Section 3.6 is written for an abstract vector space and applies verbatim to a subspace of $bb(R)^n$.) An easy way to remember which matrix is which: $[bf(v)_j]_T = bf(e)_j$, so $bf(P) [bf(v)_j]_T = bf(P) bf(e)_j$ is the $j$-th column of $bf(P)$, and it must equal $[bf(v)_j]_S$.
+
+#algorithm(title: [transition matrix from $T$ to $S$])[
+  + Form the $n times 2k$ matrix $(S | T) = mat(bf(u)_1, dots.c, bf(u)_k, bf(v)_1, dots.c, bf(v)_k, augment: #3)$.
+  + Reduce it to reduced row-echelon form. The result has the form
+    $ mat(bf(I)_k, bf(P); bf(0)_((n - k) times k), bf(0)_((n - k) times k), augment: #1), $
+    and the right-hand block $bf(P)$ is the transition matrix from $T$ to $S$.
+]
+
+#indent Indeed, the $j$-th column of $bf(P)$, $[bf(v)_j]_S$, is found by solving $mat(bf(u)_1, dots.c, bf(u)_k, bf(v)_j, augment: #(-1))$ (Section 3.6), and the $k$ systems, having the same coefficient matrix, are solved simultaneously. Since $S$ is linearly independent, the left block reduces to $bf(I)_k$ followed by $n - k$ zero rows (Section 3.5); since every $bf(v)_j in V = span(S)$, all systems are consistent, so the last $n - k$ rows are zero.
+
+#example[
+  In the plane $V = {(x, y, z)^T | x - y + 2z = 0}$ take the bases $S = {(1, 1, 0)^T, (-2, 0, 1)^T}$ and $T = {(-1, 1, 1)^T, (3, 1, -1)^T}$ of Section 3.6. Then
+  $ (S | T) = mat(1, -2, -1, 3; 1, 0, 1, 1; 0, 1, 1, -1; augment: #2) stretch(->)^"RREF" mat(1, 0, 1, 1; 0, 1, 1, -1; 0, 0, 0, 0; augment: #2), quad "so" quad bf(P) = mat(1, 1; 1, -1). $
+  For $bf(v) = (1, 3, 1)^T$ we have $bf(v) = 2 (-1, 1, 1)^T + (3, 1, -1)^T$, so $[bf(v)]_T = (2, 1)^T$, and $bf(P) [bf(v)]_T = (3, 1)^T$, which is $[bf(v)]_S$ as found in Section 3.6.
+]
+
+#theorem[
+  If $bf(P)$ is the transition matrix from $T$ to $S$, then $bf(P)$ is invertible, and $bf(P)^(-1)$ is the transition matrix from $S$ to $T$.
+]
+
+#proof[
+  Let $bf(Q)$ be the transition matrix from $S$ to $T$. For every $bf(w) in V$ we have $[bf(w)]_S = bf(P) [bf(w)]_T = bf(P) bf(Q) [bf(w)]_S$ and, similarly, $[bf(w)]_T = bf(Q) bf(P) [bf(w)]_T$. Every $bf(c) in bb(R)^k$ is a coordinate vector relative to $S$, namely $bf(c) = [c_1 bf(u)_1 + ... + c_k bf(u)_k]_S$, and likewise relative to $T$. Hence $bf(P) bf(Q) bf(c) = bf(c)$ and $bf(Q) bf(P) bf(c) = bf(c)$ for all $bf(c) in bb(R)^k$; taking $bf(c) = bf(e)_1, ..., bf(e)_k$, we obtain $bf(P) bf(Q) = bf(Q) bf(P) = bf(I)_k$.
+]
+
+#indent In the example,
+$ bf(P)^(-1) = mat(1/2, 1/2; 1/2, -1/2); $
+this is also the right-hand block of the reduced row-echelon form of $(T | S)$.
+
+#remark(title: "geometric meaning")[
+  Let $S = {bf(u)_1, bf(u)_2, bf(u)_3}$ be a basis for $V$. If $T = {k_1 bf(u)_1, k_2 bf(u)_2, k_3 bf(u)_3}$ with nonzero $k_1, k_2, k_3$, then the transition matrix from $T$ to $S$ is $diag(k_1, k_2, k_3)$: the "axes" $bf(u)_i$ of $S$ are rescaled to give those of $T$. If $T = {a_1 bf(u)_1 + a_2 bf(u)_2, thin b_1 bf(u)_1 + b_2 bf(u)_2, thin k_3 bf(u)_3}$, the transition matrix from $T$ to $S$ is
+  $ mat(a_1, b_1, 0; a_2, b_2, 0; 0, 0, k_3); $
+  its upper left block describes how the first two axes are turned (and stretched) within the plane $span{bf(u)_1, bf(u)_2}$, while the third axis is only rescaled.
+]
 
 #subsec("Transformation of Coordinates") // Tyrtyshnikov §9.11
 

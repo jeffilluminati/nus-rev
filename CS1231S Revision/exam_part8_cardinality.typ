@@ -50,7 +50,9 @@ Define $H: ZZ -> 2 ZZ$ by $H(n) = 2n$.
 + (Surjective) Let $m in 2 ZZ$. Then $m = 2k$ for some $k in ZZ$ #j[definition of even], and $H(k) = 2k = m$.
 + So $H$ is a bijection and $|ZZ| = |2 ZZ|$ #j[Cantor's definition]. #qed
 Likewise $|NN| = |NN without {0}|$ via $x |-> x + 1$, and $|NN| = |NN without {1, 3, 5, dots}|$ via $x |-> 2x$. \
-*An infinite set can have the same cardinality as a proper subset of itself.* For a finite $A$ and a proper subset $B$, always $|B| < |A|$.]
+*An infinite set can have the same cardinality as a proper subset of itself.* For a finite $A$ and a proper subset $B$, always $|B| < |A|$. \
+*Alternative definition of infinite (Week 8 deck).* Some mathematicians use this as the definition: $A$ is infinite iff there is a set $B$ with $B subset.eq A and B != A and |B| = |A|$. \
+Week 8 deck checks: $|ZZ^-| = |ZZ^+|$, $|ZZ union {a, b, c}| = |ZZ|$, $|ZZ| = |ZZ^+|$, $|ZZ| = |2 ZZ|$, $|QQ| = |ZZ|$ are all true; $|{a, b, c}| = |{a, b}|$ is false.]
 
 == 37 · Countable sets
 
@@ -68,7 +70,18 @@ A bijection $f: ZZ_(>= 0) -> B$ is the sequence $f(0), f(1), dots$: surjective =
 - *$ZZ$:* list $0, 1, -1, 2, -2, dots$ Formula on $ZZ^+$: $f(n) = n slash 2$ if $n$ is even, $-(n - 1) slash 2$ if $n$ is odd. On $NN$ (T8 Q1): $g(n) = (-1)^n floor((n + 1) / 2)$, giving $0, -1, 1, -2, 2, dots$
 - *$ZZ^+ times ZZ^+$:* count along the diagonals $(1,1), (1,2), (2,1), (1,3), (2,2), (3,1), dots$ The bijection is $f(x, y) = ((x + y - 2)(x + y - 1))/2 + x$.
 - *$QQ^+$:* put $p slash q$ in a grid, walk the diagonals, and skip values already counted: $1/1, 1/2, 2/1, 3/1, 1/3, dots$ Skipping gives injectivity; every grid point is reached, giving surjectivity.
+- *$QQ$:* $x |-> -x$ is a bijection $QQ^+ -> QQ^-$, so $QQ^-$ is countably infinite. List $QQ^+$ as $q_1, q_2, q_3, dots$; then $0, q_1, -q_1, q_2, -q_2, dots$ contains every element of $QQ = QQ^- union {0} union QQ^+$ exactly once, so $QQ$ is countable (Proposition 9.1) and $|QQ| = |ZZ|$. Equivalently: Lemma 9.4 for $QQ^- union QQ^+$, then T8 Q2 for ${0}$.
 - *Perfect squares* ${0, 1, 4, 9, dots}$ (T8 D1): $n |-> n^2$ is a bijection from $NN$; also a subset of $NN$ (Theorem 7.4.3).]
+
+#proofb[T8 Q1 · $g: NN -> ZZ$, $g(n) = (-1)^n floor((n + 1) / 2)$ is a bijection (so $ZZ$ is countable with $aleph_0 = |NN|$)][
+For even $n$: $g(n) = floor((n + 1) slash 2) = n slash 2 >= 0$. For odd $n$: $g(n) = -(n + 1) slash 2 < 0$.
++ (Injective) Let $a, b in NN$ with $g(a) = g(b)$. Then $g(a), g(b)$ are both non-negative or both negative.
+  + Case 1 (both non-negative): $a$ and $b$ are even, so $a slash 2 = b slash 2$ and $a = b$.
+  + Case 2 (both negative): $a$ and $b$ are odd, so $-(a + 1) slash 2 = -(b + 1) slash 2$ and $a = b$.
++ (Surjective) Let $m in ZZ$.
+  + Case 1 ($m >= 0$): let $n = 2m$. Then $n in NN$ and $g(n) = (-1)^(2m) floor((2m + 1) slash 2) = m$.
+  + Case 2 ($m < 0$): let $n = -2m - 1$. Then $n in NN$ is odd and $g(n) = (-1)^(-2m-1) floor((-2m) slash 2) = -(-m) = m$.
++ Therefore $g$ is a bijection from $NN$ to $ZZ$. #qed]
 
 #thm[Closure theorems (L9 s31, s41–45)][
 - *Cartesian product.* If $A$ and $B$ are countably infinite, so is $A times B$; likewise $A_1 times dots.c times A_n$ for $n >= 2$.
@@ -91,6 +104,16 @@ A bijection $f: ZZ_(>= 0) -> B$ is the sequence $f(0), f(1), dots$: surjective =
 + Let $x in union.big_(i in ZZ^+) S_i$. Then $x in S_i$ for some $i$, so $x = b_(i,j)$ for some $j$; and $f(k) = (i, j)$ for some $k$ #j[$f$ is surjective]. So $x = c_k$.
 + Every element of the union appears in $c_1, c_2, dots$, so the union is countable #j[Lemma 9.2]. #qed]
 
+#proofb[T8 Q4(a) · If $A_1, A_2, A_3, dots$ are countable, then $union.big_(i=1)^n A_i$ is countable for every $n in ZZ^+$][
++ Let $P(n) equiv (union.big_(i=1)^n A_i "is countable")$ for $n in ZZ^+$.
++ Basis step: $union.big_(i=1)^1 A_i = A_1$ is countable, so $P(1)$ is true.
++ Inductive step: suppose $P(k)$ is true for an arbitrary $k >= 1$. Write $union.big_(i=1)^(k+1) A_i = (union.big_(i=1)^k A_i) union A_(k+1) = U union A_(k+1)$.
+  + Case 1 ($U$ and $A_(k+1)$ both finite): $U union A_(k+1)$ is finite, hence countable.
+  + Case 2 (exactly one is finite): the other is countably infinite, so $U union A_(k+1)$ is countable #j[T8 Q2].
+  + Case 3 (neither is finite): both are countably infinite, so $U union A_(k+1)$ is countable #j[Lemma 9.4].
++ Therefore $union.big_(i=1)^n A_i$ is countable for every $n in ZZ^+$ by MI. #qed
+(b) This does not prove that $union.big_(i=1)^oo A_i$ is countable; see the trap below and T8 Q5.]
+
 #trap[T8 Q3, Q4 · Induction reaches every finite $n$, never infinity][
 - "$union.big_(i=1)^n A_i$ is finite (or countable) for every $n$" is proved by induction on $n$. It does *not* follow that $union.big_(i=1)^oo A_i$ is finite: $A_i = {i}$ gives $ZZ^+$. The infinite union of countable sets *is* countable, but that needs the argument of T8 Q5.
 - In an inductive step the new set $A_(k+1)$ must be *arbitrary*; choosing $A_(k+1) = nothing$ proves nothing.
@@ -105,6 +128,10 @@ A bijection $f: ZZ_(>= 0) -> B$ is the sequence $f(0), f(1), dots$: surjective =
 + For every $n in ZZ^+$, $d_n != a_(n n)$, so $d != x_n$.
 + But $d in (0, 1)$, so $d$ should be in the list: contradiction. Therefore $(0, 1)$ is uncountable. #qed
 This is *Cantor's diagonalization argument*: build an object that differs from the $n$-th listed object at position $n$.]
+
+#trap[Week 8 deck FAQ · Why diagonalization does not make $ZZ^+$ uncountable][
+List the positive integers in decimal, padded with leading zeros ($dots 000001$, $dots 000002$, $dots$), and change one digit of each along a diagonal. The resulting object typically has *infinitely many non-zero digits* extending to the left, like $dots 3141592653$. An integer has a finite decimal representation $d_n d_(n-1) dots.c d_2 d_1$, so this object is *not a positive integer*: it is missing from the list, but it was never required to be on it. A real in $(0, 1)$ may have infinitely many digits $0.d_1 d_2 d_3 dots$, so there the diagonal object *is* in the set. \
+Same contrast: the set of all *finite* binary strings ${epsilon, 0, 1, 00, 01, dots}$ is countable; the set of all *infinite* binary strings $b_1 b_2 b_3 dots$ is uncountable.]
 
 #thm[Consequences (L9 s43, s46–47)][
 - $RR$ is uncountable, since $(0, 1) subset.eq RR$ #j[Corollary 7.4.4].
@@ -132,9 +159,13 @@ This is *Cantor's diagonalization argument*: build an object that differs from t
   [all functions ${0, 1} -> NN$], [countable], [same as $NN times NN$],
   [all 2-element subsets of $NN$; all finite strings over a finite alphabet], [countable], [inject into $NN times NN$; countable union of finite sets],
   [any subset of $QQ$; any partition of $NN$ (as a set of components)], [countable], [Theorem 7.4.3; send each component to its least element],
+  [$ZZ^*$: all finite strings over the countably infinite alphabet $ZZ$ (AY22/23 Q17)], [countable], [$ZZ^* = ZZ^0 union ZZ^1 union ZZ^2 union dots.c$; each $ZZ^n$ is countable (general product); countable union (T8 Q5)],
+  [$QQ$; the rationals strictly between 0 and 1 (AY22/23 Q17)], [countable], [$QQ$ from $QQ^+$ (§37); subset of $QQ$],
   [$(0, 1)$, $RR$, $RR without QQ$], [uncountable], [Theorem 7.4.2 and Corollary 7.4.4],
   [$PP(NN)$; all functions $NN -> {0, 1}$; all infinite sequences of integers], [uncountable], [T8 Q7; diagonalization],
+  [all relations on $ZZ$ (AY22/23 Q17)], [uncountable], [a relation on $ZZ$ is a subset of $ZZ times ZZ$, so the set is $PP(ZZ times ZZ)$ with $ZZ times ZZ$ countably infinite (T8 Q7)],
   [the set of all partitions of $NN$], [uncountable], [${A, NN without A}$ for each $A$ gives uncountably many],
 )
+*AY22/23 Q17.* Countable among (i) relations on $ZZ$, (ii) rationals in $(0, 1)$, (iii) $ZZ^*$: only (ii) and (iii), option D. \
 *AY25 Q17.* $A$ countably infinite, $B$ uncountable: $A union B$ is uncountable (it contains $B$) and $A inter B$ is countable (a subset of $A$). Both true. \
 *AY25 Q13.* $(ZZ times ZZ^+) slash simq$ with $(a, b) tilde.op (c, d) <-> a d = b c$ is in bijection with $QQ$, hence with $ZZ$ and with $ZZ times ZZ^+$: all countably infinite.]

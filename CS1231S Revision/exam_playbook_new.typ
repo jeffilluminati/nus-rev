@@ -95,6 +95,7 @@
   [T10 Q7, Q8; T11 D1, D2], [Friendship graph; small graphs; edge counts], [§47, §46],
   [T11 Q1, Q3, Q4–Q7], [Self-complementary graphs; trees; edge bounds; stones], [§49, §50],
   [T11 D3, Q8, Q9], [Traversals and rebuilding binary trees], [§51],
+  [T10 Q11; T11 Q2, Q10], [Dominating sets; counting spanning trees and MSTs], [§46; §52],
 )
 #table(columns: (auto, 1fr), align: (left, left),
   [AY25/26 final question], [Solved in],
@@ -103,8 +104,22 @@
   [Q19, Q21, Q22; Q23], [§51; §44],
   [Q24(a)–(e), (g); Q24(f); Q24(h)], [§42; §41; §45],
   [Q25(a); Q25(b)–(d)], [§49; §47],
+  [Q20; Q25(e)–(h)], [§48; §46],
 )
 #text(size: 8.4pt, fill: muted)[The folder has no official answers for the AY25/26 final; those solutions are worked here.]
+#table(columns: (auto, 1fr, auto), align: (left, left, left),
+  [Earlier final, graphs and trees], [Topic], [Solved in],
+  [AY24/25 Q20; Q21; Q22], [Walks of length 4; isomorphism classes; bipartite and planar facts], [§48; §49; §47],
+  [AY24/25 Q25(a)–(c), (f); (d); (e); (g)], [Chromatic number and index, Petersen graph; vertex cut set; number of MSTs; pre-order + post-order], [§46; §47; §52; §51],
+  [AY23/24 Q18; Q19, Q20], [Planar degree bound, disjoint spanning trees; components], [§49, §52; §47],
+  [AY23/24 Q24(a), (g)(ii), (g)(iii); (b)], [MST from a weight matrix, bridges; walks of length 4], [§52; §48],
+  [AY23/24 Q24(c)(i), (c)(iii), (d); (e), (f), (g)(i)], [Euler trail after deleting an edge, edge counts; full binary tree, BSTs], [§47; §51],
+  [AY22/23 Q18; Q19; Q20], [Planarity; forests and bipartite cycles; disconnected graphs on 4 vertices], [§49; §47; §49],
+  [AY22/23 Q23(a), (b); (c), (d); (e); (f)–(i)], [Euler trail; cut-points and bridges; traversals; packing as colouring], [§47; §47; §51; §46],
+  [AY20/21 Q12; Q20(d); Q21(a)], [Walks of length 3; counting digraphs; MST], [§48; §49; §52],
+  [AY20/21 Q21(b), (c); (d); (e)], [Self-complementary graphs; rebuilding a tree; rooted trees on 5 vertices], [§49; §51; §50],
+)
+#text(size: 8.4pt, fill: muted)[AY24/25 Q25(a)–(f) follows the answers in the Week 12 recitation; the other solutions are worked here.]
 ]
 
 #let selftest-new = [

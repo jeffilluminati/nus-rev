@@ -162,7 +162,8 @@ Lectures 1–13, Tutorials 1–11, the AY23–25 midterms and the AY25/26 final.
 == 1 · Statements, connectives, truth tables
 
 #defn[Statement (2.1.1) · Statement form (2.1.5)][
-A *statement* (proposition) is a sentence that is true or false, but not both. A *statement form* is an expression built from statement variables and connectives that becomes a statement when statements are substituted for its variables.]
+A *statement* (proposition) is a sentence that is true or false, but not both. A *statement form* is an expression built from statement variables and connectives that becomes a statement when statements are substituted for its variables. \
+*Not statements (L2 s8):* questions, commands, exclamations and open sentences ("$x$ solved the question" has no truth value until $x$ is fixed; see predicates, §5).]
 
 #defn[Negation (2.1.2) · Conjunction (2.1.3) · Disjunction (2.1.4)][
 $lnot p$: “not $p$”; $p and q$: “$p$ and $q$”; $p or q$: inclusive “$p$ or $q$”, true when at least one is true.]
@@ -186,9 +187,12 @@ $lnot p$: “not $p$”; $p and q$: “$p$ and $q$”; $p or q$: inclusive “$p
 #defn[Tautology, contradiction (2.1.7–8) · Logical equivalence (2.1.6)][
 A *tautology* is a statement form that is true for every assignment; a *contradiction* is false for every assignment. A statement whose form is a tautology (contradiction) is a *tautological* (*contradictory*) statement. $P equiv Q$ iff $P$ and $Q$ have identical truth values under every assignment; equivalently, iff $P <-> Q$ is a tautology.]
 
+#trap[$equiv$ is not a connective (L2 s53)][
+$P <-> Q$ is a *statement form* with a truth value in each row. $P equiv Q$ is an *assertion about* two statement forms: it has no truth table and cannot be nested inside a formula. The link is: $P equiv Q$ iff $P <-> Q$ is a tautology. Use $equiv$ between the lines of a derivation and $<->$ inside a formula.]
+
 == 2 · Logical equivalences and set identities
 
-Theorem 2.1.1 (logic) and Theorem 6.2.2 (sets) side by side (Lecture 2, slides 25–26; Lecture 5, slides 42–43). Read $and$ as $inter$, $or$ as $union$, $lnot$ as complement, $bold(t)$ as $U$, $bold(c)$ as $nothing$. Cite laws *by name*.
+Theorem 2.1.1 (logic) and Theorem 6.2.2 (sets) side by side (Lecture 2, slides 25–26; Lecture 5, slides 42–43). Read $and$ as $inter$, $or$ as $union$, $lnot$ as complement, $bold("true")$ as $U$, $bold("false")$ as $nothing$. Cite laws *by name*. $bold("true")$ is any tautology and $bold("false")$ any contradiction (Epp writes $bold(t)$, $bold(c)$).
 
 #table(columns: (auto, 1fr, 1fr), align: (left, center, center),
   [Law], [Logic (for statement variables)], [Sets (subsets of $U$)],
@@ -197,15 +201,15 @@ Theorem 2.1.1 (logic) and Theorem 6.2.2 (sets) side by side (Lecture 2, slides 2
   [], $(p or q) or r equiv p or (q or r)$, $(A union B) union C = A union (B union C)$,
   [Distributive], $p and (q or r) equiv (p and q) or (p and r)$, $A inter (B union C) = (A inter B) union (A inter C)$,
   [], $p or (q and r) equiv (p or q) and (p or r)$, $A union (B inter C) = (A union B) inter (A union C)$,
-  [Identity], $p and bold(t) equiv p quad p or bold(c) equiv p$, $A inter U = A quad A union nothing = A$,
-  [Negation / Complement], $p or lnot p equiv bold(t) quad p and lnot p equiv bold(c)$, $A union overline(A) = U quad A inter overline(A) = nothing$,
+  [Identity], $p and bold("true") equiv p quad p or bold("false") equiv p$, $A inter U = A quad A union nothing = A$,
+  [Negation / Complement], $p or lnot p equiv bold("true") quad p and lnot p equiv bold("false")$, $A union overline(A) = U quad A inter overline(A) = nothing$,
   [Double negation / complement], $lnot(lnot p) equiv p$, $overline(overline(A)) = A$,
   [Idempotent], $p and p equiv p quad p or p equiv p$, $A inter A = A quad A union A = A$,
-  [Universal bound], $p or bold(t) equiv bold(t) quad p and bold(c) equiv bold(c)$, $A union U = U quad A inter nothing = nothing$,
+  [Universal bound], $p or bold("true") equiv bold("true") quad p and bold("false") equiv bold("false")$, $A union U = U quad A inter nothing = nothing$,
   [De Morgan's], $lnot(p and q) equiv lnot p or lnot q$, $overline(A inter B) = overline(A) union overline(B)$,
   [], $lnot(p or q) equiv lnot p and lnot q$, $overline(A union B) = overline(A) inter overline(B)$,
   [Absorption], $p or (p and q) equiv p quad p and (p or q) equiv p$, $A union (A inter B) = A quad A inter (A union B) = A$,
-  [Negations of $bold(t)$, $bold(c)$], $lnot bold(t) equiv bold(c) quad lnot bold(c) equiv bold(t)$, $overline(U) = nothing quad overline(nothing) = U$,
+  [Negations of $bold("true")$, $bold("false")$], $lnot bold("true") equiv bold("false") quad lnot bold("false") equiv bold("true")$, $overline(U) = nothing quad overline(nothing) = U$,
   [Set difference], [—], $A without B = A inter overline(B)$,
 )
 
@@ -220,19 +224,29 @@ Theorem 2.1.1 (logic) and Theorem 6.2.2 (sets) side by side (Lecture 2, slides 2
  - *Exportation:* $(p and q) -> r equiv p -> (q -> r)$
  - *Cases:* $(p or q) -> r equiv (p -> r) and (q -> r)$
  - $p -> (q or r) equiv (p and lnot q) -> r$])
+*In $and$/$or$ form (L2 s15, s85):* $p <-> q equiv (lnot p or q) and (p or lnot q) equiv (p and q) or (lnot p and lnot q)$; $quad p xor q equiv (p or q) and lnot(p and q) equiv (p or q) and (lnot p or lnot q) equiv (p and lnot q) or (lnot p and q) equiv lnot(p <-> q)$. \
 The left column is proved in Lecture 2. The right column comes from tutorials and assignments; each follows from the table in a line or two, so derive it if a question says "use the laws" (the AY24 answer key cites variant absorption as an assignment result).]
 
 #exam[AY24 Q4 · Simplify $(((p->q)->(q->r))->(r->s)) or p) and (p->(p->q)) and p$][
 Call the long first conjunct $X or p$. Answer: *$p and q$* (option C).
 #dtable(
   $(X or p) and (p -> (p -> q)) and p$, [],
-  $equiv (X or p) and (p and (p -> (p -> q)))$, j[associative, commutative],
-  $equiv ((X or p) and p) and (p -> (p -> q))$, j[associative],
-  $equiv p and (p -> (p -> q))$, j[commutative ×2, absorption],
+  $equiv (X or p) and ((p -> (p -> q)) and p)$, j[associative law],
+  $equiv (X or p) and (p and (p -> (p -> q)))$, j[commutative law],
+  $equiv ((X or p) and p) and (p -> (p -> q))$, j[associative law],
+  $equiv (p and (p or X)) and (p -> (p -> q))$, j[commutative law ×2],
+  $equiv p and (p -> (p -> q))$, j[absorption law],
   $equiv p and (lnot p or (lnot p or q))$, j[implication law ×2],
-  $equiv p and (lnot p or q)$, j[associative, idempotent],
-  $equiv p and q$, j[variant absorption],
+  $equiv p and ((lnot p or lnot p) or q)$, j[associative law],
+  $equiv p and (lnot p or q)$, j[idempotent law],
+  $equiv p and q$, j[variant absorption law],
 )]
+
+#trap[One law per line (L2 s27–28, T1 Q3)][
+Cite a law on *every* line and never put two different laws on one line; a skipped double negative or commutative step loses credit. The *same* law may be applied several times in one step, written "×2" (L2 s28; AY24 Q4 key). \
+*Laws match by exact shape:* negation is $p and lnot p$, not $lnot p and p$; absorption is $p or (p and q)$, not $p or (q and p)$. Insert the commutative line first. \
+*T1 Q3(a):* $lnot a and (lnot a -> (b and a))$ takes six lines: implication, double negative, commutative ($b and a$ to $a and b$), absorption (leaving $lnot a and a$), commutative ($a and lnot a$), negation, giving $bold("false")$. Skipping straight from the implication law to absorption is not full credit. \
+*Notation:* write $equiv$ between lines, never $=$. The course writes $bold("true")$ and $bold("false")$ for Epp's $bold(t)$ and $bold(c)$, which look like statement variables (L2 s24). Bracket every mixed $and$/$or$: $a and lnot b or lnot c$ is ambiguous (T1 Q2).]
 
 #tip[Checking tautologies and equivalences][
 *To test whether $P -> Q$ is a tautology,* try to make it false: set $Q$ false and $P$ true, and follow the consequences. If this forces a contradiction, $P -> Q$ is a tautology.
@@ -245,7 +259,7 @@ Without a truth table, show $(p -> q) and (p -> lnot q) equiv lnot p$.
 $(p -> q) and (p -> lnot q)$ \
 $equiv (lnot p or q) and (lnot p or lnot q)$ #j[implication law ×2] \
 $equiv lnot p or (q and lnot q)$ #j[distributive law] \
-$equiv lnot p or bold(c)$ #j[negation law] \
+$equiv lnot p or bold("false")$ #j[negation law] \
 $equiv lnot p$ #j[identity law]. #qed]
 
 == 3 · Conditional statements
@@ -274,15 +288,28 @@ The table below translates each phrase. “$p$ iff $q$” is true exactly when t
 #defn[Argument, validity (2.3.1) · Critical row · Syllogism · Sound, unsound (2.3.2)][
 An *argument* (*argument form*) is a sequence of statements (statement forms); all but the last are *premises* (assumptions, hypotheses), the last (after $therefore$) is the *conclusion*. An argument form is *valid* iff, whatever statements are substituted for its variables, if the premises are all true then the conclusion is true. A *critical row* is a truth-table row in which all premises are T: the form is valid iff the conclusion is T in every critical row. A *syllogism* is an argument form with two premises and a conclusion (e.g. modus ponens). An argument is *sound* iff it is valid *and* all its premises are true; otherwise it is *unsound*.]
 
+#thm[Validity as a tautology (T1 notes)][
+The argument $p_1, p_2, ..., p_k therefore q$ is valid iff $(p_1 and p_2 and dots.c and p_k) -> q$ is a *tautology*. So the falsifying test of §2 also tests validity: try to make every premise T and $q$ F. Transitivity is valid because $((p -> q) and (q -> r)) -> (p -> r)$ is a tautology (T1 Q6). \
+*Critical rows by deduction (T1 Q8):* do not draw the table; solve for the rows in which all premises are T.
+- $p or (q and r)$, $lnot p$ $therefore q and r$: the premises force $p = F$, then $q = r = T$. One critical row, conclusion T: *valid*.
+- $p or (q and r)$, $lnot(p and q)$ $therefore r$: $p = T$, $q = r = F$ makes both premises T and $r$ F: *invalid*.
+- $p -> (q or r)$, $q and lnot r$ $therefore p$: $p = F$, $q = T$, $r = F$ is a critical row with conclusion F: *invalid*.
+- $p or q$, $(p and q) -> r$, $q and lnot r$ $therefore lnot p$: premise 3 forces $q = T$, $r = F$; premise 2 then forces $p = F$. Conclusion T: *valid*.]
+
 #table(columns: (auto, 1fr, auto, 1fr), align: (left, center, left, center),
   [Rule], [Form], [Rule], [Form],
   [Modus ponens], $p -> q, thick p thick therefore q$, [Generalization], $p therefore p or q$,
   [Modus tollens], $p -> q, thick lnot q thick therefore lnot p$, [Specialization], $p and q therefore p$,
   [Conjunction], $p, thick q thick therefore p and q$, [Elimination], $p or q, thick lnot q thick therefore p$,
-  [Transitivity], $p -> q, thick q -> r thick therefore p -> r$, [Contradiction rule], $lnot p -> bold(c) thick therefore p$,
+  [Transitivity], $p -> q, thick q -> r thick therefore p -> r$, [Contradiction rule], $lnot p -> bold("false") thick therefore p$,
   [Division into cases], table.cell(colspan: 3, $p or q, thick p -> r, thick q -> r thick therefore r$),
 )
 *Fallacies (invalid):* _converse error_ $p -> q, q therefore p$; $quad$ _inverse error_ $p -> q, lnot p therefore lnot q$.
+
+#trap[Fallacies (L2 s75–78, T1 Q7)][
+A *fallacy* is an error in reasoning that gives an invalid argument. Three common ones: ambiguous premises treated as unambiguous; *circular reasoning* (assuming what is to be proved); *jumping to a conclusion*. The converse error is also called *affirming the consequent*. \
+*Validity is about form, not about the truth of the conclusion.* "If at least one of two numbers is divisible by 6, so is their product; neither is divisible by 6; $therefore$ the product is not" is $(p or q) -> r$, $lnot p and lnot q$ $therefore lnot r$: an inverse error (2 and 3), and the form stays invalid even in instances with no counterexample. Conversely a valid argument with a false premise may have a false conclusion (L2 s78): valid but unsound. \
+*Answer format (T1 Q7):* define the variables, write the form, then name the rule ("valid by specialization") or the error ("invalid: converse error").]
 
 #exam[AY24 Q5 · Which conclusions follow from $p -> (q and r)$, $lnot p -> lnot r$, $lnot p and (r -> lnot p)$?][
 + $lnot p$ #j[specialization, premise 3]; then $lnot r$ #j[modus ponens with premise 2].
@@ -296,6 +323,17 @@ Sound $=>$ valid by definition, so "$forall x (S o u n d(x) -> V a l i d(x))$" i
 *Method:* let $A, D, N$ mean "is a knight". A statement $S$ made by $X$ gives $X <-> S$. Here: $A <-> D$; $D <-> lnot N$; "Aiken is not my type" gives $N <-> lnot(A <-> N)$; "Aiken lies" gives $N <-> lnot A$.
 From $N <-> lnot A$, $A$ and $N$ differ, so $lnot(A <-> N)$ is T, hence $N$ is T. Then $A = F$, $D = A = F$, and $D <-> lnot N$ checks out. *Aiken and Dueet are knaves; Noasu is a knight.* Answer B.]
 
+#example[T1 Q9 · Knights and knaves as a written proof][
+A says "Both of us are knights"; B says "A is a knave". Every native is a knight (always truthful) or a knave (always lies), not both.
++ Suppose A is a knight.
+  + What A says is true #j[definition of knight], so B is a knight too #j[that is what A says].
+  + So what B says is true #j[definition of knight], so A is a knave #j[that is what B says].
+  + So A is not a knight #j[a native is a knight or a knave, but not both], contradicting line 1.
++ Hence A is not a knight, so A is a knave #j[knight or knave].
++ So what B says is true; B cannot be a knave #j[B said something true], so B is a knight. #qed
+*A is a knave and B is a knight.* "Knave" is not the negation of "knight": a contradiction needs $p and lnot p$, so the "not both" line must come before "contradiction". \
+*(b)* C: "D is a knave". D: "C is a knave". By cases: if C is a knight, what C says is true, so D is a knave. If C is not a knight, C is a knave, what C says is false, so D is not a knave, so D is a knight. In both cases there is *one knight and one knave*.]
+
 #exam[AY25 Q16 (6 marks) · Four animals, four colours, nine clues][
 Names: cat (3 letters), sheep (5), rabbit (6), penguin (7).
 + (2) six letters $<->$ black: *rabbit* is black; cat, sheep, penguin are not.
@@ -308,18 +346,20 @@ Names: cat (3 letters), sheep (5), rabbit (6), penguin (7).
 
 === Model derivations
 
-#proofb[Simplify $lnot(lnot p and q) and (p or q)$ using the laws][
+#proofb[Simplify $lnot(lnot p and q) and (p or q)$ using the laws (L2 s27)][
 #dtable(
-  $lnot(lnot p and q) and (p or q) equiv (lnot lnot p or lnot q) and (p or q)$, j[De Morgan's law],
+  $lnot(lnot p and q) and (p or q) equiv (lnot(lnot p) or lnot q) and (p or q)$, j[De Morgan's law],
   $equiv (p or lnot q) and (p or q)$, j[double negative law],
   $equiv p or (lnot q and q)$, j[distributive law],
-  $equiv p quad square.filled$, j[commutative, negation and identity laws])]
+  $equiv p or (q and lnot q)$, j[commutative law],
+  $equiv p or bold("false")$, j[negation law],
+  $equiv p quad square.filled$, j[identity law])]
 
 #proofb[Derive variant absorption $p and (lnot p or q) equiv p and q$ from the table][
 $p and (lnot p or q)$ \
 $equiv (p and lnot p) or (p and q)$ #j[distributive] \
-$equiv bold(c) or (p and q)$ #j[negation] \
-$equiv (p and q) or bold(c)$ #j[commutative] \
+$equiv bold("false") or (p and q)$ #j[negation] \
+$equiv (p and q) or bold("false")$ #j[commutative] \
 $equiv p and q$ #j[identity]. #qed]
 
 #proofb[A deduction with named rules: from $p or q$, $q -> r$, $(p and s) -> t$, $lnot r$, $lnot q -> (u and s)$, conclude $t$][
@@ -355,6 +395,12 @@ Decide validity: (a) $p -> q$, $q -> r$, $lnot r$ $therefore lnot p$. $quad$ (b)
 (a) *Valid:* $p -> r$ #j[transitivity]; with $lnot r$, $lnot p$ #j[modus tollens]. \
 (b) *Invalid* (inverse error): the critical row $p = F$, $q = T$ makes both premises true and the conclusion $lnot q$ false.]
 
+#example[Which premise is missing? (L2 s86, past midterm)][
+$p -> r$, $quad q -> s$, $quad$ (missing premises) $therefore (p or q) -> (r and s)$. Candidates: (I) $p or q$; (II) $(p and q) -> (r and s)$; (III) $p -> s$; (IV) $q -> r$.
+
+*Method:* list the rows where the given premises are T and the conclusion is F; the added premises must be F in every such row. \
+Row $p = T, q = F, r = T, s = F$: only (III) is F there. Row $p = F, q = T, r = F, s = T$: only (IV) is F there. So *both (III) and (IV)* are needed, and they suffice: $p -> (r and s)$ and $q -> (r and s)$ give $(p or q) -> (r and s)$ by the cases equivalence (§2). (I) and (II) are T in both rows, so they never help; (II) already follows from the two given premises.]
+
 = Part II · Quantified Statements
 // ============================================================================
 
@@ -377,6 +423,18 @@ $exists! x in D, Q(x) quad equiv quad exists x in D thin (Q(x) and forall y in D
 #tip[Translating English][
 *Use $->$ under $forall$ and $and$ under $exists$.* "All $A$ are $B$" is $forall x (A(x) -> B(x))$; "some $A$ is $B$" is $exists x (A(x) and B(x))$. Writing $forall x (A(x) and B(x))$ claims *everything* is an $A$; writing $exists x (A(x) -> B(x))$ is true as soon as one non-$A$ exists. \
 *Implicit quantification:* "If $x > 2$ then $x^2 > 4$" in a real-number context means $forall x in RR (x > 2 -> x^2 > 4)$.]
+
+#defn[Bound and free variables · Scope (T2 notes; L3 s35)][
+A variable is *bound* when a quantifier is applied to it and *free* otherwise: in $forall x thin exists y thin P(x, y)$ both are bound; in $forall x thin P(x, y)$, $y$ is free. The *scope* of a quantifier is the part of the formula it governs: the bracketed formula after it or, with no brackets, the *smallest* formula that follows. In $forall x thin (exists y thin P(x, y) or Q(x, y))$ the scope of $exists y$ is only $P(x, y)$, so the $y$ in $Q(x, y)$ is free; write $forall x thin exists y thin (P(x, y) or Q(x, y))$ to bind both. \
+*Restricted quantifiers:* $forall x in D thin P(x) equiv forall x thin (x in D -> P(x))$ and $exists x in D thin P(x) equiv exists x thin (x in D and P(x))$. The comma in "$forall x in D, P(x)$" is punctuation and may be omitted. \
+*Finite domain:* if $D = {x_1, ..., x_n}$, then $forall x in D thin Q(x) equiv Q(x_1) and dots.c and Q(x_n)$ and $exists x in D thin Q(x) equiv Q(x_1) or dots.c or Q(x_n)$.]
+
+#trap[Translation mistakes (L3 s45–47, T2 notes, T2 Q9)][
+- *A predicate as an argument:* $F l y(B i r d(x))$ or $L o v e s(x, R e i n d e e r(y))$. A predicate evaluates to true or false, so this reads $F l y(bold("true"))$. Join predicates with a connective: $R e i n d e e r(y) and L o v e s(x, y)$.
+- *A comma as a connective:* $forall x thin P(x), Q(x)$ is not a formula. The comma is not $and$, $or$ or any connective; write $forall x thin (P(x) and Q(x))$.
+- *"Not all birds can fly"* is $exists x thin (B i r d(x) and lnot F l y(x))$, the negation of "all birds can fly". $forall x thin (B i r d(x) -> lnot F l y(x))$ says "all birds cannot fly"; $exists x thin (B i r d(x) -> lnot F l y(x))$ is true as soon as a non-bird exists, even with no birds at all.
+- *"No $A$ is $B$"* (T2 Q9d): $forall x thin (A(x) -> lnot B(x))$, equivalently $forall x thin (lnot A(x) or lnot B(x))$ or $lnot exists x thin (A(x) and B(x))$.
+- *One quantifier for two witnesses* (T2 Q9e): "some who took $T$ visited $E$, but some did not" is $(exists v in V thin (T(v) and E(v))) and (exists u in V thin (T(u) and lnot E(u)))$. Merging into $exists v in V thin ((T(v) and E(v)) and (T(v) and lnot E(v)))$ asks for one visitor with $E(v) and lnot E(v)$: always false. The letter $v$ may be reused in the second clause, since each scope ends at its own bracket.]
 
 #exam[AY24 Q2 · "All birds cannot fly"][
 $forall x (B i r d(x) -> lnot F l y(x))$, option C. Option B, $forall x (B i r d(x) and lnot F l y(x))$, asserts that everything is a bird; D quantifies a second, unrelated $y$.]
@@ -445,6 +503,13 @@ Valid iff every substitution of predicates that makes all premises true also mak
 )
 *Invalid:* quantified *converse error* $forall x (P(x) -> Q(x)); thick Q(a) therefore P(a)$ and *inverse error* $forall x (P(x) -> Q(x)); thick lnot P(a) therefore lnot Q(a)$. \
 *Validity with diagrams:* draw "all $P$ are $Q$" as the $P$-disc inside the $Q$-disc; the argument is valid iff *every* consistent drawing forces the conclusion.
+
+#tip[Universal transitivity · reorder the premises into a chain (L3 s94–98, T2 Q10)][
+$forall x thin (P(x) -> Q(x)); thick forall x thin (Q(x) -> R(x)) thick therefore forall x thin (P(x) -> R(x))$. \
+*Method:* (1) rewrite every premise and the conclusion as "$forall x$, if … then …"; (2) the first premise must begin with the hypothesis of the conclusion and the last must end with its conclusion; (3) where the ends do not match, replace a premise by its *contrapositive*; (4) reorder so that each conclusion is the next hypothesis. \
+*L3 s95–98:* (1) all the triangles are blue; (2) right of all the squares $->$ above all the circles; (3) not right of all the squares $->$ not blue; $therefore$ all the triangles are above all the circles. Chain: triangle $->$ blue #j[1] $->$ right of all the squares #j[contrapositive of 3] $->$ above all the circles #j[2]. \
+*T2 Q10:* (1) above all the triangles $->$ above all the blue objects; (2) not above all the gray objects $->$ not a square; (3) black $->$ square; (4) above all the gray objects $->$ above all the triangles; $therefore$ black $->$ above all the blue objects. Order *3, 2 (contrapositive), 4, 1*: black $->$ square $->$ above all gray $->$ above all triangles $->$ above all blue. \
+In symbols each link keeps its inner quantifier inside brackets, e.g. premise 2 becomes $forall x in O thin (S q u a r e(x) -> forall y in O thin (G r a y(y) -> A b o v e(x, y)))$.]
 
 #exam[AY25 Q6 (number theory in quantifier form) · $n$ a perfect square][
 (i) "$n$ is prime" is false ($4 = 2^2$). (ii) "$n$ has an odd number of positive factors" is true for $n >= 1$ (divisors pair up as $d <-> n slash d$, except $d = sqrt(n)$), but *$n = 0$ is a perfect square with infinitely many factors*, so the key accepted both C and D. (iii) "$p dv n => p^2 dv n$" is true: if $n = m^2$ and $p dv m^2$ then $p dv m$ (unique factorization), so $p^2 dv m^2$.]
@@ -519,6 +584,14 @@ For all $x, y, z in ZZ$: *closure* ($x + y, x - y, x y in ZZ$), *commutativity*,
 
 #trap[Common mistakes in proofs][
 Arguing from examples · reusing a letter ($m = 2r$ and $n = 2r$ makes $m = n$) · assuming what is to be proved · "therefore" without a reason · writing "$a dv b = 3$" ($a dv b$ is a statement, not a number).]
+
+#tip[Without loss of generality (Lecture 1, Ex. 1)][
+"WLOG" goes before an assumption that narrows the hypothesis to one special case, and asserts that the proof of that case applies just as easily to all the others. Lecture: for two consecutive odd numbers $a, b$, "WLOG assume $a < b$, hence $b = a + 2$"; the case $b < a$ is the same proof with the names swapped. If the remaining cases need a different argument, use division into cases instead.]
+
+#trap[T2 Q7 · Two bad "proofs" of $forall x in RR thin (x^2 >= 0)$][
+*Proof by examples disguised as cases.* "Cases $x < 0$, $x = 0$, $x > 0$: if $x < 0$, for example $x = -3$, then $x^2 = 9 >= 0$; if $x = 0$ then $x^2 = 0$; if $x > 0$, say $x = 4$, then $x^2 = 16 >= 0$." Each case checks one value, not an arbitrary $x$ in that case. The same "logic" proves the false claim $forall x in RR thin (x^3 = x)$ using $x = -1, 0, 1$. \
+*Wrong negation in a proof by contradiction.* "Suppose $x^2 < 0$ for all real $x$. Let $x = 3$: $x^2 = 9 > 0$, a contradiction." The supposition must be the negation $exists x in RR thin lnot(x^2 >= 0)$; the "proof" supposes $forall x in RR thin lnot(x^2 >= 0)$. The same "logic" proves $forall x in RR thin (x^3 = x)$: suppose $x^3 != x$ for all $x$; $x = 0$ contradicts it. \
+*Checklist for "what is wrong with this proof?"* Is the element arbitrary? Is the supposition the exact negation (§6)? Is the method named correctly (T1 Q11, L2 s84: contraposition is not contradiction)? Are both directions of an "iff" proved? Is every step justified? Is a diagram used in place of a proof (T2 Q8)?]
 
 #example[T1 Q11 · Odd square iff odd integer · Proposition 4.6.4][
 For $n in ZZ$, a proposed “contradiction proof” shows only that $n$ even implies $n^2$ even. *Faults:* it uses contraposition, proves only one direction, and omits justifications. A complete proof is:
@@ -1079,6 +1152,20 @@ $S compose R$ (apply $R$ then $S$): $(6,6)(6,9) -> (6,9)$; $(9,9)(9,12) -> (9,12
 *Q17(e).* $x R_1 y <-> y = 2x$, $x R_2 y <-> x = y^2$ on $ZZ^+$. $x (R_1 compose R_2) z <-> exists y (x = y^2 and z = 2y)$, so *$x = z^2 slash 4$* (with $z$ even). \
 *Q12.* $|R compose R|$ has no fixed relation to $|R|$: on ${a, b}$, $R = {(a,a),(a,b),(b,a)}$ gives $|R compose R| = 4 > 3$; ${(a,a),(a,b)}$ gives $2 = 2$ but $!= 2^2$; ${(a,a)}$ gives $1 = 1^2$. None of (i)–(iii) always holds. Answer *E*.]
 
+#tip[Compositions and powers on the digraph (T4 Q4)][
+$(x, z) in S compose R$ iff one $R$-arrow followed by one $S$-arrow leads from $x$ to $z$. Hence $(x, y)$ lies in $R compose dots.c compose R$ ($k$ copies) iff the digraph of $R$ has a walk of *exactly $k$ arrows* from $x$ to $y$; the same arrow or loop may be used more than once. For each starting vertex, trace where exactly $k$ arrows can end. For larger $k$ square first: $R compose R compose R compose R = (R compose R) compose (R compose R)$ #j[associativity].]
+
+#exam[AY23 Q11 · $|R compose R compose R compose R|$ from a digraph on ${1, 2, 3, 4}$][
+Arrows: $1 -> 2$, $1 -> 3$, $3 -> 2$, $3 -> 4$, $4 -> 3$, so $R = {(1,2), (1,3), (3,2), (3,4), (4,3)}$; vertex 2 is a dead end. \
+*Two arrows:* $1 -> 3 -> 2$, $1 -> 3 -> 4$, $3 -> 4 -> 3$, $4 -> 3 -> 2$, $4 -> 3 -> 4$: $R compose R = {(1,2), (1,4), (3,3), (4,2), (4,4)}$. \
+*Four arrows* $= (R compose R) compose (R compose R)$: from 1 only via 4, reaching 2 and 4; from 3 via 3, reaching 3; from 4 via 4, reaching 2 and 4. So $R compose R compose R compose R = {(1,2), (1,4), (3,3), (4,2), (4,4)}$ and the answer is *5* (option B).]
+
+#example[T4 Q4 · $R compose R$ and $R compose R compose R$ read off the digraph][
+$A = {a, b, c}$ with arrows $a -> b$, $b -> a$, $b -> c$, $c -> b$ and a loop at $c$: $R = {(a,b), (b,a), (b,c), (c,b), (c,c)}$. \
+(a) *Exactly two arrows:* from $a$ reach $a, c$; from $b$ reach $b, c$; from $c$ reach $a, b, c$. $R compose R = {(a,a), (a,c), (b,b), (b,c), (c,a), (c,b), (c,c)}$. *Not transitive:* $(a, c)$ and $(c, b)$ are in it but $(a, b)$ is not. \
+(b) *Exactly three arrows:* from $a$ reach $b, c$; from $b$ and from $c$ reach everything. $R compose R compose R = {(a,b), (a,c), (b,a), (b,b), (b,c), (c,a), (c,b), (c,c)}$. *Not transitive:* $(a, c)$ and $(c, a)$ are in it but $(a, a)$ is not. \
+(c) $(R compose R) union R = A times A$, which is *transitive*.]
+
 #proofb[$(S compose R)^(-1) = R^(-1) compose S^(-1)$ (Lecture 6, slide 18)][
 Let $R subset.eq A times B$ and $S subset.eq B times C$. For all $z in C$, $x in A$: $(z, x) in (S compose R)^(-1) <-> (x, z) in S compose R$ #j[definition of inverse] \
 $<-> exists y in B thin (x R y and y S z)$ #j[definition of $compose$] \
@@ -1138,6 +1225,14 @@ $= S$. \
  - The empty relation on $A != nothing$ is symmetric, transitive, antisymmetric and asymmetric, but not reflexive.
  - If $R, S$ *both* have the property: reflexivity survives $union, inter, compose$; symmetry survives $union, inter$ but not $compose$; transitivity and antisymmetry survive only $inter$.
  - Write "0 is related to itself", not "0 is reflexive".])]
+
+#thm[More facts for MCQs (T5 D1–D4, T4 Q3, T4 Q6)][
+- *Alternative definition of antisymmetry (T5 D4):* $forall x, y in A thin (x != y -> (x R y -> y cancel(R) x))$. It is the usual definition rewritten: $(x R y and y R x) -> x = y$ $equiv x != y -> lnot(x R y and y R x)$ #j[contrapositive] $equiv x != y -> (x cancel(R) y or y cancel(R) x)$ #j[De Morgan's law] $equiv x != y -> (x R y -> y cancel(R) x)$ #j[implication law]. Distinct elements are never related in both directions.
+- *Symmetric and antisymmetric* $=> R subset.eq {(x, x) : x in A}$: if $x R y$ then $y R x$ #j[symmetry], so $x = y$ #j[antisymmetry]. If $R$ is also reflexive, $R$ is exactly the identity relation "$=$" (T5 D2): the only relation on $A$ that is both an equivalence relation and a partial order.
+- *Symmetric and asymmetric* (T5 D3): only $R = nothing$, since one pair $x R y$ would give both $y R x$ and $y cancel(R) x$.
+- *Empty relation (T5 D1):* on $A != nothing$ it is symmetric, transitive, antisymmetric and asymmetric (each vacuously) but not reflexive. On $A = nothing$ it is the only relation ($A times A = nothing$) and is reflexive too, so it is an equivalence relation and a partial order. This is why questions say "on a non-empty set" (AY23 Q10).
+- *Size of an equivalence relation:* if the classes are $S_1, ..., S_k$, then $R = (S_1 times S_1) union dots.c union (S_k times S_k)$ and $|R| = |S_1|^2 + dots.c + |S_k|^2$. T4 Q6: classes ${1, 2}$ and ${3}$ give $|R| = 2^2 + 1^2 = 5$. On ${1, 2, 3}$ the five equivalence relations (AY25 Q4) have 3, 5, 5, 5 and 9 pairs.
+- *T4 Q3 on $QQ$:* $x y >= 0$ is reflexive and symmetric but not transitive ($1, 0, -1$); $x y > 0$ is symmetric and transitive but *not reflexive* ($0 dot 0 = 0$). Neither is an equivalence relation on $QQ$; removing 0 repairs both (T4 Q10, §23).]
 
 #tip[Proof skeletons for the properties][
 *Reflexive:* "Let $x in A$. … so $x R x$." $quad$ *Symmetric:* "Let $x, y in A$ with $x R y$. … so $y R x$." \
@@ -1358,6 +1453,18 @@ $a, b$ are *comparable* iff $a pleq b$ or $b pleq a$; otherwise *noncomparable*.
 A *chain* is a subset $C$ in which every two elements are comparable; a *maximal chain* $M$ has no $t in.not M$ with $M union {t}$ a chain; the *length* of a chain is one less than its number of elements. An *antichain* is a subset in which no two distinct elements are comparable. \
 $pleq$ is a *total (linear) order* iff it is a partial order and $forall x, y in A thin (x pleq y or y pleq x)$; its Hasse diagram is a single chain. $dv$ on $ZZ^+$ is partial, not total ($3 ndv 5$, $5 ndv 3$); $<=$ on $QQ$ is total.]
 
+#grid(columns: (1fr, auto), gutter: 16pt,
+  example[T5 Q8 · Comparable versus compatible on $({1, 2, 4, 5, 10, 15, 20}, dv)$][
+  *Comparable* (one divides the other), 14 pairs: ${1,2}$, ${1,4}$, ${1,5}$, ${1,10}$, ${1,15}$, ${1,20}$, ${2,4}$, ${2,10}$, ${2,20}$, ${4,20}$, ${5,10}$, ${5,15}$, ${5,20}$, ${10,20}$. \
+  *Compatible* (a common upper bound in $A$), 17 pairs: those 14 and ${2,5}$ (both divide 10), ${4,5}$, ${4,10}$ (both divide 20). \
+  *Not compatible:* ${2,15}$, ${4,15}$, ${10,15}$, ${15,20}$; nothing in $A$ lies above 15 except 15 itself. \
+  *Comparable $=>$ compatible:* if $a pleq b$ take $c = b$; then $a pleq b$ and $b pleq b$ #j[reflexivity]. *The converse fails:* ${2, 5}$ is compatible but not comparable.],
+  align(center + horizon, hasse(
+    (([1], 1.2, 0.2), ([2], 0.6, 1.0), ([5], 1.8, 1.0),
+     ([4], 0.2, 1.8), ([10], 1.2, 1.8), ([15], 2.3, 1.8), ([20], 0.7, 2.6)),
+    ((0,1), (0,2), (1,3), (1,4), (2,4), (2,5), (3,6), (4,6)),
+    w: 2.5cm, h: 2.8cm, u: 1cm, size: 8pt)))
+
 #defn[Maximal, minimal, largest, smallest (Lecture 6.4.5)][
 For a poset $(A, pleq)$ and $c in A$:
 #grid(columns: (1fr, 1fr), gutter: 14pt,
@@ -1397,6 +1504,19 @@ On $ZZ^+$ let $a pleq b <-> b = a dot 2^k$ for some $k in NN$. Prove $pleq$ is a
 + (Minimal) $b pleq a$ with $b != a$ means $a = b 2^k$, $k >= 1$, which is possible iff $a$ is even. So the minimal elements are exactly the *odd* numbers.
 + (Maximal) None: $a pleq 2a$ and $2a != a$. Hence no largest or smallest element either. #qed]
 
+#grid(columns: (1fr, auto), gutter: 16pt,
+  example[T5 Q5 · Componentwise order on ${0, 1}^2$][
+  Let $B = {0, 1}$ and $(a, b) R (c, d) <-> (a <= c) and (b <= d)$ on $B times B$. Prove $R$ is a partial order.
+  + (Reflexive) Let $(a, b) in B times B$. Then $a <= a$ and $b <= b$, so $(a, b) R (a, b)$ #j[definition of $R$].
+  + (Antisymmetric) Let $(a, b) R (c, d)$ and $(c, d) R (a, b)$. Then $a <= c$, $b <= d$, $c <= a$ and $d <= b$ #j[definition of $R$], so $a = c$ and $b = d$ #j[antisymmetry of $<=$], so $(a, b) = (c, d)$ #j[equality of ordered pairs].
+  + (Transitive) Let $(a, b) R (c, d)$ and $(c, d) R (e, f)$. Then $a <= c$, $b <= d$, $c <= e$ and $d <= f$ #j[definition of $R$], so $a <= e$ and $b <= f$ #j[transitivity of $<=$], so $(a, b) R (e, f)$ #j[definition of $R$].
+  + Therefore $R$ is a partial order on $B times B$. #qed
+  *Maximal and largest:* $(1, 1)$. *Minimal and smallest:* $(0, 0)$. *Not well-ordered:* it is not even a total order, since $(0, 1)$ and $(1, 0)$ are noncomparable.],
+  align(center + horizon, hasse(
+    (([$(0,0)$], 1.0, 0.2), ([$(0,1)$], 0.35, 1.1), ([$(1,0)$], 1.65, 1.1), ([$(1,1)$], 1.0, 2.0)),
+    ((0,1), (0,2), (1,3), (2,3)),
+    w: 2.0cm, h: 2.2cm, u: 1cm, size: 8pt)))
+
 == 25 · Linearization and Kahn's algorithm
 
 #defn[Linearization (Lecture 6.4.7)][
@@ -1405,6 +1525,12 @@ A *linearization* of a partial order $pleq$ on $A$ is a *total order* $plin$ on 
 #tip[Kahn's algorithm (1962) · Testing a proposed line-up][
 *Kahn:* set $A_0 := A$, $i := 0$; while $A_i != nothing$: pick a *minimal* element $c_i$ of $A_i$, set $A_(i+1) := A_i without {c_i}$, $i := i + 1$. Output $c_0 plin c_1 plin dots.c$. Different choices of minimal element give different linearizations. \
 *Test:* a sequence is a linearization iff *for every line of the Hasse diagram, the lower element comes earlier*. A single reversed pair means it is not a linearization.]
+
+#tip[Is there a linearization with $a plin b$? (T5 Q2) · Listing them all (T5 Q4)][
+For distinct $a, b$, some linearization has $a plin b$ *iff not $b pleq a$*. If $b pleq a$, every linearization has $b plin a$; if $a pleq b$, every one has $a plin b$; noncomparable elements can appear in either order. For a chain $a_1 plin a_2 plin dots.c plin a_k$: possible iff no later element lies strictly below an earlier one. \
+*T5 Q2* on $({2, 3, 5, 7, 21, 30, 84, 99}, dv)$: (i) $21 plin 7$ is impossible, as $7 dv 21$. (ii) $3 plin 2$ is possible (noncomparable). (iii) $21 plin 5 plin 84$ is possible: 5 is noncomparable with 21 and with 84, and $21 dv 84$ agrees. (iv) $99 plin 84 plin 30$ is possible: pairwise noncomparable. True: *(ii), (iii), (iv)*. \
+*All linearizations (T5 Q4):* run Kahn's algorithm through every choice of minimal element. For the order of AY23 Q15 (11, 13 below 14, 15 below 16 below 12) there are $2 dot 2 = bold(4)$: $quad 11, 13, 14, 15, 16, 12$; $quad 11, 13, 15, 14, 16, 12$; $quad 13, 11, 14, 15, 16, 12$; $quad 13, 11, 15, 14, 16, 12$. \
+*Total order (L6 s87):* its Hasse diagram is one chain, so its only linearization is itself.]
 
 #grid(columns: (auto, 1fr), gutter: 16pt,
   align(center + horizon, hasse(
@@ -1454,8 +1580,10 @@ Divisor counts: $11 -> 2$, $13 -> 2$, $14 -> 4$, $15 -> 4$, $16 -> 5$, $12 -> 6$
   [$equiv space (mod n)$ on $ZZ$], [✓], [✓], [✓], [✗], [equivalence, $n$ classes],
   [$subset.eq$ on $PP(A)$], [✓], [✗], [✓], [✓], [partial order],
   [$|X| = |Y|$ on $PP(A)$], [✓], [✓], [✓], [✗], [equivalence, classes by size],
-  [$x y >= 0$ on $ZZ$], [✓], [✓], [✗], [✗], [neither: $-1, 0, 1$],
+  [$x y >= 0$ on $ZZ$ or $QQ$ (T4 Q3)], [✓], [✓], [✗], [✗], [neither: $-1, 0, 1$],
+  [$x y > 0$ on $QQ$ (T4 Q3)], [✗], [✓], [✓], [✗], [neither: $0 cancel(S) 0$],
   [$|x - y| <= 1$ on $ZZ$], [✓], [✓], [✗], [✗], [neither: $0, 1, 2$],
+  [$|x - y| <= 2$ on $ZZ$ (T4 Q3)], [✓], [✓], [✗], [✗], [neither: $-2, 0, 2$],
   [$nothing$ on $A != nothing$], [✗], [✓], [✓], [✓], [neither],
   [$A times A$], [✓], [✓], [✓], [✗ if $|A| >= 2$], [equivalence, one class],
 )
@@ -1555,7 +1683,7 @@ Result: $1 plin 3 plin 2 plin 6 plin 5 plin 15 plin 10 plin 30$. Any other choic
   [Past-paper question], [Solved in],
   [AY23 Q2, Q4, Q5, Q16], [§6, §4, §7, §7],
   [AY23 Q3, Q6, Q7, Q8, Q17], [§2, §18, §16, §14, §18],
-  [AY23 Q9, Q10, Q12, Q13, Q14, Q15, Q18, Q19], [§21, §21, §23, §24, §24, §25, §25, §23],
+  [AY23 Q9, Q10, Q11, Q12, Q13, Q14, Q15, Q18, Q19], [§21, §21, §20, §23, §24, §24, §25, §25, §23],
   [AY24 Q2, Q3, Q4, Q5], [§5, §2, §2, §4],
   [AY24 Q6, Q7, Q8, Q16], [§15, §18, §18, §18],
   [AY24 Q9, Q10, Q11, Q12, Q13–15, Q17], [§23, §21, §20, §20, §25, §20–§25],
@@ -1565,16 +1693,25 @@ Result: $1 plin 3 plin 2 plin 6 plin 5 plin 15 plin 10 plin 30$. Any other choic
 
 #table(columns: (auto, 1fr, auto), align: (left, left, left),
   [Tutorial question], [Topic], [Solved in],
+  [T1 Q3], [One law per line; true/false], [§2],
+  [T1 Q7, Q8, Q9], [Fallacies; critical rows by deduction; knights and knaves], [§4],
   [T1 Q11], [Critique a biconditional proof; contraposition], [§9],
   [T2 Q4], [Closure under division; rational addition], [§11, §12],
+  [T2 Q7], [Proof by examples; wrong negation], [§9],
   [T2 Q8, Q11], [Cases inside a conditional; factor bound], [§11],
+  [T2 Q9, Q10], [Translation and scope; universal transitivity], [§5, §8],
   [T3 Q3(c)], [Cartesian product versus power set], [§15],
   [T3 Q4–6], [Double inclusion; element method; set identities], [§17],
   [T3 Q7], [$A subset.eq B <-> A union B = B$], [§18],
   [T4 Q2], [Symmetry and the inverse relation], [§21],
+  [T4 Q3], [Classifying $x y >= 0$, $x y > 0$, $|x - y| <= 2$], [§21, §25],
+  [T4 Q4], [Powers of a relation on the digraph], [§20],
   [T4 Q6, Q7, Q9], [Repeated composition; associativity; parity relation], [§20],
   [T4 Q8, Q10], [Classes of pairs; equivalence by sign], [§23],
+  [T5 D1–D4], [Empty relation; identity relation; alternative antisymmetry], [§21],
   [T5 Q1], [Antisymmetry counterexample on strings], [§24],
+  [T5 Q2, Q4], [Linearizations with $a plin b$; listing all], [§25],
+  [T5 Q5, Q8], [Componentwise order; comparable versus compatible], [§24],
   [T5 Q6], [The three conditions defining a closure], [§22],
   [T5 Q7], [Asymmetric implies antisymmetric], [§21],
 )
@@ -1618,7 +1755,7 @@ Result: $1 plin 3 plin 2 plin 6 plin 5 plin 15 plin 10 plin 30$. Any other choic
   [Symbol], [Read as], [Symbol], [Read as], [Symbol], [Read as],
   $lnot p$, [not $p$], $p and q$, [$p$ and $q$], $p or q$, [$p$ or $q$],
   $p -> q$, [if $p$ then $q$], $p <-> q$, [$p$ iff $q$], $p xor q$, [exclusive or],
-  $P equiv Q$, [logically equivalent], $therefore$, [therefore], $bold(t), bold(c)$, [tautology, contradiction],
+  $P equiv Q$, [logically equivalent], $therefore$, [therefore], $bold("true"), bold("false")$, [tautology, contradiction (Epp: $bold(t)$, $bold(c)$)],
   $forall$, [for all], $exists$, [there exists], $exists!$, [there exists exactly one],
   $x in A$, [$x$ is an element of $A$], $A subset.eq B$, [$A$ is a subset of $B$], $A subset.neq B$, [proper subset],
   $nothing$, [empty set], $|A|$, [cardinality], $PP(A)$, [power set],

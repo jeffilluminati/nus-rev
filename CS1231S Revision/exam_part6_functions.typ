@@ -45,6 +45,12 @@ A *sequence* $a_0, a_1, a_2, dots$ is represented by a function $a$ with domain 
 *Fibonacci:* $F_0 = 0$, $F_1 = 1$, $F_(n+2) = F_(n+1) + F_n$: $quad 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, dots$ \
 A *string* (word) over a set $A$ is an expression $a_0 a_1 dots.c a_(l-1)$ with $l in ZZ_(>= 0)$ and each $a_i in A$; $l$ is its *length*; the *empty string* $epsilon$ has length 0; $A^*$ is the set of all strings over $A$. Two sequences (strings of the same length) are equal iff they agree at every index.]
 
+#defn[Floor, ceiling (T6 D3 · AY23/24 final)][
+For a real number $x$: the *floor* $floor(x)$ is the unique integer $n$ with $n <= x < n + 1$, i.e. $floor(x) = max{m in ZZ : m <= x}$; the *ceiling* $ceil(x)$ is the unique integer $n$ with $n - 1 < x <= n$, i.e. $ceil(x) = min{m in ZZ : m >= x}$. \
+$floor(2.7) = 2$, $ceil(2.7) = 3$, $floor(-2.7) = -3$, $ceil(-2.7) = -2$, $floor(5) = ceil(5) = 5$. Read off the definitions:
+- $floor(x) <= x <= ceil(x)$; $quad x in ZZ <=> floor(x) = x <=> ceil(x) = x$; $quad x in.not ZZ => ceil(x) = floor(x) + 1$.
+- For $n in ZZ$: $floor(n slash 2) = n slash 2$ if $n$ is even and $(n - 1) slash 2$ if $n$ is odd; $ceil(n slash 2) = n slash 2$ if $n$ is even and $(n + 1) slash 2$ if $n$ is odd.]
+
 #thm[Theorem 7.1.1 · Function equality (L7 s22)][
 $f: A -> B$ and $g: C -> D$ are equal iff (i) $A = C$ and $B = D$, and (ii) $f(x) = g(x)$ for all $x in A$.]
 

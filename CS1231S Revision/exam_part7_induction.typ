@@ -45,6 +45,17 @@ A sum is in *closed form* when it is written without an ellipsis or a summation 
 - Check the *basis value matches the claim* (T7 D2: the claim is for $n in NN$, so the basis must be $n = 0$, and the step must be shown, not asserted).
 - The inductive step must cover an *arbitrary* object of size $k + 1$ (T7 D3: start from any group of $k + 1$ people and remove one, rather than building up from a group of $k$).]
 
+#trap[Nine common mistakes in induction proofs (Week 7 deck)][
++ *Assuming what is to be proved.* The hypothesis is $P(k)$, not $P(k + 1)$; "by induction, $P(k + 1)$ is true" is circular.
++ *Never using the hypothesis.* A derivation of $P(k + 1)$ that does not use $P(k)$ is a direct proof, not a proof by induction.
++ *Proving the wrong implication.* The step is $P(k) => P(k + 1)$; the converse $P(k + 1) => P(k)$ builds no chain.
++ *Treating $k$ as a particular number.* The step must work for an arbitrary $k$ in the required range.
++ *Using $n$ in place of $k$ in the step:* writing $P(n) => P(n + 1)$ while proving $P(n)$ for all $n >= 1$.
++ *"Assume $P(k)$ is true for all $k >= 1$."* That assumes the whole theorem. Write "let $k >= 1$ be arbitrary and assume $P(k)$".
++ *An unjustified algebraic or inequality step* that forces $P(k + 1)$: reaching $2^(k+1) < 2k^2$ and then claiming $2k^2 < (k + 1)^2$ without checking when it holds. The structure looks perfect, yet there is a gap in the row of dominoes.
++ *Using more than the hypothesis provides.* In 1PI, assuming $P(k)$ does not give $P(k - 1)$, $P(k - 2)$; if earlier cases are needed, use 2PI.
++ *Too few basis cases for 2PI.* Proving $P(k) => P(k + 2)$ with only $P(1)$ in the basis gives $P(1), P(3), P(5), dots$ and none of $P(2), P(4), P(6), dots$]
+
 #proofb[Theorem 5.2.2 (5th ed. 5.2.1) · $1 + 2 + dots.c + n = n(n+1) / 2$ for all $n >= 1$ (L8 s26)][
 + Let $P(n) equiv (1 + 2 + dots.c + n = n(n+1) slash 2)$ for $n in ZZ^+$.
 + Basis step: $1 = 1(1 + 1) slash 2$, so $P(1)$ is true.
@@ -90,6 +101,13 @@ $P(n)$: every $2^n times 2^n$ board with one square removed can be tiled by L-tr
 + Assume $P(k)$: $a^(2^k) - 1 = 2^(k+2) m$ for some $m in ZZ$.
 + Inductive step: $a^(2^(k+1)) - 1 = (a^(2^k))^2 - 1 = (a^(2^k) - 1)(a^(2^k) + 1) = 2^(k+2) m (2^(k+2) m + 2) = 2^(k+3) m (2^(k+1) m + 1)$. So $P(k + 1)$ is true.
 + Therefore $P(n)$ is true for all $n in ZZ^+$ by MI. #qed]
+
+#exam[AY22/23 Q21 · For the Fibonacci sequence $f_0, f_1, f_2, dots = 0, 1, 1, 2, 3, dots$ and all $n in NN$: $sum_(i=0)^n f_i^2 = f_n f_(n+1)$][
++ For each $n in NN$ let $P(n)$ be the proposition $sum_(i=0)^n f_i^2 = f_n f_(n+1)$.
++ (Basis step) $f_0^2 = 0^2 = 0 = 0 dot 1 = f_0 f_1$, so $P(0)$ is true.
++ (Induction step) Let $k in NN$ such that $P(k)$ is true. Then $sum_(i=0)^(k+1) f_i^2 = sum_(i=0)^k f_i^2 + f_(k+1)^2 = f_k f_(k+1) + f_(k+1)^2$ #j[induction hypothesis] $= f_(k+1) (f_k + f_(k+1))$ #j[basic algebra] $= f_(k+1) f_(k+2)$ #j[definition of Fibonacci]. So $P(k + 1)$ is true.
++ Therefore $forall n in NN thin P(n)$ is true by MI. #qed
+Check with $n = 4$: $0 + 1 + 1 + 4 + 9 = 15 = 3 dot 5 = f_4 f_5$. 1PI is enough: the step uses only $P(k)$ and the recurrence.]
 
 == 33 · Strong induction and well-ordering
 
@@ -141,11 +159,32 @@ The well-ordering proof of the same result is in §12.]
 + Hence $P(n)$ is true for all $n in ZZ_(>= 0)$ #j[2PI], so $S = nothing$, contradicting line 1. #qed
 *Ex. 17.* (a) The positive reals have no least element ($x slash 2 < x$); no violation, as WOP concerns sets of integers. (b) ${n in ZZ_(>= 0) : n^2 < n} = nothing$; no violation, as WOP concerns non-empty sets. (c) Non-negative integers of the form $46 - 7k$: $dots, 18, 11, 4$; least element 4.]
 
+#proofb[WOP by infinite descent · PMI derived from WOP (Week 7 deck)][
+*WOP, alternative proof.*
++ Suppose not: let $S subset.eq ZZ_(>= 0)$ be non-empty with no smallest element. Choose some $a in S$.
++ $a$ is not the smallest element, so there is $a_1 in S$ with $a_1 < a$. But $a_1$ is not the smallest either, so there is $a_2 in S$ with $a_2 < a_1$.
++ Continuing, we get an infinite descending sequence $a > a_1 > a_2 > dots.c$, which cannot occur in $ZZ_(>= 0)$ (only $a$ non-negative integers lie below $a$). Hence $S$ must have a smallest element. #qed
+*Induction from WOP (smallest counterexample).*
++ Suppose $P(0)$ is true and $P(k) => P(k + 1)$ for all $k >= 0$. Suppose some $P(k)$ is false.
++ Then the set of counterexamples $C = {k in ZZ_(>= 0) : P(k) "is false"}$ is non-empty, so $C$ has a smallest element $m$ #j[WOP].
++ $m > 0$ #j[$P(0)$ is true], and $P(m - 1)$ is true #j[minimality of $m$].
++ Then $P(m)$ is true #j[$P(m - 1) => P(m)$], contradicting $m in C$. Hence $P(n)$ is true for all $n >= 0$. #qed
+Dominoes: if some domino does not fall, there is a *first* one that does not; it is not domino 1 (basis), so the domino before it falls, and then it falls too. \
+*Template for $forall n >= a thin P(n)$ by WOP:* suppose the set of counterexamples is non-empty; take its least element $m$; show $m != a$; use the truth of $P$ below $m$ to get $P(m)$ or a smaller counterexample: contradiction. Mathematical induction and WOP are equivalent: each proves the other.]
+
 == 34 · Recursion and structural induction
 
 #defn[Recurrence relation, initial conditions (L8 s48)][
 A *recurrence relation* for $a_0, a_1, a_2, dots$ is a formula relating each term $a_k$ to certain predecessors $a_(k-1), a_(k-2), dots, a_(k-i)$. The *initial conditions* give the first terms $a_0, dots, a_(i-1)$. \
 Examples: $F_n = F_(n-1) + F_(n-2)$ with $F_0 = 0, F_1 = 1$; $quad 0! = 1$, $n! = n dot (n - 1)!$; $quad a^0 = 1$, $a^n = a^(n-1) dot a$.]
+
+#proofb[L8 Ex. 19, 20 · For real $a_1, dots, a_n$, $b_1, dots, b_n$ and every $n in ZZ^+$: $sum_(i=1)^n (a_i + b_i) = sum_(i=1)^n a_i + sum_(i=1)^n b_i$][
++ Let $P(n) equiv (sum_(i=1)^n (a_i + b_i) = sum_(i=1)^n a_i + sum_(i=1)^n b_i)$ for $n >= 1$.
++ Basis step: $sum_(i=1)^1 (a_i + b_i) = a_1 + b_1 = sum_(i=1)^1 a_i + sum_(i=1)^1 b_i$, so $P(1)$ is true.
++ Assume $P(k)$ is true for an arbitrary $k >= 1$.
++ Inductive step: $sum_(i=1)^(k+1) (a_i + b_i) = sum_(i=1)^k (a_i + b_i) + (a_(k+1) + b_(k+1))$ #j[definition of $sum$] $= sum_(i=1)^k a_i + sum_(i=1)^k b_i + (a_(k+1) + b_(k+1))$ #j[inductive hypothesis] $= (sum_(i=1)^k a_i + a_(k+1)) + (sum_(i=1)^k b_i + b_(k+1))$ #j[associative and commutative laws] $= sum_(i=1)^(k+1) a_i + sum_(i=1)^(k+1) b_i$ #j[definition of $sum$]. So $P(k + 1)$ is true.
++ Therefore $P(n)$ is true for every positive integer $n$. #qed
+The recursive form of $sum$ (§31) is what lets a statement about a sum of any length be proved by induction.]
 
 #defn[Recursively defined set (L8 s56, s58) · Structural induction (L8 s58)][
 A recursive definition of a set $S$ has three clauses:
@@ -172,6 +211,27 @@ $6 = 3 dot 2 in S$; $36 = 6^2 in S$; $4 = 2^2 in S$, so $16 = 4^2 in S$. \
 + (Induction step) Let $x in S$ with $x >= 2$. Then $3x >= 6 >= 2$ and $x^2 >= 4 >= 2$, so $P(3x)$ and $P(x^2)$ are true.
 + Hence $forall n in S thin P(n)$ by structural induction over $S$. #qed
 *$15 in.not S$:* every element of $S$ is even (2 is even; if $x$ is even so are $3x$ and $x^2$), by the same argument.]
+
+#exam[AY20/21 S2 Q11 (Week 7 deck) · $T subset.eq {"s", "u"}^*$ with $"su" in T$; if $sigma, tau in T$ then $"s" sigma "u" in T$ and $"s" sigma tau "u" in T$][
+Which are in $T$? $quad$ A. ssssusuuusuu $quad$ B. ssussususuuu $quad$ C. ssussuusssuu $quad$ D. ussususussuu \
+*A $in T$:* su (base); s·su·su·u = ssusuu; s·ssusuu·u = sssusuuu; s·sssusuuu·su·u = ssssusuuusuu. \
+*Invariants,* each proved by structural induction over $T$ (founder su; constructors $sigma |-> "s" sigma "u"$ and $(sigma, tau) |-> "s" sigma tau "u"$; a constructor with two arguments assumes $P(sigma)$ *and* $P(tau)$):
+- (i) every element starts with s and ends with u; $quad$ (ii) every element of length at least 3 starts with ss and ends with uu;
+- (iii) no element contains usus; $quad$ (iv) every element has as many s's as u's.
+*Proof of (iv).*
++ Let $P(sigma) equiv ("the number of s's in" sigma "equals the number of u's")$ for $sigma in T$.
++ (Basis step) su has one s and one u, so $P("su")$ is true.
++ (Induction step) Let $sigma, tau in T$ with $P(sigma)$ and $P(tau)$ true, having $a$ and $b$ s's respectively. Then $"s" sigma "u"$ has $a + 1$ s's and $a + 1$ u's, and $"s" sigma tau "u"$ has $a + b + 1$ of each. So $P("s" sigma "u")$ and $P("s" sigma tau "u")$ are true.
++ Hence $forall sigma in T thin P(sigma)$ by structural induction over $T$. #qed
+(i) is immediate from the shape of the clauses, and (ii) follows from (i): in $"s" sigma "u"$ and $"s" sigma tau "u"$ the inner strings start with s and end with u. For (iii): an occurrence of usus in a new string avoids the outer s and u, so it lies inside $sigma$ or $tau$ (excluded by the hypothesis) or straddles the join in $"s" sigma tau "u"$, which needs $sigma$ to end in s, or $"s" sigma$ to end in usu, or $tau "u"$ to start with sus; (i) and (ii) exclude all three. \
+*B* contains usus (letters 6 to 9), against (iii). *C* has 7 s's and 5 u's, against (iv). *D* starts with u, against (i). #ans[Only A.]]
+
+#exam[AY22/23 Q14 · $1 in S$ and $2 in S$; if $x, y in S$ then $x slash y in S$][
+*Claim: $S = {2^n : n in ZZ} = {dots, 1/4, 1/2, 1, 2, 4, 8, dots}$.*
++ ($subset.eq$) Let $P(x) equiv (x = 2^n "for some" n in ZZ)$ for $x in S$. (Basis step) $1 = 2^0$ and $2 = 2^1$. (Induction step) Let $x, y in S$ with $x = 2^a$ and $y = 2^b$, $a, b in ZZ$. Then $x slash y = 2^(a - b)$ and $a - b in ZZ$, so $P(x slash y)$ is true. Hence $forall x in S thin P(x)$ by structural induction over $S$.
++ ($supset.eq$) $2^(-1) = 1 slash 2 in S$. If $2^n in S$ then $2^(n+1) = 2^n slash 2^(-1) in S$, so $2^n in S$ for all $n >= 0$ by MI; and then $2^(-n) = 1 slash 2^n in S$. #qed
+A. $forall x in S thin (x in ZZ => x "is even")$: false, $x = 1$. $quad$ B. $forall x in S thin (x in QQ => x < 1)$: false, $x = 2$. \
+C. $forall x, y in S thin (x + y >= 1)$: false, $1/2 + 1/4 = 3/4 < 1$. $quad$ D. $|S| = |ZZ|$: #ans[true], since $f: ZZ -> S$, $f(n) = 2^n$ is a bijection.]
 
 #exam[T7 Q11 · AY25 final Q14–Q16 · Recursive sets of sets and strings][
 *T7 Q11.* $A = {1,2,3,4,5}$, $B = {1,3,5,7,9}$ are founders; constructors $inter$, $union$, $without$. $C = {2,4,7,9} = (A without B) union (B without A) in S$. $D = {2,3,4,5} in.not S$: the invariant "$1 in X <=> 3 in X$" holds for $A$ and $B$ and is preserved by $inter$, $union$, $without$ (check the four cases of $1, 3 in X$ or not, $1, 3 in Y$ or not), but fails for $D$. \

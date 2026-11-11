@@ -222,13 +222,22 @@ The left column is proved in Lecture 2. The right column comes from tutorials an
 Call the long first conjunct $X or p$. Answer: *$p and q$* (option C).
 #dtable(
   $(X or p) and (p -> (p -> q)) and p$, [],
-  $equiv (X or p) and (p and (p -> (p -> q)))$, j[associative, commutative],
-  $equiv ((X or p) and p) and (p -> (p -> q))$, j[associative],
-  $equiv p and (p -> (p -> q))$, j[commutative ×2, absorption],
+  $equiv (X or p) and ((p -> (p -> q)) and p)$, j[associative law],
+  $equiv (X or p) and (p and (p -> (p -> q)))$, j[commutative law],
+  $equiv ((X or p) and p) and (p -> (p -> q))$, j[associative law],
+  $equiv (p and (p or X)) and (p -> (p -> q))$, j[commutative law ×2],
+  $equiv p and (p -> (p -> q))$, j[absorption law],
   $equiv p and (lnot p or (lnot p or q))$, j[implication law ×2],
-  $equiv p and (lnot p or q)$, j[associative, idempotent],
-  $equiv p and q$, j[variant absorption],
+  $equiv p and ((lnot p or lnot p) or q)$, j[associative law],
+  $equiv p and (lnot p or q)$, j[idempotent law],
+  $equiv p and q$, j[variant absorption law],
 )]
+
+#trap[One law per line (L2 s27–28, T1 Q3)][
+Cite a law on *every* line and never put two different laws on one line; a skipped double negative or commutative step loses credit. The *same* law may be applied several times in one step, written "×2" (L2 s28; AY24 Q4 key). \
+*Laws match by exact shape:* negation is $p and lnot p$, not $lnot p and p$; absorption is $p or (p and q)$, not $p or (q and p)$. Insert the commutative line first. \
+*T1 Q3(a):* $lnot a and (lnot a -> (b and a))$ takes six lines: implication, double negative, commutative ($b and a$ to $a and b$), absorption (leaving $lnot a and a$), commutative ($a and lnot a$), negation, giving $bold("false")$. Skipping straight from the implication law to absorption is not full credit. \
+*Notation:* write $equiv$ between lines, never $=$. The course writes $bold("true")$ and $bold("false")$ for Epp's $bold(t)$ and $bold(c)$, which look like statement variables (L2 s24). Bracket every mixed $and$/$or$: $a and lnot b or lnot c$ is ambiguous (T1 Q2).]
 
 #tip[Checking tautologies and equivalences][
 *To test whether $P -> Q$ is a tautology,* try to make it false: set $Q$ false and $P$ true, and follow the consequences. If this forces a contradiction, $P -> Q$ is a tautology.
@@ -241,7 +250,7 @@ Without a truth table, show $(p -> q) and (p -> lnot q) equiv lnot p$.
 $(p -> q) and (p -> lnot q)$ \
 $equiv (lnot p or q) and (lnot p or lnot q)$ #j[implication law ×2] \
 $equiv lnot p or (q and lnot q)$ #j[distributive law] \
-$equiv lnot p or bold(c)$ #j[negation law] \
+$equiv lnot p or bold("false")$ #j[negation law] \
 $equiv lnot p$ #j[identity law]. #qed]
 
 == 3 · Conditional statements
@@ -304,18 +313,20 @@ Names: cat (3 letters), sheep (5), rabbit (6), penguin (7).
 
 === Model derivations
 
-#proofb[Simplify $lnot(lnot p and q) and (p or q)$ using the laws][
+#proofb[Simplify $lnot(lnot p and q) and (p or q)$ using the laws (L2 s27)][
 #dtable(
-  $lnot(lnot p and q) and (p or q) equiv (lnot lnot p or lnot q) and (p or q)$, j[De Morgan's law],
+  $lnot(lnot p and q) and (p or q) equiv (lnot(lnot p) or lnot q) and (p or q)$, j[De Morgan's law],
   $equiv (p or lnot q) and (p or q)$, j[double negative law],
   $equiv p or (lnot q and q)$, j[distributive law],
-  $equiv p quad square.filled$, j[commutative, negation and identity laws])]
+  $equiv p or (q and lnot q)$, j[commutative law],
+  $equiv p or bold("false")$, j[negation law],
+  $equiv p quad square.filled$, j[identity law])]
 
 #proofb[Derive variant absorption $p and (lnot p or q) equiv p and q$ from the table][
 $p and (lnot p or q)$ \
 $equiv (p and lnot p) or (p and q)$ #j[distributive] \
-$equiv bold(c) or (p and q)$ #j[negation] \
-$equiv (p and q) or bold(c)$ #j[commutative] \
+$equiv bold("false") or (p and q)$ #j[negation] \
+$equiv (p and q) or bold("false")$ #j[commutative] \
 $equiv p and q$ #j[identity]. #qed]
 
 #proofb[A deduction with named rules: from $p or q$, $q -> r$, $(p and s) -> t$, $lnot r$, $lnot q -> (u and s)$, conclude $t$][

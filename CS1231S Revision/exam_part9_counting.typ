@@ -37,6 +37,24 @@ A *permutation* of a set of objects is an ordering of the objects in a row. An *
 - *T9 Q2 (AY23/24 exam).* Five-digit cheque numbers readable upside down use digits $0, 1, 6, 8, 9$: $5^5$. Those that read the same after rotation (the middle digit is $0, 1$ or $8$; the last two digits are forced): $5 dot 5 dot 3 = 75$. Confusable numbers: $5^5 - 75 = 3050$.
 - *T9 Q5.* (a) 8 boys and 4 girls at a round table, no two girls adjacent: seat the boys ($7!$), then put the girls into 4 of the 8 gaps ($P(8, 4)$): $7! dot 1680 = 8 thin 467 thin 200$. (b) 6 people, Eric not next to Freddy: $5! - 2 dot 4! = 72$. (c) $n - 1$ people at $n$ chairs: treat the empty chair as a person: $(n - 1)!$.]
 
+#tip[Arrangements in a row and round a table (L10 Ex. 6 · Week 10 s16, s74–76 · T9 Q5)][
+- *Kept together (glue).* Treat the block as one object, arrange the objects, then order the inside of each block. 12 distinct cards (4 suits, 3 ranks each) in a row with each suit together: $4! dot (3!)^4 = 31 thin 104$. Identical letters need no inner ordering: MISSISSIPPI with the four S's consecutive is the block (SSSS) with M, I, I, I, I, P, P: $8! slash (4! thin 2!) = 840$.
+- *Not adjacent.* Either total minus glued, or the *gap method*: arrange the other objects first, then drop the separated ones into distinct gaps. 5 people in a row with X and Y apart: $5! - 2 dot 4! = 72 = 3! dot P(4, 2)$. A row of $m$ objects has $m + 1$ gaps; a circle of $m$ objects has $m$ gaps (T9 Q5(a)).
+- *Alternating in a row.* 3 red and 3 black cards, all distinct: the pattern is RBRBRB or BRBRBR, each filled in $3! dot 3!$ ways: $2 dot 36 = 72$. Round a table the two patterns coincide: $(n - 1)! thin n!$.
+- *Relative order.* 6 distinct cards in a row with A somewhere to the left of B: swapping A and B pairs the arrangements off, so exactly half qualify: $6! slash 2 = 360$.
+- *Round a table.* Fix one person's seat to remove the rotations, then count the rest as a row.]
+
+#example[Case split when a step's count depends on earlier choices (Week 10 s77)][
+*4-digit even numbers with no repeated digit.* Choose the last digit first; the number of choices for the first digit then depends on whether 0 has been used, so split.
+- *Last digit 0:* first digit 9 ways, then 8, then 7: $9 dot 8 dot 7 = 504$.
+- *Last digit 2, 4, 6 or 8:* first digit 8 ways (not 0, not the last digit), second 8, third 7: $4 dot 8 dot 8 dot 7 = 1792$.
+Total $504 + 1792 = 2296$ #j[addition rule on disjoint cases].]
+
+#exam[AY20/21 Q20(d) · AY23/24 Q22, Q25(f)][
+*AY20/21 Q20(d).* Directed graphs on vertices $a, b, c$ without parallel edges: each of the $3 dot 3 = 9$ ordered pairs (loops included) is an edge or not: $2^9 = 512$. With at least one loop: subtract the graphs with no loop, $2^9 - 2^6 = 448$. \
+*AY23/24 Q22.* 8 people round a table, the three roommates not *all three* together: all seatings $7!$; glue the three into one block ($6$ units round the table: $5!$, inner orders $3!$): $7! - 5! dot 3! = 4320$ (option B). \
+*AY23/24 Q25(f).* Five-digit cheque numbers that can be read both ways up: each digit is one of $0, 1, 6, 8, 9$: $5^5 = 3125$. Excluding the 75 that read the same after rotation (the T9 Q2 version) leaves 3050.]
+
 == 40 · Addition, difference, inclusion and exclusion
 
 #thm[Theorems 9.3.1–9.3.3 (L10 s40, s43, s50) · Complement (L10 s48)][
@@ -54,6 +72,16 @@ A *permutation* of a set of objects is an ordering of the objects in a row. An *
 
 #tip["At least one" and "at most"][
 "At least one" is usually shortest by the difference rule: total minus "none". "At most one" is "none" plus "exactly one" by the addition rule. Overlapping conditions joined by "or" need inclusion/exclusion. Before multiplying, check that each step's count is independent of earlier choices; if not, reorder the steps or split into cases.]
+
+#tip[Each at least once: complement, then inclusion/exclusion (T10 D3 · Week 10 s13–14 · AY23/24 Q25(g) · AY24/25 Q24(a))][
+"Every value is used" is the complement of "some value is missed". Let $A_i$ be the set of outcomes that miss value $i$ and subtract $|A_1 union dots.c union A_m|$ from the total.
+- *Two values:* $2^n - 2$ (remove the two constant strings). *Three values:* $3^n - 3 dot 2^n + 3$. These are the surjections from an $n$-set onto a 2-set and a 3-set (AY23/24 Q25(g)); the general formula is in §43.
+- *Week 10 Ex. 3.* 7 balls in a row, balls of one colour identical, exactly 3 red and at least one blue and one green: place the reds, then fill 4 places with blue or green but not all one colour: $binom(7, 3) (2^4 - 2) = 35 dot 14 = 490$.
+- *Week 10 Ex. 2.* 7 books from 6 maths, 5 CS, 4 physics (all distinct), at least 2 per subject: split by distribution $(3, 2, 2)$, $(2, 3, 2)$, $(2, 2, 3)$: $binom(6,3) binom(5,2) binom(4,2) + binom(6,2) binom(5,3) binom(4,2) + binom(6,2) binom(5,2) binom(4,3) = 1200 + 900 + 600 = 2700$.
+- *AY24/25 Q24(a).* 5 students each pick one of 5 GPUs at random. $P("some GPU has more than one student") = 1 - P("all different") = 1 - 5! slash 5^5 = 1 - 120 slash 3125 = 0.9616$.]
+
+#trap[Reserve first, then choose freely][
+"Pick 2 books from each subject, then any 1 of the remaining 9" gives $15 dot 10 dot 6 dot 9 = 8100$, not 2700: a selection with 3 maths books is counted once for each choice of which maths book was the "extra". Reserving is safe only for *identical* objects (stars and bars); for distinct objects split into cases or use the complement.]
 
 == 41 · The pigeonhole principle in counting
 
@@ -84,6 +112,21 @@ State (1) what the pigeons are, (2) what the holes are, (3) the rule sending eac
 *T10 Q12.* Any simple graph $G$ on 6 vertices, or its complement, contains a triangle. Colour the edges of $K_6$ black (in $G$) or red (in $overline(G)$). Fix a vertex $v$: of its 5 edges, at least 3 have one colour #j[generalized PHP, $2 < 5 slash 2$], say red, to $u_1, u_2, u_3$. If some edge ${u_x, u_y}$ is red, then $v, u_x, u_y$ form a red triangle; otherwise $u_1, u_2, u_3$ form a black triangle. \
 *AY25 Q24(f).* Socks: 8 red, 7 blue, 6 green, 5 black, 4 white. To avoid both "4 of one colour" and "3 each of two colours", take 3 of one colour and 2 of each of the other four: 11 socks. So *12* guarantee one of the two.]
 
+#proofb[AY20/21 Q20(f) · 21 students, non-negative integer scores with sum 200: two students have the same score][
++ Suppose not: the 21 scores are distinct. #j[for contradiction]
++ List them in increasing order, $s_1 < s_2 < dots.c < s_21$. Then $s_1 >= 0$ and $s_(i+1) >= s_i + 1$, so $s_i >= i - 1$ for every $i$ #j[scores are non-negative integers].
++ So $s_1 + dots.c + s_21 >= 0 + 1 + dots.c + 20 = (20 dot 21) slash 2 = 210 > 200$, contradicting the sum 200.
++ Hence two students have the same score. #qed
+The pattern: if every hole holds at most one pigeon, the pigeons are forced into the cheapest distinct holes, and even that total is too large.]
+
+#exam[AY22/23 Q22(d) · AY24/25 Q21 · AY23/24 Q21 (divisibility chains as holes)][
+*AY22/23 Q22(d).* 838 students, 12 birth months: some month has at least $ceil(838 slash 12) = 70$ students ($69 dot 12 = 828 < 838$). \
+*AY24/25 Q21.* 25 labelled simple graphs on 3 vertices. Holes are the isomorphism classes, fixed by the number of edges $0, 1, 2, 3$: 4 holes, so at least $ceil(25 slash 4) = 7$ are isomorphic to one another (option C). \
+*AY23/24 Q21.* $S = {1, 3, 5, dots, 21}$; smallest $n$ such that any $n$ numbers from $S$ contain two with one dividing the other. Holes are *chains* in which every two members are comparable under "divides":
+$ {1, 3, 9}, quad {5, 15}, quad {7, 21}, quad {11}, quad {13}, quad {17}, quad {19}. $
+These 7 chains cover $S$, so any 8 numbers put two in one chain #j[PHP]. Seven do not suffice: ${9, 11, 13, 15, 17, 19, 21}$ has no dividing pair. So $n = 8$ (option C). \
+*Same idea.* Among any $n + 1$ numbers from ${1, dots, 2n}$ one divides another: write each as $2^k m$ with $m$ odd; there are only $n$ odd parts, and two numbers with the same odd part form a dividing pair.]
+
 == 42 · Combinations and multisets
 
 #defn[$r$-combination, $binom(n, r)$ (L11 s4) · Multiset (L11 s18)][
@@ -103,6 +146,17 @@ An *$r$-combination with repetition allowed*, or *multiset of size $r$*, chosen 
   [Repetition not allowed], $P(n, k) = n! slash (n - k)!$, $binom(n, k) = n! slash (k! (n - k)!)$,
 )]
 
+#tip[Stars and bars (L11 s18–21)][
+Line up $r$ identical stars and cut them into $n$ groups with $n - 1$ bars: $star star | | star | star star$ is the selection $(2, 0, 1, 2)$. Every string of $r$ stars and $n - 1$ bars is one selection, so the count is $binom(r + n - 1, r) = binom(r + n - 1, n - 1)$. The same count answers three questions: multisets of size $r$ from $n$ types; ways to put $r$ *identical* objects into $n$ *distinct* boxes; non-negative integer solutions of $x_1 + dots.c + x_n = r$.
+- *Every $x_i >= 1$.* Hand one to each box first, or place the bars in the $r - 1$ gaps between stars: $binom(r - 1, n - 1)$.
+- *Lower bounds $x_i >= a_i$.* Substitute $y_i = x_i - a_i$, then solve $y_1 + dots.c + y_n = r - sum a_i$.
+- *Inequality $x_1 + dots.c + x_n <= r$.* Add a slack variable $x_(n+1) >= 0$ and solve with equality: $binom(r + n, n)$.
+- *Upper bound $x_1 <= c$.* Count all solutions and subtract those with $x_1 >= c + 1$; with several upper bounds use inclusion and exclusion.
+- *Parity or multiples.* If every $x_i$ must be even, substitute $x_i = 2 y_i$ and solve $y_1 + dots.c + y_n = r slash 2$ (no solutions when $r$ is odd). For $x_i$ odd use $x_i = 2 y_i + 1$.
+- *Bounded both ways* (dice, $1 <= x_i <= 6$): shift to $y_i = x_i - 1 in {0, dots, 5}$, then remove the solutions with some $y_i >= 6$.
+- *Does not apply* when the objects are distinct ($n^r$ ways to place them) or when order within the selection matters.
+*Checks.* $x_1 + x_2 + x_3 = 10$ with $x_1 <= 4$: $binom(12, 2) - binom(7, 2) = 66 - 21 = 45$. $quad$ 12 identical sweets to 4 children, each getting at least 2: $y_1 + dots.c + y_4 = 4$, so $binom(7, 3) = 35$.]
+
 #example[L11 Ex. 1–7][
 - *Committees.* 3-person committees from 4 people: $binom(4, 3) = 4$. $P(4, 2) = 12 = binom(4, 2) dot 2!$, so $binom(4, 2) = 6$.
 - *Teams of 5 from 5 men and 7 women.* 3 men and 2 women: $binom(5, 3) binom(7, 2) = 10 dot 21 = 210$. At least one man: $binom(12, 5) - binom(7, 5) = 792 - 21 = 771$. At most one man: $binom(7, 5) + binom(5, 1) binom(7, 4) = 21 + 175 = 196$.
@@ -115,7 +169,20 @@ An *$r$-combination with repetition allowed*, or *multiset of size $r$*, chosen 
 *T9 Q6.* 5 from 7 men and 6 women with at least 3 men: $binom(7,3) binom(6,2) + binom(7,4) binom(6,1) + binom(7,5) = 525 + 210 + 21 = 756$; probability $756 slash binom(13, 5) = 756 slash 1287 approx 0.5874$. \
 *T9 Q7 (AY21/22).* \$50 000 over 4 properties in \$1000 units: $x_1 + dots.c + x_4 = 50$ has $binom(53, 50) = 23 thin 426$ solutions. Not necessarily all invested: add a slack variable $x_5$: $binom(54, 50) = 316 thin 251$. \
 *T9 Q4, T10 Q2.* $n$ boxes, white balls in a non-empty consecutive block: $sum_(k=1)^n (n - k + 1) = n(n+1) slash 2$; or choose the two ends of the block among $n + 1$ gaps: $binom(n + 1, 2)$. \
-*AY25 Q24.* (a) 3 red, 4 blue, 5 green balls in a row: $12! slash (3! thin 4! thin 5!) = 27 thin 720$. (b) Committee of 5 from 6 men and 5 women with at least 3 women: $binom(5,3) binom(6,2) + binom(5,4) binom(6,1) + binom(5,5) = 150 + 30 + 1 = 181$. (c) 6 distinct letters with exactly 2 vowels: choose the 2 vowel positions, fill them, fill the rest: $binom(6, 2) dot P(5, 2) dot P(21, 4) = 15 dot 20 dot 143 thin 640 = 43 thin 092 thin 000$. (d) $n$ couples at a round table, men and women alternating: $(n - 1)! thin n!$. (e) Every woman next to her husband: seat the $n$ couples as units, then order each couple: $(n - 1)! thin 2^n$. (g) Three distinguishable dice with sum 10: *27*.]
+*AY25 Q24.* (a) 3 red, 4 blue, 5 green balls in a row: $12! slash (3! thin 4! thin 5!) = 27 thin 720$. (b) Committee of 5 from 6 men and 5 women with at least 3 women: $binom(5,3) binom(6,2) + binom(5,4) binom(6,1) + binom(5,5) = 150 + 30 + 1 = 181$. (c) 6 distinct letters with exactly 2 vowels: choose the 2 vowel positions, fill them, fill the rest: $binom(6, 2) dot P(5, 2) dot P(21, 4) = 15 dot 20 dot 143 thin 640 = 43 thin 092 thin 000$. (d) $n$ couples at a round table, men and women alternating: $(n - 1)! thin n!$. (e) Every woman next to her husband: seat the $n$ couples as units, then order each couple: $(n - 1)! thin 2^n$. (g) Three distinguishable dice with sum 10: $x_1 + x_2 + x_3 = 10$ with $1 <= x_i <= 6$. Put $y_i = x_i - 1$: $y_1 + y_2 + y_3 = 7$ with $0 <= y_i <= 5$. Unrestricted: $binom(9, 2) = 36$. Bad solutions with a fixed $y_i >= 6$: give that die 6 first, leaving sum 1 over three variables, $binom(3, 2) = 3$; two dice cannot both be bad ($12 > 7$). So $36 - 3 dot 3 = 27$.]
+
+#exam[Stars and bars in the finals · AY20/21 Q20(a) · AY22/23 Q22(a) · AY23/24 Q25(d) · AY24/25 Q24(c)][
+*AY20/21 Q20(a).* $x + y + z = 88$ with $x, y, z >= 3$: subtract 3 from each, sum 79 over 3 variables: $binom(81, 2) = 3240$. \
+*AY22/23 Q22(a).* $x_1 + x_2 + x_3 = 10$ with $x_i >= i$: put $y_i = x_i - i$, sum $10 - 6 = 4$: $binom(6, 2) = 15$. \
+*AY23/24 Q25(d).* 16 identical tasks to 4 distinct processors, each getting an even number: $x_i = 2 y_i$, $y_1 + dots.c + y_4 = 8$: $binom(11, 3) = 165$. \
+*AY24/25 Q24(c).* $x_1 + x_2 + x_3 + x_4 = 12$, $x_i >= 0$: (i) $binom(15, 3) = 455$. (ii) With $x_4 <= 3$: remove the solutions with $x_4 >= 4$ (sum 8 after giving $x_4$ four): $455 - binom(11, 3) = 455 - 165 = 290$.]
+
+#exam[Selections and arrangements · Week 10 Ex. 1, 4 · AY20/21 Q20(b) · AY23/24 Q25(c) · AY24/25 Q24(b)][
+*Week 10 Ex. 1.* 5 distinct integers from ${1, dots, 12}$: exactly 2 even, $binom(6, 2) binom(6, 3) = 300$; at least one multiple of 3, $binom(12, 5) - binom(8, 5) = 792 - 56 = 736$. \
+*Week 10 Ex. 4.* BANANA with A first and last: arrange the remaining A, B, N, N: $4! slash 2! = 12$. \
+*AY20/21 Q20(b)* (a repeated letter). 4 tiles from I, C, A, N, D, O, I, T, order ignored. Split on the repeated letter: with a duplicate, take both I's and 2 of the other 6 letters, $binom(6, 2) = 15$; with no duplicate, take 4 of the 7 distinct letters, $binom(7, 4) = 35$. (This counts selections of letters; do not use $binom(8, 4) = 70$, which treats the two I tiles as different.) \
+*AY23/24 Q25(c).* Morse messages with five dashes and three dots: choose the positions of the dots, $binom(8, 3) = 8! slash (5! thin 3!) = 56$. \
+*AY24/25 Q24(b).* $binom(n, 3) = k$ and $binom(n - 1, 2) = k slash 2$. Since $binom(n, 3) = n / 3 binom(n - 1, 2)$, we need $n slash 3 = 2$: $n = 6$ (check: $20$ and $10$).]
 
 == 43 · Pascal's formula, the binomial theorem, combinatorial proofs
 
@@ -144,6 +211,17 @@ A *combinatorial proof* uses counting as the basis of the proof. Two kinds: a *b
 - $sum_(k=0)^n binom(n, k) 9^k = sum_(k=0)^n binom(n, k) 1^(n-k) 9^k = (1 + 9)^n = 10^n$.
 - *T10 Q1.* Term independent of $x$ in $(2x^2 + 1 slash x)^9$: the general term is $binom(9, r) (2x^2)^(9-r) x^(-r) = binom(9, r) 2^(9-r) x^(18 - 3r)$; $18 - 3r = 0$ gives $r = 6$: $binom(9, 6) dot 2^3 = 84 dot 8 = 672$.]
 
+#thm[Odd and even binomial sums · The $k$-th term (AY23/24 Q25(b) · AY20/21 Q20(c))][
+- Put $a = 1$, $b = -1$ in the binomial theorem: for $n >= 1$, $sum_(k=0)^n (-1)^k binom(n, k) = (1 - 1)^n = 0$, so the even-$k$ and odd-$k$ coefficients have equal sums. Together they sum to $2^n$, hence
+  $ binom(n, 0) + binom(n, 2) + binom(n, 4) + dots.c = binom(n, 1) + binom(n, 3) + binom(n, 5) + dots.c = 2^(n-1). $
+  A set with $n >= 1$ elements has as many subsets of even size as of odd size.
+- *AY23/24 Q25(b).* A fair coin tossed $n$ times shows an odd number of heads with probability $2^(n-1) slash 2^n = 1 slash 2$ for every $n >= 1$, so $k = 2$.
+- *The $k$-th term* of $(a + b)^n$ is the one with $r = k - 1$: $binom(n, k - 1) a^(n-k+1) b^(k-1)$. The first term is $r = 0$.
+- *AY20/21 Q20(c).* Fifth term of $(1 slash (2 sqrt(x)) - 1 slash 2)^10$ equal to 105: $r = 4$, so $binom(10, 4) (1 / (2 sqrt(x)))^6 (-1 / 2)^4 = 210 / (64 x^3 dot 16) = 105$, giving $x^3 = 1 slash 512$ and $x = 1 slash 8$.]
+
+#tip[Counting by recurrence (Week 12 s25–29, AY18/19 Q17)][
+When a direct count is awkward, ask what the $n$-th object adds to the count for $n - 1$ objects, write the recurrence with its base case, then solve it by iteration and prove the closed form by induction (Part VII). Lazy caterer: the $n$-th cut crosses the $n - 1$ earlier cuts and adds $n$ pieces, so $P(n) = P(n - 1) + n$ with $P(0) = 1$, giving $P(n) = (n^2 + n + 2) slash 2$.]
+
 #thm[Counting functions (T9 D3 · T10 D2, D3)][
 For finite sets with $|A| = m$ and $|B| = n$:
 #table(columns: (1fr, auto, auto, auto),
@@ -153,7 +231,7 @@ For finite sets with $|A| = m$ and $|B| = n$:
   [surjections ($m >= n$)], $sum_(i=0)^n (-1)^i binom(n, i) (n - i)^m$, [6], [6],
   [bijections ($m = n$)], $n!$, [0], [6],
 )
-Surjections from a 5-element set to a 3-element set: $3^5 - 3 dot 2^5 + 3 dot 1^5 = 150$ (inclusion/exclusion on the values missed). *AY25 Q10:* strictly increasing $f: {0, 1} -> {0, 1, 2, 3}$: $binom(4, 2) = 6$; injective $g: {0, 1} -> {0, 1, 2}$: $P(3, 2) = 6$.]
+Surjections from a 5-element set to a 3-element set: $3^5 - 3 dot 2^5 + 3 dot 1^5 = 150$ (inclusion/exclusion on the values missed). *AY25 Q10:* strictly increasing $f: {0, 1} -> {0, 1, 2, 3}$: $binom(4, 2) = 6$; injective $g: {0, 1} -> {0, 1, 2}$: $P(3, 2) = 6$. *AY22/23 Q22(g):* injections with $|A| = 2$, $|B| = 3$: $6$; with $|A| = k <= n = |B|$: $n! slash (n - k)!$. *AY23/24 Q25(g):* surjections from an $n$-set onto a 2-set: $2^n - 2$; onto a 3-set ($n >= 2$): $3^n - 3 dot 2^n + 3$.]
 
 == 44 · Probability axioms and expected value
 
@@ -176,6 +254,23 @@ $ sum_(k=1)^n a_k p_k = a_1 p_1 + a_2 p_2 + dots.c + a_n p_n. $]
 - *T10 D1.* 2 bulbs from 8 with 3 defective: $E[X] = 2 dot 3 slash 8 = 0.75$.
 - *AY25 Q23.* Sundaes: 20% of customers choose 3 of 10 flavours, 80% choose 2: $0.2 binom(10, 3) + 0.8 binom(10, 2) = 24 + 36 = 60$.]
 
+#tip[Expected count by indicator variables (L11 s48)][
+To find the expected *number* of objects with some property, do not find the distribution of the count. For each object $i$ let $X_i = 1$ if it has the property and $X_i = 0$ otherwise, so $E[X_i] = P("object" i "has the property")$. The count is $X = X_1 + dots.c + X_n$, and by linearity
+$ E[X] = sum_(i=1)^n P("object" i "has the property"), $
+whether or not the $X_i$ are independent. If all $n$ probabilities equal $p$, then $E[X] = n p$.]
+
+#tip[Symmetry (Week 10 s72, s74)][
+If swapping two roles maps outcomes to equally likely outcomes, the two events have the same probability. For two rolls of a fair die, $P("second" > "first") = P("first" > "second")$, and with $P("tie") = 6 slash 36$ the three cases sum to 1:
+$ P("second" > "first") = (1 - P("tie")) / 2 = 1/2 dot 5/6 = 5/12. $
+Direct check: $(5 + 4 + 3 + 2 + 1 + 0) slash 36 = 15 slash 36$. The same argument gives "A to the left of B" in half of all arrangements (§39) and $P("second draw is red") = P("first draw is red")$ without replacement (§45).]
+
+#exam[AY20/21 Q10, Q11 · AY22/23 Q22(c), (e) · AY24/25 Q24(d)][
+*AY20/21 Q10.* Expected sum of three fair dice: $3 dot 3.5 = 10.5$ (option D). \
+*AY20/21 Q11.* $(lnot b and c and d) or ((lnot a or b or lnot e or f) and c) or lnot (d and e) or c$ with six variables set at random. The statement is false iff every disjunct is false: $c$ false (which also kills the first two disjuncts) and $d$, $e$ both true; $a$, $b$, $f$ are free: $2^3 slash 2^6 = 1 slash 8$ (option C). \
+*AY22/23 Q22(c).* Second roll higher than the first: $5 slash 12$ by symmetry. \
+*AY22/23 Q22(e).* Two cards without replacement, scores 1 to 13: each card has expected score $(1 + dots.c + 13) slash 13 = 7$, so the combined score has expectation $14$ (linearity; the draws are dependent). \
+*AY24/25 Q24(d).* Ten couples; 4 of the 20 persons leave, every set of 4 equally likely. (i) A fixed couple stays: all 4 leavers come from the other 18 persons, $binom(18, 4) slash binom(20, 4) = 3060 slash 4845 = 12 slash 19$ (or $16/20 dot 15/19$: both of the couple are among the 16 who stay). (ii) Let $X_i = 1$ if couple $i$ stays. $E[X] = 10 dot 12 slash 19 = 120 slash 19 approx 6.32$.]
+
 == 45 · Conditional probability, Bayes' theorem, independence
 
 #defn[Conditional probability (L11 s53) · Independent events (L11 s73) · Pairwise and mutually independent (L11 s79–80)][
@@ -184,16 +279,34 @@ $ P(B | A) = P(A inter B) / P(A), quad "so" quad P(A inter B) = P(B | A) dot P(A
 $A$ and $B$ are *independent* iff $P(A inter B) = P(A) dot P(B)$. \
 $A$, $B$, $C$ are *pairwise independent* iff (1) $P(A inter B) = P(A) P(B)$, (2) $P(A inter C) = P(A) P(C)$, (3) $P(B inter C) = P(B) P(C)$; they are *mutually independent* iff also (4) $P(A inter B inter C) = P(A) P(B) P(C)$. Events $A_1, dots, A_n$ are mutually independent iff the probability of the intersection of *any subset* of them is the product of their probabilities.]
 
+#thm[Law of total probability (L11 s59, s64) · Independence in conditional form (L11 s72)][
+- *Total probability.* If $S$ is the union of mutually disjoint events $B_1, dots, B_n$ of non-zero probability, then for every event $A$
+  $ P(A) = P(A | B_1) P(B_1) + P(A | B_2) P(B_2) + dots.c + P(A | B_n) P(B_n), $
+  because $A$ is the disjoint union of the $A inter B_i$ #j[axiom 3] and $P(A inter B_i) = P(A | B_i) P(B_i)$. Two cases: $P(A) = P(A | B) P(B) + P(A | overline(B)) P(overline(B))$. This is the sum over the branches of the tree that end in $A$.
+- *Conditional form of independence.* If $P(B) != 0$: $A$ and $B$ are independent iff $P(A | B) = P(A)$. If $P(A) != 0$: iff $P(B | A) = P(B)$. Knowing one event does not change the probability of the other.
+- *Union of independent events.* $P(A union B) = P(A) + P(B) - P(A) P(B)$.
+- *Complements.* If $A$ and $B$ are independent, so are $A$ and $overline(B)$, since $P(A inter overline(B)) = P(A) - P(A inter B) = P(A)(1 - P(B))$; likewise $overline(A)$, $B$ and $overline(A)$, $overline(B)$.]
+
 #thm[Theorem 9.9.1 · Bayes' theorem (L11 s66)][
 Suppose $S$ is the union of mutually disjoint events $B_1, dots, B_n$, and $A$ and all $B_i$ have non-zero probability. Then for $1 <= k <= n$:
 $ P(B_k | A) = (P(A | B_k) dot P(B_k)) / (P(A | B_1) dot P(B_1) + P(A | B_2) dot P(B_2) + dots.c + P(A | B_n) dot P(B_n)). $
-The denominator is $P(A)$ (total probability).]
+The denominator is $P(A)$, by the law of total probability.]
 
 #trap[Conditional probability and independence][
 - $P(B | A)$ and $P(A | B)$ are different numbers; Bayes converts one into the other.
 - "At least one is a boy" is not "the first is a boy": of $B B, B G, G B, G G$ the condition leaves three outcomes, so $P("both boys" | "at least one boy") = 1 slash 3$.
 - Independent is not disjoint: disjoint events with positive probabilities are *dependent*.
 - Pairwise independence does not give (4), and (4) does not give pairwise independence. Two fair coins with $A$ = first is heads, $B$ = second is heads, $C$ = both the same: every pair is independent, but $P(A inter B inter C) = 1 slash 4 != 1 slash 8$.]
+
+#tip[With and without replacement][
+*Counting $k$ draws from $n$ distinct objects.* With replacement the object goes back, so each draw has $n$ choices: $n^k$ ordered outcomes. Without replacement: $P(n, k)$ ordered outcomes, $binom(n, k)$ unordered ones. Unordered with replacement gives $binom(k + n - 1, k)$ multisets, but these are *not equally likely*, so never use them as a sample space.
+#v(2pt)
+*Probability, urn with $b$ blue and $g$ grey balls, $N = b + g$, $k$ draws.*
+- *With replacement:* the draws are independent and each is blue with probability $b slash N$. $quad P("exactly" j "blue") = binom(k, j) (b / N)^j (g / N)^(k - j)$.
+- *Without replacement:* the draws are dependent. Either count unordered hands, $P("exactly" j "blue") = binom(b, j) binom(g, k - j) slash binom(N, k)$, or multiply conditional probabilities along the sequence: $P("blue then blue") = b / N dot (b - 1) / (N - 1)$.
+- In both cases $P("the" i"-th draw is blue") = b slash N$ for every $i$, by symmetry.
+- *At least one:* use the complement, $1 - P("none")$.
+*Check, 5 blue and 7 grey, 3 draws.* Without replacement: $P("exactly 2 blue") = binom(5, 2) binom(7, 1) slash binom(12, 3) = 70 slash 220 = 7 slash 22$ and $P("at least one blue") = 1 - binom(7, 3) slash binom(12, 3) = 37 slash 44$. With replacement: $P("exactly 2 blue") = 3 dot (5 slash 12)^2 (7 slash 12) = 175 slash 576$.]
 
 #example[L11 Ex. 17 · Urn with 5 blue and 7 grey balls, two drawn without replacement][
 $P(B_1) = 5/12$, $P(B_2 | B_1) = 4/11$, $P(B_2 | overline(B_1)) = 5/11$. Multiply along the branches of the tree:
@@ -215,3 +328,17 @@ $ P(B_1 inter B_2) = 20/132, quad P(B_1 inter overline(B_2)) = 35/132, quad P(ov
 - *T9 D1.* 3 blue and 7 white balls, two draws with replacement: $P("blue then white") = 0.21$; $P("both white") = 0.49$; $P("second blue") = 0.3$.
 - *T10 Q6 (AY15/16).* A random relation on a 4-element set is reflexive with probability $2^12 slash 2^16 = 1 slash 16$ and symmetric with probability $2^10 slash 2^16 = 1 slash 64$. For $|A| = n$: $1 slash 2^n$ and $2^((n^2 + n) slash 2) slash 2^(n^2) = 1 slash 2^((n^2 - n) slash 2)$.
 - *Birthday problem (T9 D4):* $P("some shared birthday among" n) = 1 - (365 dot 364 dots.c (365 - n + 1)) slash 365^n$, which first reaches 50% at $n = 23$.]
+
+#exam[Total probability and Bayes in the finals · AY22/23 Q22(f) · AY23/24 Q25(e) · AY20/21 Q20(e)][
+*AY22/23 Q22(f).* $P("spam") = 0.25$, $P(F | "spam") = 0.6$, $P(F | "not spam") = 0.3$, where $F$ = "free gifts" appears. (i) $P(F) = 0.6 dot 0.25 + 0.3 dot 0.75 = 0.375$. (ii) $P("spam" | F) = 0.15 slash 0.375 = 0.4$. \
+*AY23/24 Q25(e).* $P(G) = 0.85$, $P("bonus" | G) = 0.8$, $P("bonus" | "Apple") = 0.95$: $P(G | "bonus") = 0.68 slash (0.68 + 0.1425) = 0.68 slash 0.8225 approx 0.8267$. \
+*AY20/21 Q20(e), joint hypotheses.* One M&M from each of two bags (one 1994, one 1996); one is yellow, one is green. A hypothesis must describe the *whole* set-up: $A$ = "bag 1 is the 1994 bag and bag 2 the 1996 bag", $B$ = the reverse, $P(A) = P(B) = 1 slash 2$. Evidence $E$ = "yellow from bag 1 and green from bag 2". Multiply the two colour probabilities under each hypothesis:
+$ P(E | A) = 0.20 dot 0.16 = 0.032, quad P(E | B) = 0.14 dot 0.10 = 0.014, quad P(A | E) = 0.032 / (0.032 + 0.014) = 16/23 approx 0.696. $
+Using the yellow alone ($0.20 slash 0.34 = 10 slash 17$) ignores half of the evidence.]
+
+#exam[Independence in the finals · AY22/23 Q13, Q22(b) · AY23/24 Q25(a) · AY24/25 Q23, Q24(e)][
+*AY22/23 Q22(b).* $A$, $B$ independent, $P(A) = 0.2$, $P(A union B) = 0.6$: $0.6 = 0.2 + P(B) - 0.2 P(B)$, so $P(B) = 0.5$. \
+*AY22/23 Q13, restricted pattern.* Ten tosses, $P(H) = p$; exactly 3 heads, all consecutive. Every sequence with 3 heads has probability $p^3 (1 - p)^7$; count only the sequences allowed: the block HHH starts at toss $1, dots, 8$. Answer $8 p^3 (1 - p)^7$ (option D), not $binom(10, 3) p^3 (1 - p)^7$. \
+*AY23/24 Q25(a).* $P(H) = 0.6$, five tosses, three heads: $binom(5, 3) (0.6)^3 (0.4)^2 = 0.3456$. \
+*AY24/25 Q23.* One ball from ${1, 2, 3, 4}$; $A = {1, 2}$, $B = {1, 3}$, $C = {1, 4}$. Each has probability $1 slash 2$ and each pairwise intersection is ${1}$ with probability $1 slash 4 = 1/2 dot 1/2$, but $P(A inter B inter C) = 1 slash 4 != 1 slash 8$: pairwise independent, not mutually independent (option C). \
+*AY24/25 Q24(e).* $b$ blue and $r$ red markers, two drawn without replacement. (i) $P(R_1) = r slash (b + r)$. (ii) True: $P(R_2) = r / (b + r) dot (r - 1) / (b + r - 1) + b / (b + r) dot r / (b + r - 1) = r / (b + r)$ #j[total probability]. (iii) $P("different colours") = (2 b r) / ((b + r)(b + r - 1))$. (iv) $b + r = 25$ and $P("same") = P("different") = 1 slash 2$: $2 b r = 1/2 dot 25 dot 24 = 300$, so $b r = 150$ with $r > b$: $r = 15$, $b = 10$.]

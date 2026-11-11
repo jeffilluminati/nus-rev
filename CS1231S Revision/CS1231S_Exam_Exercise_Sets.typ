@@ -29,9 +29,17 @@
   columns: (2.2em, 1fr), row-gutter: 0.55em,
   ..o.pos().enumerate().map(((i, x)) => ([(#numbering("i", i + 1))], x)).flatten(),
 ))
-#let parts(..o) = pad(left: 0.4em, y: 0.15em, grid(
+// Structured-question parts. `work` lists the height of the ruled working panel under
+// each part (none for no panel), sized to the marks the part carries.
+#let workpanel(h) = block(width: 100%, height: h, above: 0.6em, below: 0.3em,
+  stroke: 0.4pt + luma(200), radius: 1.5pt)[]
+#let parts(work: (), ..o) = pad(left: 0.4em, y: 0.15em, grid(
   columns: (1.7em, 1fr), row-gutter: 0.7em,
-  ..o.pos().enumerate().map(((i, x)) => ([(#numbering("a", i + 1))], x)).flatten(),
+  ..o.pos().enumerate().map(((i, x)) => ([(#numbering("a", i + 1))], {
+    x
+    let h = work.at(i, default: none)
+    if h != none { workpanel(h) }
+  })).flatten(),
 ))
 #let mk(n) = { h(1fr); text(size: 8.4pt, fill: muted)[\[#n #if n == 1 [mark] else [marks]\]] }
 #let nota = [None of options (A), (B), (C), (D) is correct.]
@@ -406,7 +414,7 @@ Let $f : ZZ -> ZZ$ be defined by $f(x) = x^2$. For $X subset.eq ZZ$, $f(X)$ is t
 
 #q(split: true)[3.7 · Functions #h(0.4em) \[14 marks\]][after AY25/26 Q26 · T6 Q4, Q8][
 Working is not required for this question.
-#parts(
+#parts(work: (3cm, 3cm,),
 [\[4 × 2 marks\] For each of the following functions, answer \
 #pad(left: 1em)[
 *A* if the function is neither injective nor surjective; \
@@ -430,7 +438,7 @@ For a function $f$ and $n in ZZ^+$, $f^((n))(x)$ is the result of $n$ applicatio
 
 #q(split: true)[3.8 · Permutations and proofs #h(0.4em) \[14 marks\]][after AY23/24 Q23 · AY22/23 Q24 · T6 Q5][
 Let $S_n = {1, 2, ..., n}$. A bijection $sigma : S_n -> S_n$ is a _permutation_. In _cycle notation_, write $(x space sigma(x) space sigma(sigma(x)) space dots.c)$, closing the bracket just before the value returns to $x$, then start a new cycle with an element not yet written, until every element of $S_n$ appears. For example, if $(sigma(1), ..., sigma(6)) = (2, 6, 5, 4, 3, 1)$, then $sigma = (1 space 2 space 6)(3 space 5)(4)$.
-#parts(
+#parts(work: (2.5cm, 3.75cm, 2.5cm, 2.5cm, 6.25cm,),
 [Write $sigma : S_6 -> S_6$ with $(sigma(1), sigma(2), sigma(3), sigma(4), sigma(5), sigma(6)) = (4, 6, 3, 5, 1, 2)$ in cycle notation. #mk(2)],
 [Given $sigma_1 = (1 space 3 space 5)(2 space 4)(6)$ and $sigma_2 = (1 space 2)(3 space 6 space 4)(5)$ on $S_6$, write $sigma_1 compose sigma_2$ in cycle notation. #mk(3)],
 [State the order of $sigma_1$ and the order of $sigma_1 compose sigma_2$. #mk(2)],
@@ -522,7 +530,7 @@ Given the recurrence relation $a_n = a_(n-1) + 3n$ with initial value $a_0 = 2$,
 
 #q(split: true)[4.7 · Mathematical induction #h(0.4em) \[14 marks\]][after AY22/23 Q21 · AY23/24 Q26 · T7 Q7, T8 Q9][
 Let $F_0, F_1, F_2, ...$ be the Fibonacci sequence: $F_0 = 0$, $F_1 = 1$ and $F_(n+1) = F_n + F_(n-1)$ for $n >= 1$.
-#parts(
+#parts(work: (7.5cm, 7.5cm, 2.5cm,),
 [Prove by mathematical induction that for all $n in ZZ^+$, #mk(6)
 $ sum_(i=1)^n F_(2i-1) = F_(2n). $],
 [Prove by mathematical induction that $F_n < 2^n$ for all $n in NN$, stating every basis step needed. #mk(6)],
@@ -541,7 +549,7 @@ Clause (1): $2 in S$. \
 Clause (2): If $x in S$, then $x + 3 in S$. \
 Clause (3): If $x in S$, then $2x in S$.]
 Membership in $S$ can always be demonstrated by finitely many applications of the three clauses. Let $"Bool" = {"true", "false"}$.
-#parts(
+#parts(work: (2.5cm, 5cm, 5cm, 5cm,),
 [The principle of mathematical induction for $ZZ^+$ is the following proof rule for any predicate $P : ZZ^+ -> "Bool"$:
 #pad(left: 2em)[$P(1)$ \ $forall x in ZZ^+ space (P(x) => P(x + 1))$ \ $therefore forall x in ZZ^+ space P(x)$]
 Write a suitable induction principle, in the same format, for $S$. #mk(2)],
@@ -646,7 +654,7 @@ Which of the following statements are true?
 
 #q(split: true)[5.7 · Cardinality #h(0.4em) \[10 marks\]][after AY22/23 Q25 · T8 Q1, Q2, Q4][
 You may quote without proof: (1) a subset of a countable set is countable; (2) the union of two countable sets is countable; (3) $QQ$ is countable and $RR$ is uncountable.
-#parts(
+#parts(work: (3.75cm, 5cm, 3.75cm,),
 [Define a bijection $g : NN -> ZZ without {0}$. No proof is needed. #mk(3)],
 [Let $A$ be an uncountable set and let $B subset.eq A$ be countable. Prove that $A without B$ is uncountable. #mk(4)],
 [Prove that the set of irrational numbers is uncountable. #mk(3)],
@@ -685,7 +693,7 @@ A yoghurt bar offers 8 toppings. Members may choose exactly 3 different toppings
 
 #q(split: true)[6.5 · Counting and probability #h(0.4em) \[20 marks\]][after AY25/26 Q24][
 Working is not required for this question.
-#parts(
+#parts(work: (2.5cm, 2.5cm, 2.5cm, 2.5cm, 2.5cm, 2.5cm, 3.75cm, 2.5cm,),
 [How many distinct arrangements are there of the nine letters of the word COMMITTEE? Write your answer as a single number. #mk(2)],
 [A committee of 4 is to be formed from 7 men and 5 women such that there are at least 2 women. How many possible committees are there? Write your answer as a single number. #mk(2)],
 [A password consists of 5 letters chosen from the 26 uppercase letters A to Z, with no letter repeated. The vowels are A, E, I, O and U. How many passwords contain exactly 2 vowels? Write your answer as a single number. #mk(2)],
@@ -703,7 +711,7 @@ Working is not required for this question.
 
 #q(split: true)[6.6 · Counting and probability #h(0.4em) \[20 marks\]][after AY24/25 Q24 · AY23/24 Q25 · AY22/23 Q22 · AY20/21 Q20][
 Working is not required for this question. Write each answer as a single number or a single fraction.
-#parts(
+#parts(work: (2.5cm, 2.5cm, 2.5cm, 2.5cm, 2.5cm, 2.5cm, 2.5cm, 2.5cm,),
 [How many integer solutions does $x_1 + x_2 + x_3 + x_4 = 15$ have, assuming that $x_i >= 0$? #mk(2)],
 [How many integer solutions does the equation in (a) have, assuming that $x_i >= 0$, $x_1 >= 2$ and $x_2 >= 3$? #mk(2)],
 [How many integer solutions does the equation in (a) have, assuming that $x_i >= 0$ and $x_4 <= 2$? #mk(2)],
@@ -794,7 +802,7 @@ The *cycle graph* $C_n$, $n >= 3$, is the connected graph on $n$ vertices that c
 A *bipartite graph* $G = (U, V, E)$ has its vertices divided into disjoint sets $U$ and $V$ with every edge connecting a vertex of $U$ to a vertex of $V$. A *matching* is a set $F subset.eq E$ in which no two edges share a vertex; a *perfect matching* covers every vertex of the graph. \
 *Hall's Marriage Theorem.* $G = (U, V, E)$ has a matching that covers all vertices in $U$ if and only if $|N(S)| >= |S|$ for every $S subset.eq U$, where $N(S)$ is the set of neighbours of $S$ in $V$.]
 Working is not required. $K_n$ is the complete graph and $K_(m,n)$ the complete bipartite graph with $|U| = m$, $|V| = n$; assume $m, n >= 2$.
-#parts(
+#parts(work: (2.5cm, 2.5cm, 2.5cm, 5cm, 6.25cm, 2.5cm, 3.75cm,),
 [Is $K_(2,5)$ a planar graph? Answer "yes" or "no". #mk(2)],
 [What is the necessary and sufficient condition on $n >= 3$ for $K_n$ to be an Eulerian graph? #mk(2)],
 [What is the necessary and sufficient condition on $m, n >= 2$ for $K_(m,n)$ to have an Euler trail between two distinct vertices? #mk(2)],
@@ -813,7 +821,7 @@ Working is not required. $K_n$ is the complete graph and $K_(m,n)$ the complete 
 
 #q(split: true)[7.8 · Graphs and trees #h(0.4em) \[20 marks\]][after AY23/24 Q24 · AY22/23 Q23 · AY20/21 Q21][
 Working is not required for this question.
-#parts(
+#parts(work: (2.5cm, 3.75cm, 3.75cm, 5cm, 2.5cm, 3.75cm, 3.75cm,),
 [The edge weight matrix $W$ of a simple undirected graph is given below; the entry $w_(i,j)$ is the weight of the edge between vertex $i$ and vertex $j$. What is the weight of its minimum spanning tree? #mk(2)
 $ W = mat(0, 2, 6, 4, 7; 2, 0, 3, 5, 7; 6, 3, 0, 3, 8; 4, 5, 3, 0, 6; 7, 7, 8, 6, 0) $],
 [The adjacency matrix $A$ of a directed graph with vertex set ${v_1, v_2, v_3}$ is given below; the entry $a_(i,j)$ is the number of directed edges from $v_i$ to $v_j$. Find the number of walks of length 3 from $v_1$ to $v_3$. #mk(3)

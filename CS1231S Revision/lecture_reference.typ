@@ -5,6 +5,7 @@
   appendix-heading: [Appendix A · Properties of the Real Numbers],
   theorem-heading: [Lecture theorem reference],
   full-theorems: true,
+  extra-rows: (),
 ) = [
   #let lemma(title, body) = kbox("Lemma", rgb("#1f6f43"), rgb("#edf6f0"), title, body)
   #let corollary(title, body) = kbox("Corollary", rgb("#1f6f43"), rgb("#edf6f0"), title, body)
@@ -272,6 +273,7 @@
       [Propositions (unnumbered)], [Composition: associativity; inverse], [L6 s18], [§20],
       [Proposition (unnumbered)], [Congruence is an equivalence relation], [L6 s54], [§23],
       [Proposition (unnumbered)], [Smallest implies minimal], [L6 s83], [§24],
+      ..extra-rows,
     )
   ]
 ]

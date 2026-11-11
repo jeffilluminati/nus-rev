@@ -1,0 +1,385 @@
+#!/usr/bin/env python3
+"""
+exampaper — Download NUS exam papers from Digital Gems.
+
+Usage:
+    exampaper MODULE_CODE          e.g. MA1522
+    exampaper MODULE_CODE -o DIR   download into DIR instead of cwd
+
+Searches https://digitalgems.nus.edu.sg (collection 31 = exam papers) for the
+given module code, scrapes every result sub-page for its `data-pdf_id`, and
+downloads each PDF via https://digitalgems.nus.edu.sg/file/<pdf_id>/content.
+
+Authentication: cookies are pulled automatically from the local Firefox
+profile(s); if no valid session is found there, Chrome cookies are decrypted
+using the "Chrome Safe Storage" keychain entry (macOS will ask for permission).
+
+Requires only Python 3 stdlib + the `openssl`/`security` CLI tools.
+"""
+
+import argparse
+import glob
+import http.cookiejar
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+import urllib.parse
+import urllib.request
+
+BASE = "https://digitalgems.nus.edu.sg"
+COLLECTION = "31"
+LIMIT = 10  # results per browse page, matches the site's default
+
+LOGIN_MARK = f'window.location.href = "{BASE}/login"'
+UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+      "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36")
+
+
+# --------------------------------------------------------------------------
+# Cookie extraction
+# --------------------------------------------------------------------------
+
+def _copy_sqlite(src, workdir):
+    """Copy a (possibly locked) sqlite db + wal/shm sidecars into workdir."""
+    base = os.path.join(workdir, os.path.basename(src))
+    shutil.copy2(src, base)
+    for ext in ("-wal", "-shm"):
+        side = src + ext
+        if os.path.exists(side):
+            shutil.copy2(side, base + ext)
+    return base
+
+
+def _query_rows(db, sql):
+    import sqlite3
+    try:
+        con = sqlite3.connect(db)
+        rows = con.execute(sql).fetchall()
+        con.close()
+        return rows
+    except Exception:
+        return []
+
+
+def firefox_cookies():
+    """Collect digitalgems/nus.edu.sg cookies from all Firefox profiles."""
+    import sqlite3
+    profiles = glob.glob(os.path.expanduser(
+        "~/Library/Application Support/Firefox/Profiles/*/cookies.sqlite"))
+    if not profiles:  # Linux layout
+        profiles = glob.glob(os.path.expanduser("~/.mozilla/firefox/*/cookies.sqlite"))
+    cookies = {}
+    with tempfile.TemporaryDirectory() as td:
+        for db in profiles:
+            local = _copy_sqlite(db, td)
+            rows = _query_rows(local, "SELECT name, value, host FROM moz_cookies")
+            for name, value, host in rows:
+                if "nus.edu.sg" in host:
+                    cookies[name] = value
+    return cookies
+
+
+def _chrome_decrypt(encrypted, workdir):
+    """Decrypt a Chrome v10 cookie value on macOS via the Keychain + openssl."""
+    if not encrypted.startswith(b"v10"):
+        return None
+    try:
+        pw = subprocess.run(
+            ["security", "find-generic-password", "-s", "Chrome Safe Storage", "-w"],
+            capture_output=True, text=True, timeout=60).stdout.strip()
+        if not pw:
+            return None
+    except Exception:
+        return None
+    import hashlib
+    key = hashlib.pbkdf2_hmac("sha1", pw.encode(), b"saltysalt", 1003, dklen=16)
+    iv = " " * 16
+    hexkey = key.hex()
+    hexiv = iv.encode().hex()
+    src = os.path.join(workdir, "blob.bin")
+    with open(src, "wb") as f:
+        f.write(encrypted[3:])
+    r = subprocess.run(
+        ["openssl", "enc", "-d", "-aes-128-cbc", "-K", hexkey, "-iv", hexiv,
+         "-in", src],
+        capture_output=True)
+    out = r.stdout
+    # strip PKCS#7 padding remnants if openssl didn't
+    if out and 0 < out[-1] <= 16:
+        pad = out[-1]
+        if out[-pad:] == bytes([pad]) * pad:
+            out = out[:-pad]
+    return out.decode("utf-8", "replace") if out else None
+
+
+def chrome_cookies():
+    """Collect cookies from Chrome profile(s), decrypting v10 values (macOS)."""
+    import sqlite3
+    pattern = os.path.expanduser(
+        "~/Library/Application Support/Google/Chrome/*/Cookies")
+    dbs = glob.glob(pattern) + glob.glob(os.path.expanduser(
+        "~/.config/google-chrome/*/Cookies"))
+    cookies = {}
+    with tempfile.TemporaryDirectory() as td:
+        for db in dbs:
+            local = _copy_sqlite(db, td)
+            rows = _query_rows(
+                local, "SELECT host_key, name, encrypted_value, value FROM cookies")
+            for host, name, enc, plain in rows:
+                if "nus.edu.sg" not in host:
+                    continue
+                if plain:
+                    cookies[name] = plain
+                elif enc:
+                    val = _chrome_decrypt(enc, td)
+                    if val:
+                        cookies[name] = val
+    return cookies
+
+
+def get_session_cookies():
+    """Firefox first, then Chrome. Must yield openaccess_session to work."""
+    for name, fn in (("Firefox", firefox_cookies), ("Chrome", chrome_cookies)):
+        try:
+            c = fn()
+        except Exception as e:
+            print(f"[!] {name} cookie extraction failed: {e}")
+            continue
+        if "openaccess_session" in c:
+            print(f"[+] Using {name} cookies ({len(c)} cookies, session found)")
+            return c
+        print(f"[-] No Digital Gems session in {name} cookies")
+    return {}
+
+
+# --------------------------------------------------------------------------
+# HTTP
+# --------------------------------------------------------------------------
+
+class Fetcher:
+    def __init__(self, cookies):
+        header = "; ".join(f"{k}={v}" for k, v in cookies.items())
+        self.opener = urllib.request.build_opener()
+        self.opener.addheaders = [
+            ("User-Agent", UA),
+            ("Cookie", header),
+            ("Referer", BASE + "/"),
+        ]
+
+    def get(self, url):
+        req = urllib.request.Request(url)
+        try:
+            with self.opener.open(req, timeout=60) as resp:
+                return resp.read(), resp.headers
+        except urllib.error.HTTPError as e:
+            print(f"[!] HTTP {e.code} for {url}")
+            return None, None
+
+
+# --------------------------------------------------------------------------
+# Scraping
+# --------------------------------------------------------------------------
+
+VIEW_RE = re.compile(r'href="' + re.escape(BASE) + r'/view/(\d+)/([^"?]+)\?')
+PDF_ID_RE = re.compile(r'data-pdf_id="(\d+)"')
+VIEWER_RE = re.compile(r'/viewer/(\d+)\?')
+OBJECTS_RE = re.compile(r'var objects = (\[.*?\]);', re.DOTALL)
+
+
+def clean_slug(slug):
+    """'em-ma1522-em-2025-2026' -> 'MA1522-2025-2026' style name."""
+    s = re.sub(r"(^|-)em-", "-", slug)
+    s = re.sub(r"-+", "-", s).strip("-")
+    s = s.replace("/", "-")
+    return s or "paper"
+
+
+def parse_objects_meta(text):
+    """Parse the 'var objects = [...]' JSON on browse pages.
+
+    Returns {record_id: (academic_year, semester)} e.g. {573555: ('2025/2026', '1')}.
+    """
+    import json
+    meta = {}
+    m = OBJECTS_RE.search(text)
+    if not m:
+        return meta
+    try:
+        objects = json.loads(m.group(1))
+    except json.JSONDecodeError:
+        return meta
+    for obj in objects:
+        src = obj.get("_source", {})
+        rid = src.get("id")
+        md = src.get("metadata", {})
+
+        def first(field):
+            v = md.get(field, {}).get("en", [])
+            return str(v[0]) if v else None
+
+        if rid is not None:
+            meta[int(rid)] = (first("YearOfExamination"), first("Semester"))
+    return meta
+
+
+def paper_name(module, rid, slug, meta):
+    """Build '<MODULE>-<AY>-<Semester1|2>.pdf' stem, falling back to slug."""
+    ay, sem = meta.get(rid, (None, None))
+    if ay:
+        ay = ay.replace("/", "-").replace(" ", "")
+        sem = sem or "0"
+        return f"{module}-{ay}-Semester{sem}"
+    return clean_slug(slug)
+
+
+def find_records(f, module):
+    """Walk browse pages (offset pagination).
+
+    Returns (records, meta) where records is {record_id: slug} and meta is
+    {record_id: (academic_year, semester)}.
+    """
+    records = {}
+    meta = {}
+    offset = 0
+    while True:
+        q = urllib.parse.quote(f"must,any,contains,{module}", safe=",")
+        url = (f"{BASE}/browse/collection/{COLLECTION}?q={q}"
+               f"&offset={offset}&limit={LIMIT}")
+        html, _ = f.get(url)
+        if html is None:
+            break
+        text = html.decode("utf-8", "replace")
+        if LOGIN_MARK in text:
+            sys.exit("[x] Not logged in: Digital Gems returned the login page.\n"
+                     "    Log in once in Firefox or Chrome, then re-run.")
+        found = {int(rid): slug for rid, slug in VIEW_RE.findall(text)}
+        meta.update(parse_objects_meta(text))
+        new = {k: v for k, v in found.items() if k not in records}
+        print(f"[*] Browse offset={offset}: {len(found)} results "
+              f"({len(new)} new)")
+        if not new:
+            break
+        records.update(new)
+        offset += LIMIT
+        if len(found) < LIMIT:
+            break
+    return records, meta
+
+
+def get_pdf_ids(f, rid, slug):
+    """Scrape a record sub-page (and its viewer iframe) for data-pdf_id."""
+    url = f"{BASE}/view/{rid}/{slug}"
+    html, _ = f.get(url)
+    if html is None:
+        return []
+    text = html.decode("utf-8", "replace")
+    ids = PDF_ID_RE.findall(text)
+    if ids:
+        return ids
+    # pdf lives inside the viewer iframe -> fetch that sub-page too
+    m = VIEWER_RE.search(text)
+    if m:
+        vhtml, _ = f.get(f"{BASE}/viewer/{m.group(1)}?iframe=yes&")
+        if vhtml:
+            return PDF_ID_RE.findall(vhtml.decode("utf-8", "replace"))
+    return []
+
+
+def download_pdf(f, pdf_id, out_path):
+    if os.path.exists(out_path) and os.path.getsize(out_path) > 1000:
+        print(f"    = {os.path.basename(out_path)} already exists, skipping")
+        return True
+    data, headers = f.get(f"{BASE}/file/{pdf_id}/content")
+    if not data or not data.startswith(b"%PDF"):
+        print(f"    [!] {out_path}: not a valid PDF response")
+        return False
+    with open(out_path, "wb") as fh:
+        fh.write(data)
+    print(f"    + saved {os.path.basename(out_path)} "
+          f"({len(data) / 1024:.0f} KB)")
+    return True
+
+
+AY_RE = re.compile(r"AY\s*(\d{4})\s*[/-]\s*(\d{4})", re.IGNORECASE)
+SEM_RE = re.compile(r"Semester\s*([12])", re.IGNORECASE)
+
+
+def refine_name(path, module, outdir, used):
+    """If the filename lacks a Semester part, scrape it from the PDF text
+    (via pdftotext) and rename to <MODULE>-<AY>-<SemesterN>.pdf."""
+    if "Semester" in os.path.basename(path) or shutil.which("pdftotext") is None:
+        return path
+    try:
+        text = subprocess.run(
+            ["pdftotext", "-l", "3", path, "-"],
+            capture_output=True, text=True, timeout=30).stdout
+    except Exception:
+        return path
+    ay = AY_RE.search(text)
+    sem = SEM_RE.search(text)
+    if not (ay and sem):
+        return path
+    name = f"{module}-{ay.group(1)}-{ay.group(2)}-Semester{sem.group(1)}"
+    new_path = os.path.join(outdir, f"{name}.pdf")
+    n = 2
+    while new_path in used or (new_path != path and os.path.exists(new_path)):
+        new_path = os.path.join(outdir, f"{name}_{n}.pdf")
+        n += 1
+    os.replace(path, new_path)
+    print(f"    > renamed {os.path.basename(path)} -> "
+          f"{os.path.basename(new_path)}")
+    return new_path
+
+
+def main():
+    ap = argparse.ArgumentParser(description="Scrape NUS exam papers from Digital Gems")
+    ap.add_argument("module", help="module code, e.g. MA1522")
+    ap.add_argument("-o", "--out", default=".", help="output directory (default: cwd)")
+    args = ap.parse_args()
+    module = args.module.strip().upper().replace(" ", "")
+    outdir = os.path.abspath(os.path.expanduser(args.out))
+    os.makedirs(outdir, exist_ok=True)
+
+    cookies = get_session_cookies()
+    if not cookies:
+        sys.exit("[x] Could not obtain Digital Gems cookies.\n"
+                 "    Log in at https://digitalgems.nus.edu.sg/login in "
+                 "Firefox or Chrome, then re-run.")
+    f = Fetcher(cookies)
+
+    records, meta = find_records(f, module)
+    if not records:
+        sys.exit(f"[x] No records found for module {module}")
+    print(f"[*] {len(records)} record(s) found for {module}")
+
+    ok = fail = 0
+    used = set()  # avoid filename collisions between identical AY/semester
+    for rid, slug in sorted(records.items()):
+        pdf_ids = get_pdf_ids(f, rid, slug)
+        if not pdf_ids:
+            print(f"[!] No data-pdf_id found on sub-page for {slug} (id {rid})")
+            fail += 1
+            continue
+        name = paper_name(module, rid, slug, meta)
+        for pid in pdf_ids:
+            path = os.path.join(outdir, f"{name}.pdf")
+            n = 2
+            while path in used:
+                path = os.path.join(outdir, f"{name}_{pid}_{n}.pdf")
+                n += 1
+            used.add(path)
+            if download_pdf(f, pid, path):
+                final = refine_name(path, module, outdir, used)
+                used.discard(path)
+                used.add(final)
+                ok += 1
+            else:
+                fail += 1
+    print(f"[*] Done: {ok} downloaded, {fail} failed/skipped")
+
+
+if __name__ == "__main__":
+    main()

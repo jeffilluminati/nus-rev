@@ -1,0 +1,1207 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  MA1521 Calculus for Computing -- Final Exam Exercise Set
+%  Typeset in the style of Thomas' Calculus (Early Transcendentals, 15/e),
+%  laid out one-column in the manner of an MIT 18.02 problem set,
+%  with working space after every problem.
+%
+%  Coverage: Thomas 11.3-11.5, Chapter 13, Chapter 14 (complete); all problems original
+%            modelled on the 28-question sample final paper
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[scale=0.92]{tgheros}
+\usepackage{newtxtext}
+\usepackage[varg]{newtxmath}
+\usepackage[letterpaper,top=0.95in,bottom=0.95in,left=1.05in,right=1.05in,headsep=14pt,footskip=26pt]{geometry}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\usepackage{lastpage}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+%------------------------------------------------------------------ palette --
+\definecolor{ThomasBlue}{HTML}{00558C}   % Pearson/Thomas heading blue
+\definecolor{ThomasDeep}{HTML}{003A62}
+\definecolor{ThomasTint}{HTML}{E9F1F7}   % pale box fill
+\definecolor{RuleGray}{HTML}{B9C4CC}
+\definecolor{WorkGray}{HTML}{D9DEE3}
+\definecolor{SoftGray}{HTML}{6A7378}
+
+%------------------------------------------------------------------- vectors --
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\bi}{\mathbf{i}}
+\newcommand{\bj}{\mathbf{j}}
+\newcommand{\bk}{\mathbf{k}}
+\newcommand{\bA}{\mathbf{A}}
+\newcommand{\bB}{\mathbf{B}}
+\newcommand{\bC}{\mathbf{C}}
+\newcommand{\bD}{\mathbf{D}}
+\newcommand{\br}{\mathbf{r}}
+\newcommand{\bv}{\mathbf{v}}
+\newcommand{\bu}{\mathbf{u}}
+\newcommand{\ba}{\mathbf{a}}
+\newcommand{\bT}{\mathbf{T}}
+\newcommand{\bn}{\mathbf{n}}
+\newcommand{\grad}{\nabla}
+\newcommand{\pd}[2]{\dfrac{\partial #1}{\partial #2}}
+\newcommand{\pdi}[2]{\partial #1/\partial #2}
+\newcommand{\dd}[2]{\dfrac{d#1}{d#2}}
+\DeclareMathOperator{\proj}{proj}
+
+%---------------------------------------------------------- running headers --
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[L]{\footnotesize\sffamily\color{SoftGray}MA1521 \textbar\ Final Exam Exercise Set}
+\fancyhead[R]{\footnotesize\sffamily\color{SoftGray}\leftmark}
+\fancyfoot[C]{\footnotesize\sffamily\color{SoftGray}\thepage\ of \pageref{LastPage}}
+\fancypagestyle{plain}{\fancyhf{}%
+  \fancyfoot[C]{\footnotesize\sffamily\color{SoftGray}\thepage\ of \pageref{LastPage}}}
+
+%--------------------------------------------------- Thomas-style structures --
+% PART heading: heavy blue rule + "PART x" + title, in the manner of the
+% "EXERCISES 13.7" banner that opens every Thomas exercise set.
+\newcommand{\parthead}[4]{%
+  \clearpage
+  \markboth{#2}{#2}%
+  \noindent{\color{ThomasBlue}\rule{\linewidth}{2.6pt}}\par\vspace{2pt}
+  \noindent{\color{RuleGray}\rule{\linewidth}{0.5pt}}\par\vspace{7pt}
+  \noindent{\sffamily\bfseries\fontsize{15}{17}\selectfont\color{ThomasDeep} PART #1}%
+  \hfill{\sffamily\fontsize{9}{11}\selectfont\color{SoftGray} #4}\par\vspace{3pt}
+  \noindent{\sffamily\bfseries\fontsize{21}{24}\selectfont\color{ThomasBlue} #2}\par\vspace{4pt}
+  \noindent{\itshape\fontsize{10}{12}\selectfont\color{SoftGray} #3}\par\vspace{5pt}
+  \noindent{\color{ThomasBlue}\rule{\linewidth}{1.1pt}}\par\vspace{12pt}
+}
+
+% Category sub-head, e.g. "Finding Local Extrema" in the textbook's exercise sets
+\newcommand{\topichead}[1]{%
+  \par\addvspace{15pt}\penalty-300
+  \noindent{\sffamily\bfseries\fontsize{11.3}{13}\selectfont\color{ThomasBlue}#1}\par
+  \nobreak\vspace{1.5pt}\noindent{\color{RuleGray}\rule{\linewidth}{0.5pt}}\par\nobreak\vskip 7pt
+}
+
+% Boxed DEFINITION / THEOREM panel, after the tinted panels in Thomas' text
+\newcommand{\panel}[2]{%
+  \par\addvspace{10pt}\needspace{5\baselineskip}%
+  \noindent{\color{ThomasBlue}\rule{\linewidth}{1.1pt}}\par\vspace{-2pt}
+  \noindent\colorbox{ThomasTint}{%
+  \begin{minipage}{\dimexpr\linewidth-2\fboxsep\relax}
+  \vspace{4pt}
+  {\sffamily\bfseries\fontsize{9}{11}\selectfont\color{ThomasDeep}#1}\par\vspace{4pt}
+  #2\par\vspace{4pt}
+  \end{minipage}}\par\vspace{-1pt}
+  \noindent{\color{RuleGray}\rule{\linewidth}{0.5pt}}\par\addvspace{11pt}
+}
+
+%------------------------------------------------------------------ problems --
+\newcounter{prob}
+\newcommand{\pts}[1]{{\sffamily\fontsize{8.5}{10}\selectfont\color{SoftGray}(#1)}}
+
+% \begin{problem} ... \end{problem}
+\newenvironment{problem}{%
+  \par\ifdim\lastskip=7pt\else\addvspace{13pt}\penalty-100\fi
+  \interlinepenalty=10000 \predisplaypenalty=10000 \postdisplaypenalty=10000
+  \refstepcounter{prob}%
+  \noindent\hangindent=2.05em\hangafter=1
+  {\bfseries\color{ThomasDeep}\theprob.}\hspace{0.55em}\ignorespaces
+}{\par}
+
+\newlist{parts}{enumerate}{3}
+\setlist[parts,1]{label=\textbf{(\alph*)},ref=\alph*,leftmargin=2.15em,
+                  itemsep=4pt,topsep=4pt,parsep=1pt,partopsep=0pt,
+                  beginpenalty=10000,midpenalty=10000,endpenalty=10000}
+\setlist[parts,2]{label=(\roman*),leftmargin=2.0em,itemsep=3pt,topsep=3pt,parsep=0pt}
+
+% Working space: a light ruled panel the student writes inside. The panel is
+% built from rules and leaders so that it can stretch to fill the page.
+\newcommand{\workbox}[1]{%
+  \par\nobreak\vskip 8pt\nointerlineskip
+  {\color{WorkGray}\hrule height 0.4pt}\nobreak
+  \leaders\vbox to 0.5pt{\hbox to\linewidth{\color{WorkGray}%
+     \vrule width 0.4pt height 0.5pt\hfil\vrule width 0.4pt}}%
+     \vskip #1 plus 0.6\dimexpr#1\relax
+  \nobreak{\color{WorkGray}\hrule height 0.4pt}\nobreak
+}
+\newcommand{\work}[1]{\workbox{#1}\par\addvspace{14pt}}
+
+% Source attribution line
+\newcommand{\src}[1]{\par\vspace{2pt}\hfill{\sffamily\fontsize{8}{9}\selectfont\color{SoftGray}[#1]}\par}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\linespread{1.04}
+\flushbottom
+
+% Answer box used in the mock paper, after the boxed answers of the sample final
+\newcommand{\workans}[1]{\workbox{#1}%
+  \vskip 8pt\hbox to\linewidth{\hfill{\sffamily\fontsize{8.5}{10}\selectfont\color{SoftGray}Answer\ \ }%
+  \fcolorbox{ThomasBlue}{white}{\rule{0pt}{0.95cm}\rule{4.8cm}{0pt}}}\par\addvspace{14pt}}
+\newcommand{\fmt}[1]{\par\nobreak\vspace{2pt}{\itshape\small #1}}
+\newcommand{\dA}{\,dA}
+\newcommand{\dV}{\,dV}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TITLE BLOCK %%%
+\thispagestyle{plain}
+\markboth{Front Matter}{Front Matter}
+
+\noindent{\color{ThomasBlue}\rule{\linewidth}{3.2pt}}\par\vspace{2.5pt}
+\noindent{\color{RuleGray}\rule{\linewidth}{0.5pt}}\par\vspace{16pt}
+
+\noindent
+\begin{minipage}[t]{0.62\linewidth}
+{\sffamily\bfseries\fontsize{12}{14}\selectfont\color{ThomasDeep}MA1521\ \ CALCULUS FOR COMPUTING}\par\vspace{2pt}
+{\sffamily\fontsize{9.5}{11}\selectfont\color{SoftGray}National University of Singapore}
+\end{minipage}%
+\begin{minipage}[t]{0.38\linewidth}
+\raggedleft
+{\sffamily\fontsize{9.5}{12}\selectfont\color{SoftGray}
+Exercise Set~F\ \ (Final Exam Revision)\\
+Name:\ \rule{3.2cm}{0.4pt}\\[2pt]
+Date:\ \rule{3.2cm}{0.4pt}}
+\end{minipage}
+
+\vspace{20pt}
+\noindent{\sffamily\bfseries\fontsize{28}{32}\selectfont\color{ThomasBlue}Partial Derivatives\\[2pt] and Multiple Integrals}
+
+\vspace{10pt}
+\noindent{\fontsize{11.5}{14}\selectfont\itshape\color{ThomasDeep}
+Thomas' Calculus: Early Transcendentals, 15/e \ \ \textbullet\ \ Sections 11.3--11.5,\ Chapter 13,\ and Chapter 14 complete}\par\vspace{3pt}
+\noindent{\fontsize{10.5}{13}\selectfont\itshape\color{SoftGray}
+MIT 18.02 Multivariable Calculus \ \ \textbullet\ \ Lectures 1--18 and 25--26}
+
+\vspace{12pt}
+\noindent{\color{ThomasBlue}\rule{\linewidth}{1.4pt}}
+\vspace{16pt}
+
+\panel{HOW TO USE THIS SET}{%
+\fontsize{10}{12.5}\selectfont
+The sample final paper has 28 short-answer questions: three on single-variable calculus,
+nine on vectors and partial derivatives, and sixteen on multiple integrals. This set is
+weighted the same way. Parts~A to~C revise the material already examined at the midterm,
+in the form the final asks it; Parts~D to~F cover Chapter~14 in full; Part~G is a complete
+28-question mock paper to be sat in one sitting of two hours.
+\par\vspace{5pt}
+Every problem here is new: none is copied from the textbook, the lesson notes, or the sample
+paper, although each is modelled on a question type that appears there. Every problem is
+followed by a ruled panel sized to the work it should take. Answers to all problems begin on
+the last pages; consult them only after a complete attempt.
+}
+
+\vspace{4pt}
+
+\topichead{Distribution of Problems}
+
+\noindent
+{\fontsize{10}{13}\selectfont
+\begin{tabular}{@{}p{0.06\linewidth}p{0.46\linewidth}p{0.24\linewidth}p{0.14\linewidth}@{}}
+\textbf{Part} & \textbf{Topic} & \textbf{Thomas sections} & \textbf{Problems}\\[3pt]
+\hline\\[-7pt]
+A & Single-Variable Warm-Up & 4.5, 5.4, 8.8 & 1--3\\
+B & Lines, Planes, and Partial Derivatives & 11.3--11.5, 13.3--13.6 & 4--9\\
+C & Extreme Values and Lagrange Multipliers & 13.7--13.8 & 10--14\\
+D & Double Integrals in Rectangular Coordinates & 14.1--14.3 & 15--22\\
+E & Polar Coordinates and Substitutions & 14.4, 14.8 & 23--33\\
+F & Triple Integrals & 14.5--14.7 & 34--45\\
+G & Mock Final Examination (2 hours) & all of the above & 46--73\\[3pt]
+\hline
+\end{tabular}}
+
+\clearpage
+\topichead{Results You Are Expected to Know Cold}
+
+\panel{THEOREM --- Fubini's Theorem and Reversing the Order of Integration}{%
+If $f$ is continuous on $R:\ a\le x\le b,\ g_1(x)\le y\le g_2(x)$, then
+\[
+\iint_R f(x,y)\dA=\int_a^b\!\!\int_{g_1(x)}^{g_2(x)} f(x,y)\,dy\,dx .
+\]
+The outer limits are always constants. To reverse the order, sketch $R$, describe it again as
+$c\le y\le d,\ h_1(y)\le x\le h_2(y)$, and rewrite the limits; never simply swap the integral
+signs. On a rectangle, $\iint g(x)h(y)\dA=\bigl(\int g\,dx\bigr)\bigl(\int h\,dy\bigr)$.}
+
+\panel{THEOREM --- Substitutions in Multiple Integrals}{%
+If $x=g(u,v)$, $y=h(u,v)$ maps a region $G$ of the $uv$-plane one-to-one onto $R$, then
+\[
+\iint_R f(x,y)\,dx\,dy=\iint_G f\bigl(g(u,v),h(u,v)\bigr)\left|\frac{\partial(x,y)}{\partial(u,v)}\right|du\,dv,
+\qquad
+\frac{\partial(x,y)}{\partial(u,v)}=\begin{vmatrix}x_u&x_v\\ y_u&y_v\end{vmatrix}
+=\frac{1}{\partial(u,v)/\partial(x,y)} .
+\]
+\vspace{-6pt}
+\[
+\text{Polar: } dA=r\,dr\,d\theta \qquad
+\text{Cylindrical: } dV=r\,dz\,dr\,d\theta \qquad
+\text{Spherical: } dV=\rho^{2}\sin\phi\,d\rho\,d\phi\,d\theta
+\]
+In spherical coordinates $x=\rho\sin\phi\cos\theta$, $y=\rho\sin\phi\sin\theta$,
+$z=\rho\cos\phi$, with $\rho\ge0$ and $0\le\phi\le\pi$.}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PART A %%%
+\parthead{A}{Single-Variable Warm-Up}%
+{Thomas 4.5, 5.4, 8.8 \ \textbullet\ \ sample final Questions 1--3}%
+{3 problems}
+
+\topichead{Improper Integrals}
+
+\begin{problem}
+\textbf{Improper integrals.}\quad Each integral below is improper. Say why, and evaluate it.
+\begin{parts}
+\item $\displaystyle\int_0^1 x^{2}(\ln x)^{2}\,dx$
+\item $\displaystyle\int_0^1 \frac{\ln x}{\sqrt{x}}\,dx$
+\item $\displaystyle\int_1^{\infty} \frac{\ln x}{x^{3}}\,dx$
+\item $\displaystyle\int_0^{\infty} x^{2}e^{-3x}\,dx$
+\end{parts}
+\end{problem}
+\work{8.4cm}
+
+\topichead{Indeterminate Forms and L'H\^opital's Rule}
+
+\begin{problem}
+\textbf{Limits.}\quad Evaluate each limit.
+\begin{parts}
+\item $\displaystyle\lim_{x\to3}\frac{(x-3)(\ln x-\ln3)}{x^{2}-7x+12+3\ln x-3\ln3}$
+\item $\displaystyle\lim_{x\to0}\frac{e^{3x}-1-3x}{1-\cos2x}$
+\item $\displaystyle\lim_{x\to\infty}\left(1+\frac{2}{x}\right)^{3x}$
+\end{parts}
+\end{problem}
+\work{7.2cm}
+
+\topichead{The Fundamental Theorem of Calculus}
+
+\begin{problem}
+\textbf{Differentiating an integral.}
+\begin{parts}
+\item Let $\displaystyle f(x)=\int_{2x-1}^{x^{3}}\frac{1}{t^{2}+4}\,dt$. Find $f'(2)$.
+\item Let $\displaystyle g(x)=\int_{x}^{x^{2}}\sqrt{1+t^{3}}\,dt$. Find $g'(2)$.
+\item Let $\displaystyle F(x)=\int_{0}^{x^{2}}(t-4)e^{-t}\,dt$ for $x>0$. At what value of $x$
+      does $F$ have a local minimum?
+\end{parts}
+\end{problem}
+\work{6.6cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PART B %%%
+\parthead{B}{Lines, Planes, and Partial Derivatives}%
+{Thomas 11.3--11.5, 13.3--13.6 \ \textbullet\ \ sample final Questions 4--9}%
+{6 problems}
+
+\topichead{Lines and Planes in Space}
+
+\begin{problem}
+\textbf{Three short questions.}
+\begin{parts}
+\item Let $P=(1,-2,3)$ and $Q=(4,0,1)$. Find the point at which the line through $P$ and $Q$
+      meets the plane $3x-y+2z=5$.
+\item The angle between the vectors $\bi-2\bj+\bk$ and $-2\bi+\bj+\bk$ is $a\pi$ with
+      $0\le a\le1$. Find $a$.
+\item Find an equation of the plane through $(1,1,0)$, $(2,0,3)$, and $(0,2,1)$, and the
+      distance from the point $(3,4,5)$ to that plane.
+\end{parts}
+\end{problem}
+\work{7.4cm}
+
+\topichead{Tangent Planes}
+
+\begin{problem}
+\textbf{Tangent planes to level surfaces.}
+\begin{parts}
+\item Let $S$ be the surface $x^{2}+4y^{2}-z=5$. Find the point on $S$ at which the tangent
+      plane to $S$ is parallel to the plane $4x-8y-2z=1$.
+\item Find an equation of the tangent plane to the surface $xyz+z^{3}=12$ at the point
+      $(1,2,2)$.
+\end{parts}
+\end{problem}
+\work{6.4cm}
+
+\topichead{Recovering a Function from Its Partial Derivatives}
+
+\begin{problem}
+\begin{parts}
+\item Find the function $f(x,y)$ such that
+\[
+\pd{f}{x}=2xe^{y}-y\sin x,\qquad \pd{f}{y}=x^{2}e^{y}+\cos x+2y,\qquad f(0,0)=3,
+\]
+and hence find $f(\pi,1)$.
+\item For what value of the constant $k$ does there exist a function $g(x,y)$ with
+\[
+\pd{g}{x}=kxy^{2}+3y,\qquad \pd{g}{y}=4x^{2}y+3x+1\,?
+\]
+For that value of $k$, find all such functions $g$.
+\end{parts}
+\end{problem}
+\work{7.4cm}
+
+\topichead{The Chain Rule}
+
+\begin{problem}
+Let $u=2xy$, let $v=v(x,y)$ be a function such that
+$\pd{v}{x}=4x$ and $\pd{v}{y}=-y$, let $w=x^{2}-y$, and let
+\[
+z=u^{2}-3v+uw .
+\]
+Determine $\pd{z}{x}$ as a function of $x$ and $y$.
+\end{problem}
+\work{5.6cm}
+
+\topichead{Directional Derivatives and Rates of Change}
+
+\begin{problem}
+Consider the function $f(x,y)=xy^{2}-x^{3}$.
+\begin{parts}
+\item Find the directional derivative of $f$ at the point $(1,2)$ in the direction of the
+      vector $5\bi-12\bj$.
+\item What is the largest value the directional derivative of $f$ at $(1,2)$ can take, over all
+      directions?
+\end{parts}
+\end{problem}
+\work{5.2cm}
+
+\begin{problem}
+Let $T(x,y,z)$, measured in degrees Celsius, be the temperature at the point $(x,y,z)$ of a
+server room, where $x$, $y$, $z$ are measured in metres. It is given that
+\[
+\grad T(x,y,z)=\left\langle\, y^{2}-z,\ 2xy,\ 4-x \,\right\rangle .
+\]
+A sensor drone flies through the room so that its position at time $t$ seconds is
+$\br(t)=\left\langle t^{2},\ 2t-1,\ t^{3}\right\rangle$. Find the rate of change, in degrees
+Celsius per second, of the temperature recorded by the drone at time $t=1$.
+\end{problem}
+\work{5.4cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PART C %%%
+\parthead{C}{Extreme Values and Lagrange Multipliers}%
+{Thomas 13.7--13.8 \ \textbullet\ \ sample final Questions 10--12}%
+{5 problems}
+
+\topichead{Critical Points and the Second Derivative Test}
+
+\begin{problem}
+Find all the critical points of
+\[
+f(x,y)=x^{2}y-2xy+2y^{2}-15y ,
+\]
+and classify each as a local maximum point, a local minimum point, or a saddle point.
+Give the value of $f$ at each local extremum.
+\end{problem}
+\work{7.6cm}
+
+\begin{problem}
+Determine all the saddle points and all the local extrema of
+\[
+f(x,y)=x^{3}-12xy+8y^{3}.
+\]
+\end{problem}
+\work{6.6cm}
+
+\topichead{Absolute Extrema on a Closed Disk}
+
+\begin{problem}
+Let $f(x,y)=x^{2}+2y^{2}-x$.
+\begin{parts}
+\item Find the critical point of $f$ and its type.
+\item Write down the system of three equations in $x$, $y$, and $\lambda$ that the method of
+      Lagrange multipliers gives for the extreme values of $f$ on the circle $x^{2}+y^{2}=1$.
+\item Find the maximum and minimum values of $f$ on the closed disk $x^{2}+y^{2}\le1$.
+\end{parts}
+\end{problem}
+\work{8.4cm}
+
+\topichead{The Method of Lagrange Multipliers}
+
+\begin{problem}
+\textbf{Constrained extrema.}
+\begin{parts}
+\item Find the maximum and minimum values of $f(x,y)=xy^{2}$ on the circle $x^{2}+y^{2}=3$.
+\item Find the point on the plane $2x-y+2z=18$ closest to the origin, and its distance from
+      the origin.
+\end{parts}
+\end{problem}
+\work{7.4cm}
+
+\begin{problem}
+Three positive numbers $x$, $y$, $z$ have sum $12$. Find the largest possible value of the
+product $xy^{2}z^{3}$, and the values of $x$, $y$, $z$ at which it is attained.
+\end{problem}
+\work{5.8cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PART D %%%
+\parthead{D}{Double Integrals in Rectangular Coordinates}%
+{Thomas 14.1--14.3 \ \textbullet\ \ sample final Questions 13--17}%
+{8 problems}
+
+\topichead{Double Integrals over Rectangles}
+
+\begin{problem}
+\textbf{Rectangles.}\quad Evaluate each double integral.
+\begin{parts}
+\item $\displaystyle\iint_R\left(4x^{3}+6xy^{2}\right)dA$,\quad $R:\ 0\le x\le1,\ 0\le y\le2$
+\item $\displaystyle\iint_R x\cos(xy)\dA$,\quad $R:\ 0\le x\le\pi/2,\ 0\le y\le1$
+\item $\displaystyle\iint_R \frac{y}{1+xy}\dA$,\quad $R:\ 0\le x\le1,\ 0\le y\le1$
+\end{parts}
+\fmt{In parts (b) and (c) one order of integration is much easier than the other.}
+\end{problem}
+\work{7.6cm}
+
+\begin{problem}
+\textbf{Integrals of products.}
+\begin{parts}
+\item Let $f$ be a continuous function with $\displaystyle\int_0^{8}f(t)\,dt=12$, and let $R$
+      be the rectangle bounded by the lines $x=0$, $x=4$, $y=0$, $y=2$. Find the value of
+      $\displaystyle\iint_R f(2x)\,f(4y)\dA$.
+\item Let $g$ be a continuous function with $\displaystyle\int_0^{1}g(t)\,dt=5$, and let $S$
+      be the unit square $0\le x\le1$, $0\le y\le1$. Find the value of
+      $\displaystyle\iint_S \bigl(g(x)+g(y)\bigr)\dA$.
+\end{parts}
+\end{problem}
+\work{6.2cm}
+
+\topichead{Double Integrals over General Regions}
+
+\begin{problem}
+Consider the triangular region $R$ in the $xy$-plane with vertices $(1,1)$, $(5,1)$, and
+$(3,5)$. Compute $\displaystyle\iint_R y\dA$.
+\end{problem}
+\work{6.6cm}
+
+\begin{problem}
+Let $R$ be the region in the $xy$-plane bounded by the parabola $y=x^{2}$ and the line
+$y=2x+3$.
+\begin{parts}
+\item Find the area of $R$.
+\item Find $\displaystyle\iint_R x\dA$, and deduce the $x$-coordinate of the centroid of $R$.
+\end{parts}
+\end{problem}
+\work{7.0cm}
+
+\begin{problem}
+Let $R$ be the region in the first quadrant bounded by the curve $y=\sqrt{x}$, the line
+$x+y=2$, and the $x$-axis. Sketch $R$, and evaluate $\displaystyle\iint_R y\dA$ using a
+\emph{single} iterated integral.
+\end{problem}
+\work{6.6cm}
+
+\topichead{Reversing the Order of Integration}
+
+\begin{problem}
+\textbf{Reversing the order.}\quad Sketch the region of integration and evaluate each iterated
+integral by reversing the order of integration.
+\begin{parts}
+\item $\displaystyle\int_0^1\!\!\int_{\sqrt{x}}^{1}\sqrt{1+y^{3}}\,dy\,dx$
+\item $\displaystyle\int_0^4\!\!\int_{y/2}^{2}e^{x^{2}}\,dx\,dy$
+\item $\displaystyle\int_0^{\pi/2}\!\!\int_{x}^{\pi/2}\frac{\cos y}{y}\,dy\,dx$
+\item $\displaystyle\int_0^8\!\!\int_{x^{1/3}}^{2}\frac{1}{y^{4}+1}\,dy\,dx$
+\end{parts}
+\end{problem}
+\work{10.4cm}
+
+\begin{problem}
+The sum
+\[
+\int_0^1\!\!\int_0^{x}xy\,dy\,dx+\int_1^2\!\!\int_0^{2-x}xy\,dy\,dx
+\]
+is a double integral of $xy$ over a single region $R$. Sketch $R$, write the sum as one
+iterated integral with the order $dx\,dy$, and evaluate it.
+\end{problem}
+\work{6.4cm}
+
+\topichead{Volume}
+
+\begin{problem}
+Find the volume of the solid that lies below the plane $z=2x+y+1$ and above the region in the
+$xy$-plane bounded by the parabola $y=x^{2}$ and the line $y=1$.
+\end{problem}
+\work{6.0cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PART E %%%
+\parthead{E}{Polar Coordinates and Substitutions}%
+{Thomas 14.4, 14.8 \ \textbullet\ \ sample final Questions 18--22}%
+{11 problems}
+
+\topichead{Double Integrals in Polar Form}
+
+\begin{problem}
+\textbf{Disks, annuli, and sectors.}\quad Evaluate each double integral.
+\begin{parts}
+\item $\displaystyle\iint_R e^{-(x^{2}+y^{2})}\dA$, where $R$ is the closed disk of radius $2$
+      centred at the origin.
+\item $\displaystyle\iint_R \left(x^{2}+y^{2}\right)^{3/2}dA$, where $R$ is the part of the
+      annulus $1\le x^{2}+y^{2}\le4$ that lies in the upper half-plane $y\ge0$.
+\item $\displaystyle\iint_R y\dA$, where $R$ is the region in the first quadrant bounded by
+      the circles $x^{2}+y^{2}=1$ and $x^{2}+y^{2}=9$ and the lines $y=x$ and $y=\sqrt{3}\,x$.
+\end{parts}
+\end{problem}
+\work{8.4cm}
+
+\begin{problem}
+\textbf{Circles through the origin.}
+\begin{parts}
+\item Let $R$ be the region in the first quadrant bounded by the curve $y=\sqrt{4x-x^{2}}$ and
+      the $x$-axis. Find $\displaystyle\iint_R\frac{1}{\sqrt{x^{2}+y^{2}}}\dA$.
+\item Let $R$ be the closed disk $x^{2}+y^{2}\le2y$. Find $\displaystyle\iint_R y\dA$ using
+      polar coordinates, and explain how the answer could have been predicted without
+      integrating.
+\end{parts}
+\end{problem}
+\work{7.8cm}
+
+\begin{problem}
+\begin{parts}
+\item Compute $\displaystyle\frac{1}{\pi}\iint_R\left(x^{4}+2x^{2}y^{2}+y^{4}-2x^{2}-2y^{2}+4\right)dA$,
+      where $R$ is the closed disk of radius $\sqrt{2}$ centred at the origin.
+\item Evaluate $\displaystyle\int_0^{2}\!\!\int_{y}^{\sqrt{8-y^{2}}}\frac{1}{1+x^{2}+y^{2}}\,dx\,dy$
+      by changing to polar coordinates.
+\end{parts}
+\end{problem}
+\work{7.4cm}
+
+\begin{problem}
+Find the area enclosed by one leaf of the rose $r=2\cos3\theta$.
+\end{problem}
+\work{4.6cm}
+
+\begin{problem}
+Let $\displaystyle I=\int_0^{\infty}e^{-4x^{2}}\,dx$. By writing $I^{2}$ as a double integral
+over the first quadrant and changing to polar coordinates, find the exact value of $I$.
+\end{problem}
+\work{5.6cm}
+
+\topichead{Substitutions in Double Integrals}
+
+\begin{problem}
+Let $D$ be the parallelogram in the $xy$-plane bounded by the lines
+\[
+x-2y=0,\qquad x-2y=4,\qquad 2x+y=1,\qquad 2x+y=6 .
+\]
+Compute $\displaystyle\iint_D (x-2y)\,e^{2x+y}\,dx\,dy$, giving the answer in terms of integer
+powers of $e$.
+\end{problem}
+\work{6.6cm}
+
+\begin{problem}
+Let $R$ be the region in the first quadrant of the $xy$-plane bounded by the hyperbolas
+$xy=1$ and $xy=2$ and the lines $y=x$ and $y=4x$. Use the change of variables $u=xy$,
+$v=y/x$ to compute $\displaystyle\iint_R y^{2}\dA$.
+\end{problem}
+\work{6.6cm}
+
+\begin{problem}
+Let $R$ be the region in the first quadrant of the $xy$-plane bounded by the curves
+$x^{2}-y^{2}=1$, $x^{2}-y^{2}=3$, $xy=1$, and $xy=4$. Compute
+$\displaystyle\iint_R\left(x^{4}-y^{4}\right)dA$.
+\fmt{Suggestion. The Jacobian $\partial(u,v)/\partial(x,y)$ is much easier to compute than
+$\partial(x,y)/\partial(u,v)$.}
+\end{problem}
+\work{6.6cm}
+
+\begin{problem}
+Consider the double integral
+\[
+\iint_R\frac{x^{2}}{y}\cos\!\left(y^{2}\right)dA ,
+\]
+where $R$ is the region in the first quadrant of the $xy$-plane bounded by the lines $y=1$,
+$y=2$, $y=x$, and $y=3x$. Use the change of variables $u=y^{2}$ and $v=x/y$ to rewrite the
+integral as an iterated integral in the variables $u$, $v$ with integration order $du\,dv$.
+\fmt{[You do not have to compute the integral.]}
+\end{problem}
+\work{6.6cm}
+
+\begin{problem}
+Let $R$ be the region enclosed by the ellipse $\dfrac{x^{2}}{9}+\dfrac{y^{2}}{4}=1$. Evaluate
+\[
+\iint_R\left(\frac{x^{2}}{9}+\frac{y^{2}}{4}\right)dA .
+\]
+\end{problem}
+\work{5.4cm}
+
+\begin{problem}
+Let $R$ be the triangle with vertices $(0,0)$, $(2,0)$, and $(0,2)$. Use the change of
+variables $u=y-x$, $v=y+x$ to evaluate
+\[
+\iint_R e^{(y-x)/(y+x)}\dA .
+\]
+\end{problem}
+\work{6.6cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PART F %%%
+\parthead{F}{Triple Integrals}%
+{Thomas 14.5--14.7 \ \textbullet\ \ sample final Questions 23--28}%
+{12 problems}
+
+\topichead{Triple Integrals in Rectangular Coordinates}
+
+\begin{problem}
+\textbf{Iterated integrals.}\quad Evaluate.
+\begin{parts}
+\item $\displaystyle\int_0^2\!\!\int_0^1\!\!\int_0^3\left(x^{2}y+2z\right)dz\,dy\,dx$
+\item $\displaystyle\int_0^1\!\!\int_0^{2x}\!\!\int_0^{x+y}6z\,dz\,dy\,dx$
+\item $\displaystyle\int_{-1}^{1}\!\!\int_{-2}^{2}\!\!\int_{-3}^{3}\left(x^{3}y^{2}+z\sin y+5\right)dz\,dy\,dx$
+\end{parts}
+\fmt{Part (c) should take one line.}
+\end{problem}
+\work{7.8cm}
+
+\begin{problem}
+Let $D$ be the tetrahedron in the first octant bounded by the coordinate planes and the plane
+$x+2y+z=2$.
+\begin{parts}
+\item Find the volume of $D$.
+\item Evaluate $\displaystyle\iiint_D y\dV$.
+\item Find the centre of mass of $D$, assuming constant density.
+\end{parts}
+\end{problem}
+\work{8.4cm}
+
+\topichead{Triple Integrals in Cylindrical Coordinates}
+
+\begin{problem}
+Find the volume of the solid bounded below by the paraboloid $z=x^{2}+y^{2}$ and above by the
+plane $z=2y$.
+\end{problem}
+\work{6.6cm}
+
+\begin{problem}
+Let $R$ be the solid region bounded by the cylinders $x^{2}+y^{2}=1$ and $x^{2}+y^{2}=4$ and
+the planes $z=0$ and $z=2$. Compute
+\[
+\iiint_R z\left(x^{2}+y^{2}\right)^{3/2}dx\,dy\,dz .
+\]
+\end{problem}
+\work{5.6cm}
+
+\begin{problem}
+Consider the solid region $E$ bounded by the cylinder $x^{2}+y^{2}=4$, the horizontal plane
+$z=1$, and the plane $z=5-y$. Evaluate
+\[
+\frac{1}{\pi}\iiint_E\left(x^{2}+y^{2}\right)dV .
+\]
+\end{problem}
+\work{6.6cm}
+
+\begin{problem}
+Let $E$ be the solid consisting of the points $(x,y,z)$ with $\sqrt{x^{2}+y^{2}}\le z\le3$.
+Evaluate $\displaystyle\iiint_E z\dV$.
+\end{problem}
+\work{5.6cm}
+
+\begin{problem}
+Evaluate
+\[
+\int_{-2}^{2}\!\!\int_{-\sqrt{4-x^{2}}}^{\sqrt{4-x^{2}}}\!\!\int_{\sqrt{x^{2}+y^{2}}}^{2}\left(x^{2}+y^{2}\right)dz\,dy\,dx
+\]
+by converting to cylindrical coordinates.
+\end{problem}
+\work{5.6cm}
+
+\topichead{Triple Integrals in Spherical Coordinates}
+
+\begin{problem}
+\textbf{Balls and shells.}\quad Evaluate.
+\begin{parts}
+\item $\displaystyle\iiint_E\sqrt{x^{2}+y^{2}+z^{2}}\dV$, where $E$ is the set of points with
+      $1\le x^{2}+y^{2}+z^{2}\le4$ and $z\ge0$.
+\item $\displaystyle\iiint_E z\dV$, where $E$ is the upper half of the ball of radius $2$
+      centred at the origin.
+\item $\displaystyle\iiint_E x^{2}\dV$, where $E$ is the unit ball $x^{2}+y^{2}+z^{2}\le1$.
+\end{parts}
+\end{problem}
+\work{8.4cm}
+
+\begin{problem}
+Find the volume of the solid that lies above the cone $z=\sqrt{3\left(x^{2}+y^{2}\right)}$ and
+inside the sphere $x^{2}+y^{2}+z^{2}=4$.
+\end{problem}
+\work{5.4cm}
+
+\begin{problem}
+\begin{parts}
+\item Let $E$ be the solid consisting of the points $(x,y,z)$ with
+      $\sqrt{3\left(x^{2}+y^{2}\right)}\le z\le3$. Rewrite
+      \[
+      \iiint_E\frac{1}{1+x^{2}+y^{2}+z^{2}}\dV
+      \]
+      as an iterated integral in spherical coordinates with integration order
+      $d\rho\,d\phi\,d\theta$. \emph{[You do not have to compute the integral.]}
+\item Let $B$ be the ball $x^{2}+y^{2}+z^{2}\le2z$. Evaluate
+      $\displaystyle\iiint_B\sqrt{x^{2}+y^{2}+z^{2}}\dV$.
+\end{parts}
+\end{problem}
+\work{8.4cm}
+
+\topichead{Masses, Centres of Mass, and Other Substitutions}
+
+\begin{problem}
+A solid is bounded below by the paraboloid $z=x^{2}+y^{2}$ and above by the plane $z=4$. Its
+density at the point $(x,y,z)$ is $\delta=z$. Find the mass of the solid and the
+$z$-coordinate of its centre of mass.
+\end{problem}
+\work{6.4cm}
+
+\begin{problem}
+Let $E$ be the solid ellipsoid $\dfrac{x^{2}}{4}+\dfrac{y^{2}}{9}+z^{2}\le1$. Use the
+substitution $x=2u$, $y=3v$, $z=w$ to evaluate $\displaystyle\iiint_E z^{2}\dV$.
+\end{problem}
+\work{5.6cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PART G %%%
+\parthead{G}{Mock Final Examination}%
+{28 short-answer questions \ \textbullet\ \ 2 hours, closed book, one helpsheet}%
+{28 problems}
+
+\panel{INSTRUCTIONS}{\fontsize{10}{12.5}\selectfont
+Work the 28 questions below in one uninterrupted sitting of \textbf{two hours}. As in the
+real paper, only the final answer written in the box is marked, so check the requested form
+of each answer before writing it down. Unless a question says otherwise, give each answer as
+an integer or a fraction in lowest terms.}
+
+\begin{problem}
+Evaluate $\displaystyle\int_0^1x^{3}(\ln x)^{2}\,dx$.
+\end{problem}
+\workans{4.2cm}
+
+\begin{problem}
+Evaluate $\displaystyle\lim_{x\to1}\frac{(x-1)\ln x}{x^{2}-3x+2+\ln x}$.
+\end{problem}
+\workans{3.8cm}
+
+\begin{problem}
+Consider the function $f$ given by
+$\displaystyle f(x)=\int_{x+1}^{x^{2}+2}\frac{1}{t^{3}+1}\,dt$. Find $f'(1)$.
+\end{problem}
+\workans{3.6cm}
+
+\begin{problem}
+Let $P=(2,1,-1)$ and $Q=(0,2,3)$. Find the point of intersection between the plane
+$x+2y+z=9$ and the line through $P$ and $Q$.
+\fmt{Give the answer in the form $(a,b,c)$, where $a$, $b$, $c$ are real numbers.}
+\end{problem}
+\workans{3.8cm}
+
+\begin{problem}
+Let $S$ be the surface in $xyz$-space defined by the equation $2x^{2}+y^{2}-3z=3$. Find the
+point on $S$ at which the tangent plane to $S$ is parallel to the plane $8x-4y-6z=7$.
+\fmt{Give the answer in the form $(a,b,c)$, where $a$, $b$, $c$ are real numbers.}
+\end{problem}
+\workans{3.8cm}
+
+\begin{problem}
+Find the function $f(x,y)$ such that
+\[
+\pd{f}{x}=3x^{2}y+e^{x},\qquad\pd{f}{y}=x^{3}-2\sin2y,
+\]
+and $f(0,0)=5$.
+\fmt{Give the answer as an expression in terms of $x$ and $y$.}
+\end{problem}
+\workans{3.8cm}
+
+\begin{problem}
+Let $u=x^{2}y$, let $v=v(x,y)$ be such that $\pd{v}{x}=-3x^{2}$ and $\pd{v}{y}=4y$, let
+$w=x-2y$, and let $z=uw+v$. Determine $\pd{z}{x}$ as a function of $x$, $y$.
+\end{problem}
+\workans{3.8cm}
+
+\begin{problem}
+Consider the function $f(x,y)=x^{3}-xy^{2}$. Find the directional derivative of $f$ at the
+point $(2,1)$ in the direction of the vector $3\bi-4\bj$.
+\end{problem}
+\workans{3.4cm}
+
+\begin{problem}
+Let $C(x,y,z)$, measured in parts per million, be the concentration of a gas at the point
+$(x,y,z)$, where $x$, $y$, $z$ are measured in metres. It is given that
+$\grad C(x,y,z)=\left\langle 2x-z,\ 3y^{2},\ 2-x\right\rangle$. The position of a probe at
+time $t$ seconds is $\br(t)=\left\langle 2t,\ t^{2},\ t^{3}-1\right\rangle$. Let $A$ be the
+real number such that the rate of change of the concentration measured by the probe at time
+$t=1$ is $A$ parts per million per second. Find the value of $A$.
+\end{problem}
+\workans{3.6cm}
+
+\begin{problem}
+Determine all saddle points of the function $f(x,y)=3x^{2}y+y^{3}-3y$.
+\end{problem}
+\workans{5.2cm}
+
+\begin{problem}
+Keep the notation of the previous question. Write down the system of three polynomial
+equations in the unknowns $x$, $y$ and a parameter $\lambda$ that you need to solve if you
+use the method of Lagrange multipliers to find the maximum value of
+$f(x,y)=3x^{2}y+y^{3}-3y$ on the circle $x^{2}+y^{2}=3$.
+\end{problem}
+\workans{3.0cm}
+
+\begin{problem}
+Keep the notation of the previous question. It is given that $(0,-1)$ is the only local
+maximum point of $f(x,y)=3x^{2}y+y^{3}-3y$ in the $xy$-plane. Determine the maximum value of
+$f(x,y)$ on the closed disk of radius $\sqrt{3}$ centred at $(0,0)$.
+\end{problem}
+\workans{5.6cm}
+
+\begin{problem}
+Let $R$ be the region in the $xy$-plane bounded by the lines $x=0$, $x=3$, $y=0$, $y=2$.
+Evaluate $\displaystyle\iint_R\left(6xy^{2}+2x\right)dA$.
+\end{problem}
+\workans{3.4cm}
+
+\begin{problem}
+Consider the triangular region $R$ in the $xy$-plane with vertices at $(0,1)$, $(3,1)$, and
+$(1,4)$. Compute $\displaystyle\iint_R x\dA$.
+\end{problem}
+\workans{5.0cm}
+
+\begin{problem}
+Let $R$ be the region in the $xy$-plane bounded by the curve $y=x^{2}-2$ and the line $y=x$.
+Find the value of $\displaystyle\iint_R y\dA$.
+\end{problem}
+\workans{4.6cm}
+
+\begin{problem}
+Find the exact value of the iterated integral
+$\displaystyle\int_0^4\!\!\int_{\sqrt{x}}^{2}\frac{1}{\sqrt{y^{3}+1}}\,dy\,dx$.
+\end{problem}
+\workans{4.4cm}
+
+\begin{problem}
+Let $f(t)$ be a function such that $\displaystyle\int_0^{12}f(t)\,dt=30$. Let $R$ be the
+region in the $xy$-plane bounded by the lines $x=0$, $x=4$, $y=0$, and $y=6$. Find the value
+of $\displaystyle\iint_R f(3x)\,f(2y)\dA$.
+\end{problem}
+\workans{3.6cm}
+
+\begin{problem}
+Consider the region $R$ in the first quadrant of the $xy$-plane bounded by the curve
+$y=\sqrt{2x-x^{2}}$ and the $x$-axis. Find the value of
+$\displaystyle\iint_R\frac{x}{x^{2}+y^{2}}\dA$.
+\fmt{Give the answer in terms of $\pi$.}
+\end{problem}
+\workans{4.4cm}
+
+\begin{problem}
+Compute $\displaystyle\frac{1}{\pi}\iint_R\left(2+3x^{4}+6x^{2}y^{2}+3y^{4}\right)dA$, where
+$R$ is the closed disk of unit radius centred at the origin.
+\end{problem}
+\workans{3.8cm}
+
+\begin{problem}
+Let $D$ be the parallelogram in the $xy$-plane bounded by the lines $y=x$, $y=x+3$,
+$y=-2x$, $y=-2x+6$. Compute $\displaystyle\iint_De^{y}\,dy\,dx$.
+\fmt{Give the answer as an expression in terms of integer powers of $e$.}
+\end{problem}
+\workans{5.6cm}
+
+\begin{problem}
+Let $R$ be the region in the first quadrant of the $xy$-plane bounded by the curves
+$x^{2}+y^{2}=1$, $x^{2}+y^{2}=4$ and the lines $y=3x$, $y=3x+1$. Compute
+$\displaystyle\iint_R(x+3y)\left(x^{2}+y^{2}\right)^{2}dy\,dx$.
+\end{problem}
+\workans{5.6cm}
+
+\begin{problem}
+Consider the double integral
+$\displaystyle\iint_Rx^{2}e^{xy}\dA$,
+where $R$ is the region in the first quadrant of the $xy$-plane bounded by the curves $xy=1$,
+$xy=3$ and the lines $y=x$, $y=2x$. Use the change of variables $u=xy$ and $v=y/x$ to
+rewrite the double integral as an iterated integral in the variables $u$, $v$ with
+integration order $du\,dv$. \emph{[You do not have to compute the integral.]}
+\fmt{Give the answer in the form $\int_a^b\!\int_c^d g(u,v)\,du\,dv$.}
+\end{problem}
+\workans{5.0cm}
+
+\begin{problem}
+Compute $\displaystyle\int_{-1}^{1}\!\!\int_{-1}^{1}\!\!\int_{-1}^{1}\left(x^{2}+yz^{3}\right)dz\,dy\,dx$.
+\end{problem}
+\workans{3.2cm}
+
+\begin{problem}
+Compute the integral
+$\displaystyle\int_0^1\!\!\int_0^{x}\!\!\int_{x+y}^{3}dz\,dy\,dx$.
+\end{problem}
+\workans{3.8cm}
+
+\begin{problem}
+Let $R$ be the solid region in $xyz$-space bounded by the surface $x^{2}+y^{2}=4$, the
+surface $x^{2}+y^{2}=1$, the plane $z=3$, and the plane $z=0$. Compute
+$\displaystyle\iiint_Rz\left(x^{2}+y^{2}\right)dx\,dy\,dz$.
+\fmt{Give the answer in terms of $\pi$.}
+\end{problem}
+\workans{4.4cm}
+
+\begin{problem}
+Consider the solid region $E$ in $xyz$-space bounded by the cylinder $x^{2}+y^{2}=4$, the
+horizontal plane $z=1$, and the surface $z=4+y$. Evaluate
+$\displaystyle\frac{1}{\pi}\iiint_E\left(x^{2}+y^{2}\right)dV$.
+\end{problem}
+\workans{5.0cm}
+
+\begin{problem}
+Let $E$ be the ball consisting of the points $(x,y,z)$ in $xyz$-space such that
+$x^{2}+y^{2}+z^{2}\le4$. Evaluate $\displaystyle\iiint_E\sqrt{x^{2}+y^{2}+z^{2}}\dV$.
+\fmt{Give the answer in terms of $\pi$.}
+\end{problem}
+\workans{4.0cm}
+
+\begin{problem}
+Let $E$ be the solid region in $xyz$-space consisting of the points $(x,y,z)$ such that
+$\sqrt{\dfrac{x^{2}+y^{2}}{3}}\le z\le3$. Rewrite the triple integral
+\[
+\iiint_E\frac{z^{2}}{1+x^{2}+y^{2}+z^{2}}\dV
+\]
+as an iterated integral in spherical coordinates with integration order
+$d\rho\,d\phi\,d\theta$. \emph{[You do not have to compute the integral.]}
+\end{problem}
+\workans{5.0cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ANSWERS %%%
+\clearpage\raggedbottom
+\markboth{Answers}{Answers}
+\noindent{\color{ThomasBlue}\rule{\linewidth}{2.6pt}}\par\vspace{2pt}
+\noindent{\color{RuleGray}\rule{\linewidth}{0.5pt}}\par\vspace{7pt}
+\noindent{\sffamily\bfseries\fontsize{21}{24}\selectfont\color{ThomasBlue}Answers}%
+\hfill{\sffamily\fontsize{9}{11}\selectfont\color{SoftGray}Exercise Set F}\par\vspace{4pt}
+\noindent{\itshape\fontsize{10}{12}\selectfont\color{SoftGray}
+Consult these only after a complete attempt. Each answer is followed by the key step, so that
+a wrong answer can be traced to the line where it went wrong.}\par\vspace{5pt}
+\noindent{\color{ThomasBlue}\rule{\linewidth}{1.1pt}}\par\vspace{10pt}
+
+{\fontsize{8.8}{11}\selectfont
+\setlength{\columnsep}{22pt}
+\setlength{\parskip}{3.5pt}
+\begin{multicols}{2}
+\raggedright
+
+\textbf{Part A}\par\vspace{2pt}
+
+\textbf{1.} In general $\int_0^1x^{n}\ln x\,dx=-\frac{1}{(n+1)^{2}}$ and
+$\int_0^1x^{n}(\ln x)^{2}dx=\frac{2}{(n+1)^{3}}$, the boundary terms vanishing by L'H\^opital.\quad
+(a) $\tfrac{2}{27}$.\quad (b) $-4$.\quad (c) $\tfrac14$ (parts with $u=\ln x$).\quad
+(d) $\tfrac{2}{27}$ (parts twice, or $n!/a^{n+1}$).
+
+\textbf{2.} (a) $\tfrac25$: two applications of L'H\^opital give
+$\dfrac{1/x+3/x^{2}}{2-3/x^{2}}$ at $x=3$.\quad
+(b) $\tfrac94$.\quad (c) $e^{6}$.
+
+\textbf{3.} (a) $\dfrac{3x^{2}}{x^{6}+4}-\dfrac{2}{(2x-1)^{2}+4}$ at $x=2$:
+$\tfrac{12}{68}-\tfrac{2}{13}=\tfrac{5}{221}$.\quad
+(b) $2x\sqrt{1+x^{6}}-\sqrt{1+x^{3}}$ at $x=2$: $4\sqrt{65}-3$.\quad
+(c) $F'(x)=2x\left(x^{2}-4\right)e^{-x^{2}}$ changes from negative to positive at $x=2$.
+
+\vspace{4pt}
+\textbf{Part B}\par\vspace{2pt}
+
+\textbf{4.} (a) $\br=(1+3t,\,-2+2t,\,3-2t)$; $11+3t=5$, $t=-2$: $(-5,-6,7)$.\quad
+(b) $\cos\theta=\tfrac{-3}{6}$, so $a=\tfrac23$.\quad
+(c) $\bn=\langle1,-1,3\rangle\times\langle-1,1,1\rangle=\langle-4,-4,0\rangle$: the plane is
+$x+y=2$, and the distance is $\tfrac{5}{\sqrt2}=\tfrac{5\sqrt2}{2}$.
+
+\textbf{5.} (a) $\langle2x,8y,-1\rangle=\lambda\langle4,-8,-2\rangle$ gives
+$\lambda=\tfrac12$, $x=1$, $y=-\tfrac12$, then $z=-3$: $\left(1,-\tfrac12,-3\right)$.\quad
+(b) $\grad F=\langle4,2,14\rangle$: $2x+y+7z=18$.
+
+\textbf{6.} (a) $f=x^{2}e^{y}+y\cos x+y^{2}+3$;\ $f(\pi,1)=\pi^{2}e+3$.\quad
+(b) $g_{xy}=2kxy+3$ must equal $g_{yx}=8xy+3$, so $k=4$ and
+$g=2x^{2}y^{2}+3xy+y+C$.
+
+\textbf{7.} $z_x=(2u+w)u_x-3v_x+u\,w_x=6x^{2}y+8xy^{2}-2y^{2}-12x$.
+
+\textbf{8.} $\grad f(1,2)=\langle1,4\rangle$.\quad (a) $\tfrac{5-48}{13}=-\tfrac{43}{13}$.\quad
+(b) $|\grad f|=\sqrt{17}$.
+
+\textbf{9.} $\br(1)=(1,1,1)$, $\grad T=\langle0,2,3\rangle$, $\br'(1)=\langle2,2,3\rangle$:
+$13\ {}^{\circ}\mathrm{C/s}$.
+
+\vspace{4pt}
+\textbf{Part C}\par\vspace{2pt}
+
+\textbf{10.} $f_x=2y(x-1)$, $f_y=x^{2}-2x+4y-15$; $D=8y-(2x-2)^{2}$. Saddle points at $(5,0)$
+and $(-3,0)$ ($D=-64$); local minimum $-32$ at $(1,4)$ ($D=32$, $f_{xx}=8$).
+
+\textbf{11.} Critical points $(0,0)$ and $(2,1)$; $D=288xy-144$. Saddle point at $(0,0)$;
+local minimum $-8$ at $(2,1)$. No local maximum.
+
+\textbf{12.} (a) $\left(\tfrac12,0\right)$, a local minimum ($D=8$), $f=-\tfrac14$.\quad
+(b) $2x-1=2\lambda x$,\ \ $4y=2\lambda y$,\ \ $x^{2}+y^{2}=1$.\quad
+(c) $y=0$ gives $f(1,0)=0$, $f(-1,0)=2$; $\lambda=2$ gives $x=-\tfrac12$,
+$y=\pm\tfrac{\sqrt3}{2}$, $f=\tfrac94$. Maximum $\tfrac94$, minimum $-\tfrac14$.
+
+\textbf{13.} (a) $y^{2}=2x^{2}$, so $x=\pm1$: maximum $2$ at $(1,\pm\sqrt2)$, minimum $-2$ at
+$(-1,\pm\sqrt2)$.\quad (b) $(4,-2,4)$, at distance $6$.
+
+\textbf{14.} $y=2x$, $z=3x$, so $(x,y,z)=(2,4,6)$ and the maximum is $2\cdot16\cdot216=6912$.
+
+\vspace{4pt}
+\textbf{Part D}\par\vspace{2pt}
+
+\textbf{15.} (a) $10$.\quad (b) $1$ (integrate in $y$ first).\quad
+(c) $2\ln2-1$ (integrate in $x$ first).
+
+\textbf{16.} (a) $\left(\tfrac12\cdot12\right)\left(\tfrac14\cdot12\right)=18$.\quad
+(b) $5+5=10$.
+
+\textbf{17.} $\displaystyle\int_1^5\!\!\int_{(y+1)/2}^{(11-y)/2}y\,dx\,dy=\tfrac{56}{3}$
+(area $8$ times $\bar y=\tfrac73$).
+
+\textbf{18.} The curves meet at $x=-1$ and $x=3$.\quad (a) $\tfrac{32}{3}$.\quad
+(b) $\tfrac{32}{3}$, so $\bar x=1$.
+
+\textbf{19.} $\displaystyle\int_0^1\!\!\int_{y^{2}}^{2-y}y\,dx\,dy=\tfrac{5}{12}$.
+
+\textbf{20.} (a) $\int_0^1y^{2}\sqrt{1+y^{3}}\,dy=\tfrac29\left(2\sqrt2-1\right)$.\quad
+(b) $\int_0^2 2xe^{x^{2}}dx=e^{4}-1$.\quad
+(c) $\int_0^{\pi/2}\cos y\,dy=1$.\quad
+(d) $\int_0^2\frac{y^{3}}{y^{4}+1}dy=\tfrac14\ln17$.
+
+\textbf{21.} $R$ is the triangle with vertices $(0,0)$, $(2,0)$, $(1,1)$:
+$\displaystyle\int_0^1\!\!\int_y^{2-y}xy\,dx\,dy=\tfrac13$.
+
+\textbf{22.} $\displaystyle\int_{-1}^{1}\!\!\int_{x^{2}}^{1}(2x+y+1)\,dy\,dx=\tfrac{32}{15}$
+(the term $2x$ integrates to $0$ by symmetry).
+
+\vspace{4pt}
+\textbf{Part E}\par\vspace{2pt}
+
+\textbf{23.} (a) $\pi\left(1-e^{-4}\right)$.\quad (b) $\tfrac{31\pi}{5}$.\quad
+(c) $\int_{\pi/4}^{\pi/3}\sin\theta\,d\theta\int_1^3r^{2}dr=\tfrac{13}{3}\left(\sqrt2-1\right)$.
+
+\textbf{24.} (a) $r=4\cos\theta$, $0\le\theta\le\tfrac{\pi}{2}$:
+$\int_0^{\pi/2}4\cos\theta\,d\theta=4$.\quad
+(b) $r=2\sin\theta$, $0\le\theta\le\pi$: $\tfrac83\int_0^{\pi}\sin^{4}\theta\,d\theta=\pi$.
+The disk has area $\pi$ and centroid $(0,1)$, so $\iint y\dA=\bar y\cdot\text{area}=\pi$.
+
+\textbf{25.} (a) The integrand is $r^{4}-2r^{2}+4$: $\tfrac{20}{3}$.\quad
+(b) The region is $0\le\theta\le\tfrac{\pi}{4}$, $0\le r\le2\sqrt2$: $\tfrac{\pi}{4}\ln3$.
+
+\textbf{26.} $\tfrac12\int_{-\pi/6}^{\pi/6}4\cos^{2}3\theta\,d\theta=\tfrac{\pi}{3}$.
+
+\textbf{27.} $I^{2}=\int_0^{\pi/2}\!\int_0^{\infty}e^{-4r^{2}}r\,dr\,d\theta=\tfrac{\pi}{16}$,
+so $I=\tfrac{\sqrt\pi}{4}$.
+
+\textbf{28.} $u=x-2y$, $v=2x+y$, $\partial(u,v)/\partial(x,y)=5$:
+$\tfrac15\int_0^4u\,du\int_1^6e^{v}dv=\tfrac85\left(e^{6}-e\right)$.
+
+\textbf{29.} $\partial(u,v)/\partial(x,y)=2v$ and $y^{2}=uv$:
+$\int_1^4\!\int_1^2\tfrac{u}{2}\,du\,dv=\tfrac94$.
+
+\textbf{30.} $u=x^{2}-y^{2}$, $v=xy$, $\partial(u,v)/\partial(x,y)=2\left(x^{2}+y^{2}\right)$,
+so the integrand becomes $\tfrac{u}{2}$: $\int_1^4\!\int_1^3\tfrac{u}{2}\,du\,dv=6$.
+
+\textbf{31.} $x=v\sqrt u$, $y=\sqrt u$, $\left|\partial(x,y)/\partial(u,v)\right|=\tfrac12$:
+$\displaystyle\int_{1/3}^{1}\!\!\int_1^4\tfrac12\sqrt u\,v^{2}\cos u\,du\,dv$.
+
+\textbf{32.} $x=3r\cos\theta$, $y=2r\sin\theta$, Jacobian $6r$:
+$6\int_0^{2\pi}\!\int_0^1r^{3}dr\,d\theta=3\pi$.
+
+\textbf{33.} Jacobian $\tfrac12$; the triangle becomes $0\le v\le2$, $-v\le u\le v$:
+$\tfrac12\int_0^2v\left(e-e^{-1}\right)dv=e-\tfrac1e$.
+
+\vspace{4pt}
+\textbf{Part F}\par\vspace{2pt}
+
+\textbf{34.} (a) $22$.\quad (b) $\tfrac{13}{2}$.\quad
+(c) $240$: the first two terms are odd in $x$ and in $z$ respectively, and the box has volume $48$.
+
+\textbf{35.} (a) $\tfrac23$.\quad (b) $\tfrac16$.\quad
+(c) $\left(\tfrac12,\tfrac14,\tfrac12\right)$, one quarter of the way to each intercept.
+
+\textbf{36.} The shadow is the disk $r\le2\sin\theta$:
+$\int_0^{\pi}\!\int_0^{2\sin\theta}\left(2r\sin\theta-r^{2}\right)r\,dr\,d\theta
+=\tfrac43\int_0^{\pi}\sin^{4}\theta\,d\theta=\tfrac{\pi}{2}$.
+
+\textbf{37.} $2\pi\int_1^2r^{4}dr\int_0^2z\,dz=\tfrac{124\pi}{5}$.
+
+\textbf{38.} $\tfrac1\pi\int_0^{2\pi}\!\int_0^2r^{3}(4-r\sin\theta)\,dr\,d\theta=32$.
+
+\textbf{39.} $2\pi\int_0^3\!\int_r^3zr\,dz\,dr=\tfrac{81\pi}{4}$.
+
+\textbf{40.} $2\pi\int_0^2r^{3}(2-r)\,dr=\tfrac{16\pi}{5}$.
+
+\textbf{41.} (a) $2\pi\int_1^2\rho^{3}d\rho=\tfrac{15\pi}{2}$.\quad (b) $4\pi$.\quad
+(c) By symmetry $\iiint x^{2}=\tfrac13\iiint\rho^{2}=\tfrac{4\pi}{15}$.
+
+\textbf{42.} The cone is $\phi=\tfrac{\pi}{6}$:
+$2\pi\left(1-\tfrac{\sqrt3}{2}\right)\tfrac83=\tfrac{8\pi}{3}\left(2-\sqrt3\right)$.
+
+\textbf{43.} (a) $\displaystyle\int_0^{2\pi}\!\!\int_0^{\pi/6}\!\!\int_0^{3\sec\phi}
+\frac{\rho^{2}\sin\phi}{1+\rho^{2}}\,d\rho\,d\phi\,d\theta$.\quad
+(b) The ball is $\rho\le2\cos\phi$, $0\le\phi\le\tfrac{\pi}{2}$:
+$2\pi\int_0^{\pi/2}4\cos^{4}\phi\sin\phi\,d\phi=\tfrac{8\pi}{5}$.
+
+\textbf{44.} Slicing by horizontal disks of area $\pi z$: $M=\int_0^4\pi z^{2}dz=\tfrac{64\pi}{3}$
+and $\bar z=\tfrac{1}{M}\int_0^4\pi z^{3}dz=3$.
+
+\textbf{45.} Jacobian $6$, and $\iiint_{\text{unit ball}}w^{2}=\tfrac{4\pi}{15}$:
+$\tfrac{8\pi}{5}$.
+
+\vspace{4pt}
+\textbf{Part G}\par\vspace{2pt}
+
+\textbf{46.} $\tfrac{1}{32}$.\qquad
+\textbf{47.} $2$.\qquad
+\textbf{48.} $\tfrac{2}{28}-\tfrac19=-\tfrac{5}{126}$.
+
+\textbf{49.} $t=\tfrac32$: $\left(-1,\tfrac52,5\right)$.\qquad
+\textbf{50.} $(1,-1,0)$.
+
+\textbf{51.} $x^{3}y+e^{x}+\cos2y+3$.\qquad
+\textbf{52.} $3x^{2}y-4xy^{2}-3x^{2}$.
+
+\textbf{53.} $\grad f=\langle11,-4\rangle$: $\tfrac{49}{5}$.\qquad
+\textbf{54.} $\langle4,3,0\rangle\cdot\langle2,2,3\rangle=14$.
+
+\textbf{55.} $(1,0)$ and $(-1,0)$ (and $(0,1)$ is a local minimum, $(0,-1)$ a local maximum).
+
+\textbf{56.} $6xy=2\lambda x$,\quad $3x^{2}+3y^{2}-3=2\lambda y$,\quad $x^{2}+y^{2}=3$.
+
+\textbf{57.} Interior: $f(0,-1)=2$. Boundary: $x=0$ gives $f=0$; $\lambda=3y$ gives $y=\pm1$,
+$x=\pm\sqrt2$, $f=4y$. Maximum $4$.
+
+\textbf{58.} $90$.\qquad
+\textbf{59.} $\int_1^4\!\int_{(y-1)/3}^{(11-2y)/3}x\,dx\,dy=6$.\qquad
+\textbf{60.} $-\tfrac95$.
+
+\textbf{61.} $\int_0^2\frac{y^{2}}{\sqrt{y^{3}+1}}dy=\tfrac43$.\qquad
+\textbf{62.} $10\cdot15=150$.\qquad
+\textbf{63.} $\int_0^{\pi/2}2\cos^{2}\theta\,d\theta=\tfrac{\pi}{2}$.
+
+\textbf{64.} $3$.\qquad
+\textbf{65.} $u=y-x$, $v=y+2x$, $y=\tfrac{2u+v}{3}$, Jacobian $\tfrac13$:
+$\tfrac32\left(e^{2}-1\right)^{2}$.
+
+\textbf{66.} $u=x^{2}+y^{2}$, $v=y-3x$, $\partial(u,v)/\partial(x,y)=2(x+3y)$:
+$\int_0^1\!\int_1^4\tfrac{u^{2}}{2}\,du\,dv=\tfrac{21}{2}$.
+
+\textbf{67.} $\displaystyle\int_1^2\!\!\int_1^3\frac{u\,e^{u}}{2v^{2}}\,du\,dv$.\qquad
+\textbf{68.} $\tfrac83$.\qquad
+\textbf{69.} $1$.
+
+\textbf{70.} $\tfrac{135\pi}{4}$.\qquad
+\textbf{71.} $24$.\qquad
+\textbf{72.} $16\pi$.
+
+\textbf{73.} $\displaystyle\int_0^{2\pi}\!\!\int_0^{\pi/3}\!\!\int_0^{3\sec\phi}
+\frac{\rho^{4}\cos^{2}\phi\,\sin\phi}{1+\rho^{2}}\,d\rho\,d\phi\,d\theta$.
+
+\end{multicols}}
+
+\vspace{10pt}
+\noindent{\color{RuleGray}\rule{\linewidth}{0.5pt}}\par\vspace{5pt}
+\noindent{\sffamily\fontsize{8}{10}\selectfont\color{SoftGray}
+All problems in this set are original. They are modelled on the question types of the MA1521
+sample final paper and of the Lecture Group 1 and Lecture Group 2 lesson notes for Weeks 8--11,
+and on the exercise sets of \emph{Thomas' Calculus: Early Transcendentals}, 15th edition
+(Hass, Heil, Weir), Chapters 13 and 14.}
+
+\end{document}

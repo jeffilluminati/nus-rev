@@ -47,6 +47,7 @@
 #let by = $bold(y)$
 #let bz = $bold(0)$
 #let xh = $hat(bold(x))$
+#let xh0 = $hat(bold(x))_0$
 #let rank = math.op("rank")
 #let nullity = math.op("nullity")
 #let Col = math.op("Col")
@@ -82,19 +83,19 @@
 
   *Row operations* $R_i <-> R_j$, #h(0.2em) $c R_i$ ($c != 0$; #warn[never $0 R_i$]), #h(0.2em) $R_i + c R_j$. #warn[$2R_2 + R_1$ is not one operation] (it is two, so the result is still row equivalent). Row equivalent ⇔ same RREF ⇔ $bB = bP bA$ with $bP$ invertible ⇒ same solutions.
 
-  *Solve $bA bx = bb$* reduce $(bA | bb)$. Last column a pivot column ⇒ #warn[inconsistent]. Otherwise: every column of $bA$ a pivot column ⇒ unique; else one parameter per non-pivot column ⇒ infinitely many, with $n - r$ parameters.
+  *Solve $bA bx = bb$* reduce $(bA | bb)$. Last column a pivot column ⇒ #warn[inconsistent]. Otherwise: $r = n$ (every column of $bA$ a pivot column) ⇒ unique; else one parameter per non-pivot column ⇒ $oo$ many, $n - r$ parameters.
 
   *Gaussian elimination* forward to a REF, then back-substitution. *Gauss–Jordan* continue to the RREF and read off. If the question names a method, use it and show every operation.
 
-  *By ranks* $rank bA < rank(bA | bb)$ ⇒ none; #h(0.2em) $rank bA = rank(bA | bb) = n$ ⇒ unique; #h(0.2em) $= r < n$ ⇒ infinitely many.
+  *By ranks* $rank bA < rank(bA | bb)$ ⇒ none; #h(0.2em) $rank bA = rank(bA | bb) = n$ ⇒ unique; #h(0.2em) $= r < n$ ⇒ $oo$ many.
 
-  *Sizes* ($m$ equations, $n$ unknowns): consistency needs no relation between $m$ and $n$. A unique solution forces $m >= n$ (#warn[not conversely]). $rank bA = m$ ⇒ consistent for every $bb$, with $n - m$ parameters.
+  *Sizes* ($m$ equations, $n$ unknowns): consistency needs no relation between $m$ and $n$. A unique solution forces $m >= n$ (#warn[not conversely]). $rank bA = m$ ⇒ consistent $forall bb$, with $n - m$ parameters.
 
-  *Homogeneous $bA bx = bz$* always consistent; more variables than equations ⇒ nontrivial solutions; infinitely many solutions ⇔ one nontrivial solution.
+  *Homogeneous $bA bx = bz$* always consistent; $n > m$ ⇒ some $bx != bz$; $oo$ many solutions ⇔ one solution $bx != bz$.
 
-  *Solution structure* general solution of $bA bx = bb$ = one particular solution + general solution of $bA bx = bz$. In $bx = bp + s bv_1 + t bv_2$: $bA bp = bb$, $bA bv_i = bz$, nullity 2. $by$ solves $bA bx = bb$ ⇔ $by - bp in span{bv_1, bv_2}$; two solutions of $bA bx = bb$ differ by a solution of $bA bx = bz$.
+  *Solution structure* solutions of $bA bx = bb$ $= bp + Null(bA)$ for any one solution $bp$. In $bx = bp + s bv_1 + t bv_2$: $bA bp = bb$, $bA bv_i = bz$, nullity 2. $by$ solves $bA bx = bb$ ⇔ $by - bp in span{bv_1, bv_2}$; $bA by_1 = bA by_2$ ⇒ $by_1 - by_2 in Null(bA)$.
 
-  *System from its solution set* $bp + s bv_1 + t bv_2$: each coefficient row $ba$ solves $ba dot bv_i = 0$ for all $i$; its right-hand side is $ba dot bp$.
+  *System from its solution set* $bp + s bv_1 + t bv_2$: each coefficient row $ba$ solves $ba dot bv_i = 0$ $forall i$; its right-hand side is $ba dot bp$.
 
   *Linear equation* $a_1 x_1 + dots.c + a_n x_n = b$; the constants may be anything ($sin(pi\/12)$, $e^2$), but $x y$, $x^2$, $e^(2z)$, $sin y$ make it non-linear. In $RR^3$ each equation is a plane: the solution set is empty, a point, a line (1 parameter) or a plane (2 parameters).
 
@@ -112,7 +113,7 @@
 
   *Shapes* the zero square matrix is diagonal, scalar, triangular and symmetric. Diagonal ⇔ upper and lower triangular ⇔ symmetric and triangular. Upper $times$ upper is upper (also lower, unit lower); upper $times$ lower need not be triangular. $bA^tp bA$, $bA bA^tp$, $bA + bA^tp$ are symmetric; sums and inverses of symmetric matrices are symmetric, products only if $bA bB = bB bA$.
 
-  *Inverse* $(bA | bI) -> (bI | bA^(-1))$; a zero row on the left ⇒ singular. #h(0.2em) $mat(a, b; c, d)^(-1) = display(dfrac(1, a d - b c)) mat(d, -b; -c, a)$. #h(0.2em) $bA^(-1) = adj(bA) \/ det bA$, $adj(bA) = (A_(j i))$ (transpose of the cofactor matrix). Solve $bA bX = bB$ by $(bA | bB) -> (bI | bX)$. Diagonal: invert each entry. Triangular: invertible ⇔ no zero on the diagonal, and the inverse is triangular of the same kind.
+  *Inverse* $(bA | bI) -> (bI | bA^(-1))$; a zero row on the left ⇒ singular. #h(0.2em) $mat(a, b; c, d)^(-1) = display(dfrac(1, a d - b c)) mat(d, -b; -c, a)$. #h(0.2em) $bA^(-1) = adj(bA) \/ det bA$, $adj(bA) = (A_(j i))$ (transpose of the cofactor matrix). Solve $bA bX = bB$ by $(bA | bB) -> (bI | bX)$. Diagonal: invert each entry. Triangular: invertible ⇔ all $a_(i i) != 0$, and the inverse is triangular of the same kind.
 
   *Products* for square $bA$, $bB$: $bA bB$ invertible ⇔ $bA$ and $bB$ invertible. $bA_1 bA_2 dots.c bA_k = bI$ (square) ⇒ every $bA_i$ is invertible and cyclic shifts hold, $bA_2 dots.c bA_k bA_1 = bI$, #warn[not the reversed product]. $bA$ singular ⇒ $bA bB = bz$ and $bC bA = bz$ for some nonzero $bB$, $bC$.
 
@@ -128,7 +129,7 @@
 
   #key[*Given $bA = bL bU$* #h(0.2em) $bL$ is invertible, so $bA$ is row equivalent to $bU$ — same rank, pivot positions, $Null$, $Row$ and the same relations between columns ($bu_2 = 2 bu_1$ ⇔ $ba_2 = 2 ba_1$). Basis of $Col(bA)$: the columns $ba_j = bL bu_j$ at the pivot positions, #warn[not the columns of $bU$]. Square: $det bA = det bU = product u_(i i)$. Known $bA bv = bw$: use $bL (bU bv) = bw$ to find the entries of $bL$.]
 
-  #key[*Square $bA$ of order $n$ is invertible* ⇔ RREF is $bI$ ⇔ product of elementary matrices ⇔ $bA bx = bz$ only trivially ⇔ $bA bx = bb$ unique for all $bb$ ⇔ $det != 0$ ⇔ columns (rows) independent / span $RR^n$ / a basis ⇔ rank $n$ ⇔ nullity 0 ⇔ 0 not an eigenvalue ⇔ has a left (or right) inverse ⇔ $bA^tp$ invertible ⇔ $bx |-> bA bx$ injective ⇔ surjective.]
+  #key[*Square $bA$ of order $n$ is invertible* ⇔ RREF is $bI$ ⇔ product of elementary matrices ⇔ $Null(bA) = {bz}$ ⇔ $bA bx = bb$ unique $forall bb$ ⇔ $det bA != 0$ ⇔ columns (rows) independent / span $RR^n$ / a basis ⇔ $rank bA = n$ ⇔ $nullity bA = 0$ ⇔ $lambda = 0$ not an eigenvalue ⇔ has a left (or right) inverse ⇔ $bA^tp$ invertible ⇔ $bx |-> bA bx$ injective ⇔ surjective.]
 
   *Blocks* $det mat(bA, bB; bz, bD) = det bA det bD$ for square $bA$, $bD$; a block diagonal matrix is inverted, powered and diagonalized block by block.
 ]
@@ -136,13 +137,13 @@
 #section(tag: "2.8", accent: hue.green)[Determinants][
   *Cofactor expansion* along any row or column: $det = sum_j a_(i j) A_(i j)$, $A_(i j) = (-1)^(i+j) det(bM_(i j))$. Pick the row/column with most zeros. $3 times 3$: $a e i + b f g + c d h - c e g - a f h - b d i$ (this diagonal rule holds #warn[only for orders 2 and 3]).
 
-  *Triangular* ⇒ product of the diagonal. Two equal or proportional rows / a zero row ⇒ 0.
+  *Triangular* ⇒ $det = product a_(i i)$. Two equal or proportional rows / a zero row ⇒ 0.
 
   *By reduction* swap ⇒ $times (-1)$; $c R_i$ ⇒ $times c$; $R_i + c R_j$ ⇒ unchanged (these are $det bE$). So $det(bA) = (plus.minus "product of pivots") \/ ("scalings used")$. Column operations act the same way.
 
   *Properties* $det(bA bB) = det bA det bB$, $det(bA^tp) = det bA$, $det(bA^(-1)) = 1\/det bA$, $det(bA^k) = (det bA)^k$, #warn[$det(c bA) = c^n det bA$], $det(-bA) = (-1)^n det bA$, $det(bP^(-1) bA bP) = det bA$, $det(adj bA) = (det bA)^(n-1)$, $bA adj(bA) = (det bA) bI$ (also for singular $bA$). #warn[$det(bA + bB) != det bA + det bB$.]
 
-  *$det bA = 0$* ⇔ singular ⇔ rows (columns) dependent ⇔ $bA bx = bz$ has a nontrivial solution ⇔ 0 is an eigenvalue.
+  *$det bA = 0$* ⇔ singular ⇔ rows (columns) dependent ⇔ $Null(bA) != {bz}$ ⇔ $lambda = 0$ is an eigenvalue.
 
   *Cramer* $x_i = det(bA_i)\/det(bA)$, $bA_i$ = $bA$ with column $i$ replaced by $bb$. *Area* of the parallelogram on $bu, bv in RR^2$: $|det(bu #h(0.25em) bv)|$ (triangle: half); volume of the box on three vectors of $RR^3$: $|det|$.
 
@@ -152,7 +153,7 @@
 ]
 
 #section(tag: "3", accent: hue.amber)[Vector spaces: span, independence, basis][
-  *In the span?* $bv in span{bu_1, ..., bu_k}$ ⇔ $(bu_1 dots.c bu_k | bv)$ consistent (several vectors at once: $(bu_1 dots.c bu_k | bv_1 bv_2 dots.c)$). $span(S) = RR^n$ ⇔ REF of $(bu_1 dots.c bu_k)$ has no zero row; impossible if $k < n$. $span(S_1) subset.eq span(S_2)$ ⇔ every vector of $S_1$ is in $span(S_2)$; equal ⇔ $subset.eq$ and equal dimensions.
+  *In the span?* $bv in span{bu_1, ..., bu_k}$ ⇔ $(bu_1 dots.c bu_k | bv)$ consistent (several vectors at once: $(bu_1 dots.c bu_k | bv_1 bv_2 dots.c)$). $span(S) = RR^n$ ⇔ REF of $(bu_1 dots.c bu_k)$ has no zero row; impossible if $k < n$. $span(S_1) subset.eq span(S_2)$ ⇔ $S_1 subset.eq span(S_2)$; equal ⇔ $subset.eq$ and equal dimensions.
 
   *Span facts* $S subset.eq span(S)$; #h(0.2em) $S subset.eq T$ ⇒ $span(S) subset.eq span(T)$; #h(0.2em) $span(nothing) = span{bz} = {bz}$; #h(0.2em) $span(S) = span(T)$ forces neither $S = T$ nor $|S| = |T|$.
 
@@ -160,7 +161,7 @@
 
   *Subspace facts* ${bz}$ is a subspace, $nothing$ is not; nonempty and closed under $+$ and scalar multiples ⇒ subspace. $U inter V$ and $U + V$ are subspaces, #warn[$U union V$ is not] unless one contains the other. $ba, bb in.not V$ does not give $ba + bb in.not V$. Subspaces of $RR^3$: ${bz}$, lines and planes through the origin, $RR^3$. Red flags: a nonzero constant, products or squares ($x y + y z = 0$, $x^2 = y^2$), “or”, inequalities, $|dot|$; homogeneous linear equations joined by “and” are fine.
 
-  *Independent* ⇔ $c_1 bu_1 + dots.c + c_k bu_k = bz$ only trivially ⇔ every column of $(bu_1 dots.c bu_k)$ is a pivot column. More than $n$ vectors in $RR^n$ ⇒ dependent. Contains $bz$ ⇒ dependent. Two vectors: dependent ⇔ multiples. Dependent ⇔ some vector is a combination of the others.
+  *Independent* ⇔ $c_1 bu_1 + dots.c + c_k bu_k = bz$ only trivially ⇔ every column of $(bu_1 dots.c bu_k)$ is a pivot column. $k > n$ ⇒ dependent. $bz in S$ ⇒ dependent. Two vectors: dependent ⇔ multiples. Dependent ⇔ some vector is a combination of the others.
 
   *Independence facts* $nothing$ is independent, ${bz}$ is dependent. Subsets of independent sets are independent; supersets of dependent sets are dependent. $S$ independent and $bu in.not span(S)$ ⇒ $S union {bu}$ independent.
 
@@ -200,17 +201,17 @@
 
   *Inclusions* $Col(bA bB) subset.eq Col(bA)$, $Row(bA bB) subset.eq Row(bB)$, $Null(bB) subset.eq Null(bA bB)$ — #warn[not] $Col(bA bB) subset.eq Col(bB)$. $bA bB = bz$ ⇔ $Col(bB) subset.eq Null(bA)$ ⇒ $rank bA + rank bB <= n$. Rank 1 ⇔ $bA = bu bv^tp != bz$ (every column a multiple of $bu$). $k$ independent vectors in $Null(bA)$ ⇒ $rank bA <= n - k$.
 
-  *Consistent* $bA bx = bb$ ⇔ $bb in Col(bA)$ ⇔ $rank(bA) = rank(bA | bb)$. Consistent for #b[every] $bb$ ⇔ $rank = m$.
+  *Consistent* $bA bx = bb$ ⇔ $bb in Col(bA)$ ⇔ $rank(bA) = rank(bA | bb)$. Consistent $forall bb$ ⇔ $rank bA = m$.
 
   *Basis from a spanning set* put the vectors as columns, keep the pivot columns; the RREF entries of a non-pivot column are its coefficients in terms of them. *Extend to a basis of $RR^n$* add standard basis vectors for the non-pivot columns of the row-form REF.
 
   *Full rank* means $r = min(m, n)$. Wide ($m < n$): nullity $>= n - m > 0$, never a unique solution, no left inverse. Tall ($m > n$): some $bb$ is inconsistent, no right inverse. “Nullity 0 ⇔ full rank” holds only when $m >= n$.
 
-  #key[*Full rank, $rank = n$* (columns independent) ⇔ $bA^tp bA$ invertible ⇔ left inverse $(bA^tp bA)^(-1) bA^tp$ ⇔ $bA bx = bb$ has at most one solution ⇔ least squares solution unique ⇔ $bx |-> bA bx$ injective.
+  #key[*Full rank, $rank = n$* (columns independent) ⇔ $bA^tp bA$ invertible ⇔ left inverse $(bA^tp bA)^(-1) bA^tp$ ⇔ $bA bx = bb$ has $<= 1$ solution ⇔ least squares solution unique ⇔ $bx |-> bA bx$ injective.
 
-    *Full rank, $rank = m$* (rows independent) ⇔ $bA bA^tp$ invertible ⇔ right inverse $bA^tp (bA bA^tp)^(-1)$ ⇔ $bA bx = bb$ consistent for all $bb$ ⇔ surjective.
+    *Full rank, $rank = m$* (rows independent) ⇔ $bA bA^tp$ invertible ⇔ right inverse $bA^tp (bA bA^tp)^(-1)$ ⇔ $bA bx = bb$ consistent $forall bb$ ⇔ surjective.
 
-    *All right inverses* solve $bA bX = bI$ column by column, $(bA | bI) ->$ RREF, each column = a particular solution + any vector of $Null(bA)$. *All left inverses* the right inverses of $bA^tp$, transposed. Rank below $min(m, n)$: neither exists.]
+    *All right inverses* solve $bA bX = bI$ column by column, $(bA | bI) ->$ RREF, column $j$ $= bp_j + Null(bA)$ with $bA bp_j = be_j$. *All left inverses* the right inverses of $bA^tp$, transposed. $r < min(m, n)$: neither exists.]
 
   #ex[Rank with constants $c, d$: clear column 1; if the remaining rows are $(0, c - 4, 0, c - 4)$, $(0, 0, d - 1, d - 1)$ then rank $= 1 + [c != 4] + [d != 1]$; nullity $= n - $ rank.]
 ]
@@ -226,7 +227,7 @@
 
   *False friends* $bA^2 = bI$ does not force $bA = plus.minus bI$; symmetric $times$ symmetric need not be symmetric (needs $bA bB = bB bA$).
 
-  *Never unique* $Null(bA) != {bz}$ ⇒ $bA bx = bb$ has none or infinitely many solutions, for #b[every] $bb$.
+  *Never unique* $Null(bA) != {bz}$ ⇒ $bA bx = bb$ has 0 or $oo$ many solutions, $forall bb$.
 
   *Independent $S$* is a basis of $span(S)$: “$S$ is a basis of no subspace” is #warn[false].
 
@@ -257,13 +258,13 @@
 
   *Coordinates in an orthogonal basis* (no row reduction): $c_i = (bw dot bu_i)/(bu_i dot bu_i)$; orthonormal: $c_i = bw dot bu_i$. Orthonormal $S$: $[bx]_S dot [by]_S = bx dot by$ and $norm([bx]_S) = norm(bx)$ — #warn[false if $S$ is only orthogonal].
 
-  *Orthogonal complement* $V^perp = {bw : bw dot bv = 0 "for all" bv in V}$ = $Null$ of the matrix whose #b[rows] span $V$ (checking a spanning set is enough). $dim V + dim V^perp = n$. $Row(bA)^perp = Null(bA)$, $Col(bA)^perp = Null(bA^tp)$.
+  *Orthogonal complement* $V^perp = {bw : bw dot bv = 0 #h(0.3em) forall bv in V}$ = $Null$ of the matrix whose #b[rows] span $V$ (checking a spanning set is enough). $dim V + dim V^perp = n$. $Row(bA)^perp = Null(bA)$, $Col(bA)^perp = Null(bA^tp)$.
 
   #key[*Projection of $bw$ onto $V$* with #warn[orthogonal] basis ${bu_1, ..., bu_k}$:
     $ bw_p = (bw dot bu_1)/(bu_1 dot bu_1) bu_1 + dots.c + (bw dot bu_k)/(bu_k dot bu_k) bu_k . $
     $bw - bw_p in V^perp$; $bw_p$ is the closest point of $V$; distance $= norm(bw - bw_p)$. Basis not orthogonal ⇒ Gram–Schmidt first, or solve $bA^tp bA bx = bA^tp bw$ and take $bA bx$.]
 
-  *Projection facts* $bw_p$ exists and is #warn[unique] for every $bw$ (whatever basis or spanning set is used); $bw in V$ ⇔ $bw_p = bw$; $bw - bw_p$ is the projection onto $V^perp$. Matrix forms: $bw_p = bA (bA^tp bA)^(-1) bA^tp bw$ (columns of $bA$ a basis of $V$) $= bQ bQ^tp bw$ (orthonormal columns).
+  *Projection facts* $bw_p$ exists and is #warn[unique] $forall bw$ (whatever basis or spanning set is used); $bw in V$ ⇔ $bw_p = bw$; $bw - bw_p$ is the projection onto $V^perp$. Matrix forms: $bw_p = bA (bA^tp bA)^(-1) bA^tp bw$ (columns of $bA$ a basis of $V$) $= bQ bQ^tp bw$ (orthonormal columns).
 
   *Hyperplane* $V = {bn dot bx = 0}$: $bw_p = bw - (bw dot bn)/(bn dot bn) bn$; matrix $bI - (bn bn^tp)/(bn^tp bn)$; distance $|bw dot bn| \/ norm(bn)$. *Line* $span{bu}$: matrix $(bu bu^tp)/(bu^tp bu)$. *Projection matrices* $bP^2 = bP = bP^tp$, eigenvalues 1 (on $V$) and 0 (on $V^perp$).
 
@@ -287,7 +288,7 @@
 
   *Normal equations* always consistent. Unique ⇔ columns of $bA$ independent; then $xh = (bA^tp bA)^(-1) bA^tp bb$, or with QR: #h(0.2em) $bR xh = bQ^tp bb$ (back-substitute).
 
-  *Columns dependent* ⇒ infinitely many $xh$ = particular + $Null(bA)$ (if $bA bn = bz$, every $xh + t bn$ is one too), but $bA xh$ is the same for all. Error $= norm(bb - bA xh)$.
+  *Columns dependent* ⇒ $oo$ many: $xh = xh0 + Null(bA)$ ($bA bn = bz$ ⇒ $xh0 + t bn$ is one too), but $bA xh = bA xh0$ for all. Error $= norm(bb - bA xh)$.
 
   *Consistent $bA bx = bb$* least squares solutions = solutions. *Residual* $bb - bA xh in Null(bA^tp)$; #h(0.2em) $norm(bb - bA xh)^2 = norm(bb)^2 - norm(bA xh)^2$.
 
@@ -299,11 +300,11 @@
 ]
 
 #section(tag: "6.1", accent: hue.teal)[Eigenvalues & diagonalization][
-  *Definitions* $bA bv = lambda bv$, $bv != bz$. Characteristic polynomial $det(x bI - bA)$; eigenspace $E_lambda = Null(lambda bI - bA)$. Triangular ⇒ eigenvalues on the diagonal. $2 times 2$: $x^2 - (a + d) x + det$. $3 times 3$: $x^3 - tr(bA) x^2 + (M_(11) + M_(22) + M_(33)) x - det bA$, $M_(i i)$ the $2 times 2$ minor without row and column $i$.
+  *Definitions* $bA bv = lambda bv$, $bv != bz$. Characteristic polynomial $det(x bI - bA)$; eigenspace $E_lambda = Null(lambda bI - bA)$. Triangular ⇒ $lambda = a_(i i)$. $2 times 2$: $x^2 - (a + d) x + det$. $3 times 3$: $x^3 - tr(bA) x^2 + (M_(11) + M_(22) + M_(33)) x - det bA$, $M_(i i)$ the $2 times 2$ minor without row and column $i$.
 
-  *Trace and det* if the char. polynomial splits: $sum lambda_i$ = trace, $product lambda_i = det$ (all $n$ roots, with multiplicity). *Eigen-data for free* an eigenvector of $bA$ for $lambda$ is also one of $bA^k$ ($lambda^k$), $bA^(-1)$ ($1\/lambda$), $bA + c bI$ ($lambda + c$), $p(bA)$ ($p(lambda)$); $bA^k$ and $p(bA)$ may have more. $bA^tp$: same eigenvalues. $bA^2 = bA$ ⇒ $lambda in {0, 1}$; $bA^k = bz$ ⇒ $lambda = 0$.
+  *Trace and det* if the char. polynomial splits: $sum lambda_i = tr bA$, $product lambda_i = det bA$ (all $n$ roots, with multiplicity). *Eigen-data for free* an eigenvector of $bA$ for $lambda$ is also one of $bA^k$ ($lambda^k$), $bA^(-1)$ ($1\/lambda$), $bA + c bI$ ($lambda + c$), $p(bA)$ ($p(lambda)$); $bA^k$ and $p(bA)$ may have more. $bA^tp$: same eigenvalues. $bA^2 = bA$ ⇒ $lambda in {0, 1}$; $bA^k = bz$ ⇒ $lambda = 0$.
 
-  *Shortcuts* every row (or every column) sums to $s$ ⇒ $lambda = s$ (rows: eigenvector $(1, ..., 1)^tp$). Block triangular ⇒ eigenvalues of the diagonal blocks. Rank 1, $bA = bu bv^tp$: $lambda = bv dot bu$ (eigenvector $bu$) and 0 ($E_0 = bv^perp$, dimension $n - 1$); diagonalizable ⇔ $bv dot bu != 0$. $mat(a, b; b, a)$: $a + b$ with $(1, 1)^tp$, $a - b$ with $(1, -1)^tp$. $a bI + b bJ$: $a + n b$ once, $a$ ($n - 1$ times). Integer matrix: every rational root is an integer dividing $det bA$.
+  *Shortcuts* every row (or every column) sums to $s$ ⇒ $lambda = s$ (rows: eigenvector $(1, ..., 1)^tp$). Block triangular ⇒ eigenvalues of the diagonal blocks. Rank 1, $bA = bu bv^tp$: $lambda = bv dot bu$ (eigenvector $bu$) and 0 ($E_0 = bv^perp$, $dim = n - 1$); diagonalizable ⇔ $bv dot bu != 0$. $mat(a, b; b, a)$: $a + b$ with $(1, 1)^tp$, $a - b$ with $(1, -1)^tp$. $a bI + b bJ$: $a + n b$ once, $a$ ($n - 1$ times). Integer matrix: every rational root is an integer dividing $det bA$.
 
   *$lambda = 0$* is an eigenvalue ⇔ $bA$ singular ⇔ $bA bv = bz$ for some $bv != bz$; then $E_0 = Null(bA)$.
 
@@ -325,7 +326,7 @@
 
   #ex[$bA = mat(4, -2; 1, 1)$: $lambda = 2, 3$; $bP = mat(1, 2; 1, 1)$; $bA^n = bP mat(2^n, 0; 0, 3^n) bP^(-1)$. For $bx_n = bA^n bx_0$: write $bx_0 = c_1 bv_1 + c_2 bv_2$, then $bx_n = c_1 lambda_1^n bv_1 + c_2 lambda_2^n bv_2$.]
 
-  *Limits and powers* $|lambda| < 1$ terms die as $n -> oo$; the $lambda = 1$ component survives. $lim bA^n$ exists (diagonalizable $bA$) ⇔ every eigenvalue is 1 or has $|lambda| < 1$; negative powers need $bA$ invertible; if all $lambda >= 0$, a square root is $bP bD^(1\/2) bP^(-1)$.
+  *Limits and powers* $|lambda| < 1$ terms die as $n -> oo$; the $lambda = 1$ component survives. $lim bA^n$ exists (diagonalizable $bA$) ⇔ every $lambda = 1$ or $|lambda| < 1$; negative powers need $bA$ invertible; if all $lambda >= 0$, a square root is $bP bD^(1\/2) bP^(-1)$.
 ]
 
 #section(tag: "6.3", accent: hue.violet)[Orthogonal diagonalization][
@@ -345,7 +346,7 @@
 
   *Build $bP$* column $j$ = tomorrow's distribution given state $j$ today; fill the missing entry so the column sums to 1; “never the same twice” ⇒ zero diagonal. Probability vector: entries $>= 0$ with sum 1; $bP bx$ is again one.
 
-  *Equilibrium* solve $(bP - bI) bx = bz$, then scale so the entries sum to 1. 1 is always an eigenvalue, all $|lambda| <= 1$. If the chain converges, the limit is an equilibrium vector. Long-run proportions (ranking of states) = the equilibrium vector.
+  *Equilibrium* solve $(bP - bI) bx = bz$, then scale so the entries sum to 1. $lambda = 1$ is always an eigenvalue, all $|lambda| <= 1$. If the chain converges, the limit is an equilibrium vector. Long-run proportions (ranking of states) = the equilibrium vector.
 
   *Regular* (some $bP^k$ has all entries $> 0$) ⇒ the equilibrium is unique and every chain converges to it. *PageRank* column $j$ has $1\/$(number of links out of page $j$) at the pages it links to.
 
@@ -391,7 +392,7 @@
 
   *Range by equations* $bb in R(T)$ ⇔ $(bA | bb)$ consistent ⇔ $bb perp Null(bA^tp)$.
 
-  *Injective* ⇔ $ker = {bz}$ ⇔ rank $n$. *Surjective* ⇔ rank $m$. $n > m$ ⇒ not injective; $n < m$ ⇒ not surjective. $ker(T)$ nontrivial for square $bA$ ⇔ $det bA = 0$. $T(bx_1) = T(bx_2)$ ⇔ $bx_1 - bx_2 in ker T$, so it forces $bx_1 = bx_2$ only when $T$ is injective. $n = m$: injective ⇔ surjective ⇔ $bA$ invertible; then $T^(-1)$ has matrix $bA^(-1)$.
+  *Injective* ⇔ $ker T = {bz}$ ⇔ $rank bA = n$. *Surjective* ⇔ $R(T) = RR^m$ ⇔ $rank bA = m$. $n > m$ ⇒ not injective; $n < m$ ⇒ not surjective. $ker(T)$ nontrivial for square $bA$ ⇔ $det bA = 0$. $T(bx_1) = T(bx_2)$ ⇔ $bx_1 - bx_2 in ker T$, so it forces $bx_1 = bx_2$ only when $T$ is injective. $n = m$: injective ⇔ surjective ⇔ $bA$ invertible; then $T^(-1)$ has matrix $bA^(-1)$.
 
   *Rotation* by $theta$: $mat(cos theta, -sin theta; sin theta, cos theta)$. *Reflection* in the line at angle $theta\/2$: $mat(cos theta, sin theta; sin theta, -cos theta)$. Reflection about $span{bu}$: $2 (bu bu^tp)/(bu^tp bu) - bI$; in a subspace $V$: $2 bP - bI$ (symmetric, orthogonal, square $= bI$). *Projection* symmetric, $bP^2 = bP$, in general neither diagonal nor triangular.
 
@@ -423,7 +424,7 @@
 #section(accent: hue.blue)[Section B checklist][
   *Working* label every row operation; state the pivot / non-pivot columns you read off; define parameters $s, t in RR$.
 
-  *Checks that cost seconds* $bA bA^(-1) = bI$; $bA bv = lambda bv$ for each eigenvector; trace $= sum lambda_i$ (with multiplicity); $bQ^tp bQ = bI$ and $bQ bR = bA$; $bA bv_i = sigma_i bu_i$; equilibrium entries sum to 1; least squares residual $bb - bA xh$ is $perp$ to every column of $bA$; projection lies in $V$.
+  *Checks that cost seconds* $bA bA^(-1) = bI$; $bA bv = lambda bv$ for each eigenvector; $tr bA = sum lambda_i$ (with multiplicity); $bQ^tp bQ = bI$ and $bQ bR = bA$; $bA bv_i = sigma_i bu_i$; equilibrium entries sum to 1; least squares residual $bb - bA xh$ is $perp$ to every column of $bA$; projection lies in $V$.
 
   *Parameter questions* answer for #warn[all] values — list each special case and the generic case.
 

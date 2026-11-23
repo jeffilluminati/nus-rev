@@ -216,7 +216,7 @@
 ]
 
 #section(accent: hue.slate)[MCQ traps][
-  *Rank $n$* “$m times n$, rank $n$ ⇒ invertible”: #warn[false] unless square.
+  *Rank $n$* “$m times n$, rank $n$ (or nullity 0) ⇒ invertible”: #warn[false] unless square.
 
   *Sums and differences* $bA, bB$ invertible says nothing about $bA plus.minus bB$ (take $bB = -bA$, or $bB = bA$). Distinct invertible $bA, bB$: $bA - bB$ may be singular ($bI$ and $diag(1, 2)$), and $bA bB^(-1)$ may be diagonal ($bB = 2 bA$).
 
@@ -226,9 +226,23 @@
 
   *False friends* $bA^2 = bI$ does not force $bA = plus.minus bI$; symmetric $times$ symmetric need not be symmetric (needs $bA bB = bB bA$).
 
+  *Never unique* $Null(bA) != {bz}$ ⇒ $bA bx = bb$ has none or infinitely many solutions, for #b[every] $bb$.
+
+  *Independent $S$* is a basis of $span(S)$: “$S$ is a basis of no subspace” is #warn[false].
+
+  *Least squares* $xh in RR^n$ is #warn[not] the projection $bA xh in RR^m$. $bn in Null(bA)$ alone is a least squares solution only if $bA^tp bb = bz$.
+
+  *Singular values* are $sqrt(mu)$, #warn[not] the eigenvalues $mu$ of $bA^tp bA$ ($9, 4, 4$ gives $3, 2, 2$); no 0 when $bA^tp bA$ is invertible.
+
+  *Char. polynomial* has degree $n$, with multiplicity: $diag(-1, 2, 2)$ gives $(x + 1)(x - 2)^2$.
+
+  *Only one eigenvalue $lambda$* diagonalizable ⇒ $bA = lambda bI$ ⇒ orthogonally diagonalizable too. Repeated or zero eigenvalues do #warn[not] block diagonalization ($bI$, $bz$).
+
   *“Statement true for all $bb$ / all $a$”* test the extreme cases ($bb = bz$, zero matrix, $bI$, $mat(1, 1; 0, 1)$, $mat(0, 1; 0, 0)$).
 
-  *Wording* “always true” needs a proof; “false” needs one counterexample. “Necessary” vs “sufficient”: check each direction separately.
+  *Wording* “always true” needs a proof; “false” needs one counterexample. “Necessary” vs “sufficient”: check each direction separately. “Always” and “never” can both be false ($bA + bB$ invertible); a weaker claim stays true ($rank(bA bB) <= max(rank bA, rank bB)$).
+
+  *Options* “None of the above” is right when the exact set of true statements is not listed.
 ]
 
 // ══════════════════════════════════════════════════════════ SIDE 2: Ch 5–7 ══

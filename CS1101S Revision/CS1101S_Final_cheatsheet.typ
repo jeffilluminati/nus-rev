@@ -365,7 +365,7 @@ def f():
 
 *Lifetime:* each call makes a #hl[new] frame; a recursion of depth $d$ has $d$ frames with the *same* parent. A frame survives its call only if something still points to it (a returned function object); `W2 = make_withdraw(100)` gets its own E3 and its own `balance`.
 
-*Drawing:* numbers, booleans, strings, `None` go *inside* the frame; pairs, lists and function objects *outside*, with an arrow. Passing or naming never copies: two arrows, one object. Built-in calls make no frame; empty frames are not drawn.
+*Drawing:* numbers, booleans, strings, `None` go *inside* the frame; pairs, lists and function objects *outside*, with an arrow. Passing or naming never copies: two arrows, one object. Built-in calls make no frame; empty frames are not drawn. #hl[Prof's drawing rules:] show the *built-ins* frame only if it is relevant (a built-in is looked up or rebound); always write a function object's *parameters* (needed to apply it); its *body* may be shortened with `…`, as long as it is clear which function is meant.
 #block(width: 100%, height: 30pt, breakable: false, above: 4pt, below: 3pt, {
   fr(0, 0, 40, 27, [], [#tg[E]\ a:\ b:\ c:])
   pbox(76, 6, [1], [2])

@@ -120,102 +120,6 @@ def fac_cps(n, c):         # fac_cps(5, lambda x: x)
             else fac_cps(n - 1, lambda x: c(n * x)))
 ```
 
-= Pairs, Linked Lists & Trees
-Llist: #text(fill: kw-color)[`None`] or #hl[a pair whose tail is a llist]. Tree: a llist whose elements are data items or trees.
-`pair(1, 2)` prints `[1, 2]`; `llist(1, 2)` is `[1, [2, None]]`. One box per `pair` call; `head`, `tail`, naming and passing *never copy*.
-```python
-pair = lambda x, y: lambda f: f(x, y)  # pairs as functions
-head = lambda p: p(lambda x, y: x)
-```
-*Pre-declared* ($n$ = length): `length` $Theta(n)$; `llist_ref(xs, i)` $Theta(i)$; `append(xs, ys)` $Theta(|"xs"|)$, copies `xs`, *shares* `ys`; `reverse` $Theta(n)$; `member(v, xs)` returns the sub-llist starting at `v` or `None`; `remove` (first only), `remove_all`; `enum_llist(a, b)` inclusive; `build_llist(f, n)` = `llist(f(0), …, f(n-1))`; `for_each`; `reduce(op, init, llist(1, 2, 3))` = `op(1, op(2, op(3, init)))`.
-```python
-def map(f, xs):
-    return (None if is_none(xs)
-            else pair(f(head(xs)), map(f, tail(xs))))
-```
-```python
-def filter(pred, xs):
-    return (None if is_none(xs)
-            else pair(head(xs), filter(pred, tail(xs)))
-                 if pred(head(xs))
-            else filter(pred, tail(xs)))
-```
-```python
-def reduce(op, initial, xs):     # op(element, rest_result)
-    return (initial if is_none(xs) else
-            op(head(xs), reduce(op, initial, tail(xs))))
-```
-```python
-def append(xs, ys):
-    return (ys if is_none(xs)
-            else pair(head(xs), append(tail(xs), ys)))
-```
-```python
-def reverse(xs):                  # iterative, Θ(n)
-    def rev(orig, done):
-        return (done if is_none(orig) else
-                rev(tail(orig), pair(head(orig), done)))
-    return rev(xs, None)
-```
-```python
-def remove(v, xs):
-    return (None if is_none(xs)
-            else tail(xs) if head(xs) == v
-            else pair(head(xs), remove(v, tail(xs))))
-flatten = lambda xss: reduce(append, None, xss)
-```
-```python
-def remove_duplicates(xs):
-    return (None if is_none(xs) else pair(head(xs),
-        remove_duplicates(filter(lambda y: y != head(xs),
-                                 tail(xs)))))
-```
-All three: recursive process, $Theta(n)$ time and space. *Choose:* same length out $=>$ `map`; subset of items $=>$ `filter`; anything else $=>$ `reduce`.
-```python
-def map_tree(f, tree):
-    return map(lambda t: map_tree(f, t) if is_llist(t)
-                         else f(t), tree)
-```
-== Binary search trees
-Empty, or `llist(entry, left, right)` with left < entry < right. `find`, `insert`: $O(log n)$ balanced, $O(n)$ degenerate. `insert` rebuilds the path: `make_tree(entry(t), insert(left_branch(t), x), right_branch(t))`.
-```python
-def find(bst, x):
-    return (False if is_empty_tree(bst)
-            else True if x == entry(bst)
-            else find(left_branch(bst), x)
-                 if x < entry(bst)
-            else find(right_branch(bst), x))
-```
-== Permutations, subsets, combinations
-```python
-def permutations(s):
-    return (llist(None) if is_none(s)
-            else reduce(append, None, map(
-                lambda x: map(lambda p: pair(x, p),
-                              permutations(remove(x, s))),
-                s)))
-```
-```python
-def subsets(s):
-    if is_none(s):
-        return llist(None)
-    else:
-        rest = subsets(tail(s))
-        return append(
-            rest, map(lambda x: pair(head(s), x), rest))
-```
-```python
-def combinations(xs, r):   # r items out of xs
-    if r == 0:
-        return llist(None)
-    elif is_none(xs):
-        return None
-    else:
-        return append(combinations(tail(xs), r),
-                      map(lambda c: pair(head(xs), c),
-                          combinations(tail(xs), r - 1)))
-```
-
 = Orders of Growth
 $r(n)$ is $O(g)$: $r(n) <= k dot g(n)$ for some $k > 0$ and all large $n$ (upper bound). $Omega(g)$: $r(n) >= k dot g(n)$. $Theta(g)$: both. Give the *tightest*. \
 $1 < log n < sqrt(n) < n < n log n < n^2 < n^3 < 2^n < n! < n^n$ \
@@ -366,13 +270,107 @@ def d_insertion_sort(xs):
 Always *use the returned value* (the first pair may change). Read `tail` *before* you overwrite it. Loop over a llist: `p = xs`, then `while not is_none(p): … p = tail(p)` -- $Theta(1)$ space.
 
 = Environment Model
-- *Environment* = sequence of *frames* (name → value). Lookup: first frame, then enclosing ones; not found $=>$ unbound-name error.
-- Built-ins frame ← *global* frame (top-level names) ← call frames.
-- `lambda`/`def` creates a *function object* (two circles): parameters + body, and the #hl[environment in which it was created]. `def f` then binds `f` in the current frame.
-- *Call:* evaluate function and arguments in the *current* env; make a new frame that extends the #hl[function's own environment] (not the caller's); bind parameters; bind every name assigned in the body as a local, *unassigned*; run the body.
-- `x = e`: evaluate `e`, then set the binding of `x` in the frame that owns it (local frame; the enclosing/global one if declared `nonlocal`/`global`).
-- *No block scope:* `if`, `while`, `for` create *no* frames; the loop variable lives in the surrounding frame and is reassigned, so closures made in a loop all see its *final* value (fix: make each in a function call).
-- Built-in calls create no frame; empty frames are not drawn. Numbers, booleans, strings, `None` go inside the frame; pairs, lists and function objects outside, with arrows.
+#let dfont(body) = text(font: "Inconsolatazi4", size: 5.8pt, body)
+#let arr(x1, y1, x2, y2, c: black) = {
+  place(line(start: (x1 * 1pt, y1 * 1pt), end: (x2 * 1pt, y2 * 1pt), stroke: 0.5pt + c))
+  let a = calc.atan2(x2 - x1, y2 - y1)
+  let h = 3.4
+  let w = 22deg
+  place(polygon(fill: c, stroke: none, (x2 * 1pt, y2 * 1pt),
+    ((x2 - h * calc.cos(a - w)) * 1pt, (y2 - h * calc.sin(a - w)) * 1pt),
+    ((x2 - h * calc.cos(a + w)) * 1pt, (y2 - h * calc.sin(a + w)) * 1pt)))
+}
+#let fr(x, y, w, h, tag, body) = place(dx: x * 1pt, dy: y * 1pt, box(width: w * 1pt, height: h * 1pt,
+  stroke: 0.5pt, fill: white, inset: (x: 2pt, y: 1.8pt), {
+    place(top + right, text(size: 4.9pt, fill: accent2, weight: "bold", tag))
+    set par(leading: 0.34em)
+    dfont(body)
+  }))
+// function object: two circles; the left one holds parameters and body, the right one the environment
+#let fo(x, y) = {
+  for d in (0, 6.4) {
+    place(dx: (x + d - 3.2) * 1pt, dy: (y - 3.2) * 1pt, circle(radius: 3.2pt, stroke: 0.5pt, fill: white))
+    place(dx: (x + d - 0.7) * 1pt, dy: (y - 0.7) * 1pt, circle(radius: 0.7pt, fill: black))
+  }
+}
+#let tg(body) = text(font: "IBM Plex Sans", size: 4.9pt, fill: accent2, weight: "bold", body)
+#let lab(x, y, body) = place(dx: x * 1pt, dy: y * 1pt, text(size: 4.9pt, fill: cmt, body))
+#let pbox(x, y, a, b) = {   // one pair: two cells
+  place(dx: x * 1pt, dy: y * 1pt, box(width: 9pt, height: 8pt, stroke: 0.5pt, align(center + horizon, dfont(a))))
+  place(dx: (x + 9) * 1pt, dy: y * 1pt, box(width: 9pt, height: 8pt, stroke: 0.5pt, align(center + horizon, dfont(b))))
+}
+
+*Environment* = sequence of *frames* (name → value); every expression is evaluated in the *current* environment. Lookup: first frame, then the enclosing ones; not found $=>$ unbound-name error. Built-ins frame ← *global* frame ← call frames. A frame points to exactly #hl[one] enclosing environment.
+
+*Function object* (two circles): left → parameters and body; right → the #hl[environment in which it was created]. `lambda` makes only the object; `def f` also binds `f` in the current frame.
+
+*Call* `f(a, b)`: #hl[(1)] evaluate `f` and the arguments in the *current* environment; #hl[(2)] make a new frame whose parent is the #hl[function's own environment], never the caller's; #hl[(3)] bind the parameters; #hl[(4)] bind every *local* (any name assigned in the body, including an inner `def` and a `for` variable, unless declared `nonlocal`/`global`) as *unassigned*; #hl[(5)] run the body there.
+
+```python
+def make_withdraw(balance):
+    def withdraw(amount):
+        nonlocal balance
+        balance = balance - amount
+        return balance
+    return withdraw
+W1 = make_withdraw(100)
+W1(40)                       # 60
+```
+#block(width: 100%, height: 106pt, breakable: false, above: 4pt, below: 4pt, {
+  fr(0, 0, 190, 11, [], [#tg[built-ins] #h(4pt) pair, head, tail, print, …])
+  fr(0, 19, 96, 21, [], [#tg[global]\ make_withdraw:\ W1:])
+  fr(0, 54, 96, 21, [], [#tg[E1: make_withdraw(100)]\ balance: #strike[100] 60\ withdraw:])
+  fr(0, 89, 96, 15, [], [#tg[E2: W1(40)]\ amount: 40])
+  // frame → enclosing environment
+  arr(8, 19, 8, 11.5, c: accent2)
+  arr(8, 54, 8, 40.5, c: accent2)
+  arr(8, 89, 8, 75.5, c: accent2)
+  // function objects
+  fo(130, 29.5)
+  fo(130, 66)
+  arr(52, 29.5, 126.3, 29.5)               // make_withdraw → object
+  place(line(start: (136.4pt, 32.7pt), end: (136.4pt, 37pt), stroke: 0.5pt + accent2))
+  arr(136.4, 37, 96.5, 37, c: accent2)      // its environment: global
+  place(line(start: (16pt, 35.5pt), end: (22pt, 35.5pt), stroke: 0.5pt))
+  place(line(start: (22pt, 35.5pt), end: (22pt, 47pt), stroke: 0.5pt))
+  place(line(start: (22pt, 47pt), end: (116pt, 47pt), stroke: 0.5pt))
+  arr(116, 47, 128, 62.6)                   // W1 → withdraw object
+  arr(36, 70.5, 126.4, 67)                  // withdraw → same object
+  place(line(start: (136.4pt, 69.2pt), end: (136.4pt, 73pt), stroke: 0.5pt + accent2))
+  arr(136.4, 73, 96.5, 73, c: accent2)      // its environment: E1
+  lab(143, 24, [p: balance])
+  lab(143, 30, [b: def withdraw …])
+  lab(143, 60.5, [p: amount])
+  lab(143, 66.5, [b: nonlocal balance …])
+  lab(100, 88, [E2's parent is where withdraw])
+  lab(100, 94, [was *created* (E1), not where])
+  lab(100, 100, [it was *called* (global)])
+})
+*Assignment* `x = e`: evaluate `e`, then change the binding of `x` in the frame that owns it: the current frame, or the enclosing-function / global one after `nonlocal x` / `global x`. Cross out the old value. Reading a local *before* it is assigned is an #hl[error], even if a global of that name exists:
+```python
+x = 1
+def f():
+    print(x)        # error: x is local to f, unassigned
+    x = 2
+```
+*No block scope:* `if`, `while`, `for` make *no* frames; the loop variable lives in the surrounding frame and is reassigned, so closures made in a loop all see its *final* value (fix: make each inside a function call).
+
+*Lifetime:* each call makes a #hl[new] frame; a recursion of depth $d$ has $d$ frames with the *same* parent. A frame survives its call only if something still points to it (a returned function object); `W2 = make_withdraw(100)` gets its own E3 and its own `balance`.
+
+*Drawing:* numbers, booleans, strings, `None` go *inside* the frame; pairs, lists and function objects *outside*, with an arrow. Passing or naming never copies: two arrows, one object. Built-in calls make no frame; empty frames are not drawn.
+#block(width: 100%, height: 30pt, breakable: false, above: 4pt, below: 3pt, {
+  fr(0, 0, 40, 27, [], [#tg[E]\ a:\ b:\ c:])
+  pbox(76, 6, [1], [2])
+  pbox(76, 18, [1], [2])
+  arr(12, 10.5, 75.5, 9.5)
+  arr(12, 16.5, 75.5, 11.5)
+  arr(12, 22.5, 75.5, 22.5)
+  lab(100, 4, [a = pair(1, 2); #h(2pt) b = a])
+  lab(100, 10.5, [c = pair(1, 2)])
+  lab(100, 17, [a is b: True; #h(2pt) a is c: False])
+  lab(100, 23.5, [set_head(b, 9) changes a too])
+})
+*Exam routine:* (1) global frame with every top-level name; (2) one function object per `def`/`lambda` evaluated, env arrow to the frame current at that moment; (3) per call, a frame whose parent is the env arrow of the function called; (4) update bindings in program order; (5) the answer to "what does `x` refer to" is the first frame on the chain that has `x`.
 
 = Python Lists & Loops
 `A = [None] * n` ($Theta(n)$); `A[i]` read/write $Theta(1)$; `len(A)` $Theta(1)$; `A[-1]` is the last. #hl[Lists cannot grow]: size must be known first (count, then fill). Index $>=$ `len` is an error. `[[0] * c] * r` shares *one* row -- build each row in a loop.

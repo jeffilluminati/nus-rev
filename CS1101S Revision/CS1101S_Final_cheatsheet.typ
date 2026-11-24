@@ -8,18 +8,18 @@
 #let cmt = rgb(110, 110, 110)
 #let rowgray = luma(90%)
 
-#let body-size = 7.3pt
-#let code-size = 6.5pt
+#let body-size = 7.7pt
+#let code-size = 6.8pt
 #let codebg = luma(96%)
 
 #set document(title: "CS1101S final cheatsheet (adapted from m. zaidan)")
 #set page(
   paper: "a4",
   flipped: true,
-  margin: 0.22in,
+  margin: 0.1in,
   columns: 4,
 )
-#set columns(gutter: 8pt)
+#set columns(gutter: 6pt)
 #set text(font: "IBM Plex Sans", stretch: 75%, size: body-size)
 #show math.equation: set text(font: "IBM Plex Math")
 #set par(leading: 0.42em, spacing: 0.55em, justify: false)
@@ -39,14 +39,15 @@
 
 #show table: it => block(breakable: false, it)
 #show heading: set block(sticky: true)
+// light headers: coloured text on a hairline, no filled bar (less space, less ink)
 #show heading.where(level: 1): it => block(
-  width: 100%, fill: accent2, radius: 1.5pt,
-  inset: (x: 3pt, y: 2pt), above: 6pt, below: 3.6pt,
-  text(fill: white, size: 8pt, weight: "bold", it.body),
+  width: 100%, stroke: (bottom: 0.6pt + accent2),
+  inset: (x: 0pt, bottom: 1.2pt, top: 0pt), above: 4pt, below: 2.6pt,
+  text(fill: accent2, size: 7.8pt, weight: "bold", upper(it.body)),
 )
 #show heading.where(level: 2): it => block(
-  above: 5pt, below: 2.6pt,
-  text(fill: accent2, size: 7.5pt, weight: "bold", it.body),
+  above: 3.6pt, below: 2.2pt,
+  text(fill: accent2, size: 7.3pt, weight: "bold", it.body),
 )
 
 #let hl(x) = text(fill: accent, x)

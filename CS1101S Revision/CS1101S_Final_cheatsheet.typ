@@ -34,7 +34,7 @@
 #show raw.where(block: true): it => block(
   width: 100%, fill: codebg, radius: 1.5pt,
   outset: (x: 2pt, y: 1.5pt), above: 3.8pt, below: 3.8pt,
-  breakable: it.lines.len() > 16, it,   // only long blocks may run on into the next column
+  breakable: it.lines.len() > 13, it,   // only long blocks may run on into the next column
 )
 
 #show table: it => block(breakable: false, it)
@@ -63,18 +63,25 @@
 #let midrule = table.hline(stroke: 0.4pt)
 #let bottomrule = table.hline(stroke: 0.8pt)
 
-// ── T-diagram pieces ─────────────────────────────────────────────────────────
-#let tcell(w, body) = box(width: w, height: 8pt, stroke: 0.5pt, align(center + horizon, text(size: 5.6pt, body)))
-#let tprog(name, lang, w: 30pt) = stack(dir: ttb, tcell(w, name), tcell(w, lang))
-#let tinterp(lang, impl, w: 22pt) = stack(dir: ttb, tcell(w, lang), tcell(w, impl))
-#let tmachine(name, w: 22pt) = box(width: w, height: 9pt, {
-  place(polygon(stroke: 0.5pt, (0pt, 0pt), (w, 0pt), (w / 2, 9pt)))
-  place(top + center, dy: 0.8pt, text(size: 5pt, name))
+// ── T-diagram pieces, drawn as in lecture L7B ────────────────────────────────
+#let tt(body) = text(size: 5.6pt, body)
+#let tcell(w, body, ..st) = box(width: w, height: 8pt, stroke: st.pos().at(0, default: 0.5pt), align(center + horizon, tt(body)))
+// program: rounded head with the name, wider than the box with its language
+#let tprog(name, lang, w: 30pt) = box(width: w + 8pt, stack(dir: ttb,
+  box(width: w + 8pt, height: 8pt, radius: 4pt, stroke: 0.5pt, align(center + horizon, tt(name))),
+  align(center, tcell(w, lang, (left: 0.5pt, right: 0.5pt, bottom: 0.5pt)))))
+// interpreter: one box, the language it runs above the language it is written in
+#let tinterp(lang, impl, w: 30pt) = box(width: w, height: 15pt, stroke: 0.5pt,
+  align(center + horizon, stack(dir: ttb, spacing: 2.2pt, tt(lang), tt(impl))))
+// machine: a box with a pointed bottom
+#let tmachine(name, w: 30pt) = box(width: w, height: 12pt, {
+  place(polygon(stroke: 0.5pt, (0pt, 0pt), (w, 0pt), (w, 7.5pt), (w / 2, 12pt), (0pt, 7.5pt)))
+  place(top + center, dy: 1.6pt, tt(name))
 })
-// compiler: bar "from → to" over a stem holding the implementation language, then whatever runs it
+// compiler: bar "from → to" over a stem with the implementation language, then whatever runs it
 #let tcomp(from, to, impl, ..below) = stack(dir: ttb,
-  tcell(56pt, [#from #sym.arrow.r #to]),
-  align(center, stack(dir: ttb, tcell(22pt, impl), ..below.pos())))
+  tcell(60pt, [#from #h(3pt) #sym.arrow.r.long #h(3pt) #to]),
+  align(center, stack(dir: ttb, tcell(30pt, impl, (left: 0.5pt, right: 0.5pt, bottom: 0.5pt)), ..below.pos())))
 
 // ═══════════════════════ SIDE 1: Units 1–2 (functions, data) ═══════════════════════
 
@@ -680,19 +687,18 @@ def force_it(obj):                 # memoizing version
 Application: `apply(actual_value(function_expression(c), env), arg_expressions(c), env)` -- the arguments stay *expressions*. In `apply`, a built-in gets `map(actual_value)` of them (strict); a compound function gets `map(delay_it)` (thunks). `eval_conditional` and the driver use `actual_value`. An unused argument is never evaluated, so `unless(c, a, b)` works as a function and compound `pair` gives lazy lists.
 
 = T-Diagrams
-*Program* [name / its language]; *interpreter* [language it runs / written in]; *compiler* [from → to / written in]; *machine* ▽.
-Whatever sits *on* something must be written in the language that thing accepts. A compiler changes only the *language* of its input (same name) and must itself run on an interpreter or machine. Compiling an interpreter or compiler changes the language it is *written in*.
-#block(breakable: false, grid(
-  columns: (auto, 1fr),
-  column-gutter: 6pt,
-  align: (left + top, left + horizon),
-  stack(dir: ltr, spacing: 0pt,
-    tprog[Ctrl][Python],
-    pad(top: 8pt, tcomp([Python], [PVML], [JS], tinterp[JS][x86], tmachine[x86])),
-    stack(dir: ttb, tprog[Ctrl][PVML], align(center, stack(dir: ttb, tinterp[PVML][EV3], tmachine[EV3]))),
-  ),
-  note[Python program `Ctrl`, compiled to PVML by a compiler written in JS (on a JS interpreter on x86), then run by a PVML interpreter on the EV3.],
+*Program*: rounded head [name] on a box [its language]. *Interpreter*: box [language it runs / written in]. *Compiler*: T, bar [from ⟶ to], stem [written in]. *Machine*: box with a pointed bottom.
+A piece sits *on* another only if its bottom language is what the piece below accepts. A compiler changes only the *language* of its input (same name left and right of the bar) and must itself run on an interpreter or machine. Compiling an interpreter or compiler changes the language it is *written in*.
+#block(breakable: false, above: 5pt, below: 3pt, stack(dir: ltr, spacing: 0pt,
+  tprog[Controller][Python],
+  h(-4pt),
+  pad(top: 8pt, tcomp([Python], [PVML], [JavaScript], tinterp[JavaScript][x86-64], tmachine[x86-64])),
+  h(-4pt),
+  tprog[Controller][PVML],
+  pad(top: 9pt, x: 3pt, tt(sym.arrow.r.long)),
+  stack(dir: ttb, tprog[Controller][PVML], align(center, stack(dir: ttb, tinterp[PVML][EV3], tmachine[EV3]))),
 ))
+#note[Compile `Controller` from Python to PVML on a PC, then run the PVML program on the EV3.]
 
 = Types, Objects & Math
 `def f(x: int) -> int:` #h(0.4em) `Callable[[A, B], C]` #h(0.4em) `Pair[H, T]` #h(0.4em) `list[T]` #h(0.4em) `T | None` #h(0.4em) `def f[A](x: A) -> A:` (generic). Type = set of values; subtype = subset (an `int` is a `float`, not vice versa). Checked *before* running, on every path; passing $!=$ correct.

@@ -8,7 +8,7 @@
 #let cmt = rgb(110, 110, 110)
 #let rowgray = luma(90%)
 
-#let body-size = 7.4pt
+#let body-size = 7.3pt
 #let code-size = 6.5pt
 #let codebg = luma(96%)
 
@@ -694,6 +694,28 @@ Whatever sits *on* something must be written in the language that thing accepts.
 ))
 
 = Types, Objects & Math
-`def f(x: int) -> int:` #h(0.4em) `Callable[[A, B], C]` #h(0.4em) `Pair[H, T]` #h(0.4em) `list[T]` #h(0.4em) `T | None` #h(0.4em) `def f[A](x: A) -> A:` (generic). `type LList[T] = Pair[T, LList[T]] | None`. Type = set of values; subtype = subset (an `int` is a `float`, not vice versa). `head(xs)` is accepted only after an `is_none(xs)` test. Checked *before* running, on every path; passing $!=$ correct.
+`def f(x: int) -> int:` #h(0.4em) `Callable[[A, B], C]` #h(0.4em) `Pair[H, T]` #h(0.4em) `list[T]` #h(0.4em) `T | None` #h(0.4em) `def f[A](x: A) -> A:` (generic). Type = set of values; subtype = subset (an `int` is a `float`, not vice versa). Checked *before* running, on every path; passing $!=$ correct.
+== Type checks for llists (Python §4 Typed)
+`type LList[T] = Pair[T, LList[T]] | None`. `head` and `tail` expect a `Pair[H, T]`, so on an `LList[T]` they are #hl[rejected until the checker knows it is not `None`] (the checker never runs the program).
+```python
+xs: LList[int] = llist(1, 2, 3)
+head(xs)        # rejected: xs can be None
+0 if is_none(xs) else head(xs)        # accepted
+```
+`is_none(x)` *narrows the name* `x`: `None` in the true branch, a pair in the false branch (also after `if is_none(x): return …`). It narrows a #hl[name, not an expression]: testing `is_none(tail(xs))` says nothing about the next `tail(xs)`. To go one pair deeper, #hl[store the tail in a local variable and test that]:
+```python
+def second(xs: LList[int]) -> int | None:
+    if is_none(xs):
+        return None
+    else:
+        rest = tail(xs)          # LList[int]: can be None
+        if is_none(rest):
+            return None
+        else:
+            return head(rest)    # rest is a pair here
+# head(tail(xs)): rejected, even after is_none(tail(xs))
+```
+Same in a loop: `p = xs`; `while not is_none(p): … head(p) … p = tail(p)`. A result of type `T | None` must be tested by the *caller* too. `map: (Callable[[A], B], LList[A]) -> LList[B]`.
+
 *Object* = state + operations: a closure with a `dispatch(message)` function, or a `class` (`def __init__(self, r): self.r = r`; `c = Circle(1)`; `c.area()`). A class is a type.
 `math_floor`, `math_sqrt`, `math_pow(b, e)` (float), `abs`, `min`, `max`, `a % b`, `round(2.5) == 2`, `str(19)`. #h(1fr) #note[adapted from m. zaidan]
